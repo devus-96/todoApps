@@ -2,20 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.header {
+  @apply absolute top-0 left-0 right-0 z-10 px-12 py-4 max-lg:opacity-0
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.btn {
+  @apply px-14 py-[11px] rounded-full text-sm text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
+} 
+
+.btn1 {
+  @apply w-full py-[11px] rounded-full bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
+} 
+
+.input {
+  @apply px-4 py-[11px] w-full border border-black rounded-full outline-none text-black placeholder:text-gray-500
+} 
+
+.flex-justify {
+  @apply flex items-center justify-between
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.flex-center {
+  @apply flex items-center justify-center
 }
+
+.line {
+  @apply w-[40%] h-[1px] bg-gray-700
+}
+

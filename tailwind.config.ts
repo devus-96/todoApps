@@ -11,7 +11,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        bgLoging: "#E5E9F6"
       },
+      backgroundColor: {
+        btnColor: "#9eabe4"
+      }
     },
   },
   plugins: [],

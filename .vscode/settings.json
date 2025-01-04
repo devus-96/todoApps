@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "127.0.0.1",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "PG local",
+            "database": "appmanagebd",
+            "username": "postgres",
+            "connectionTimeout": 30,
+            "password": "daus985220"
+        }
+    ]
+}
