@@ -12,7 +12,7 @@ const Register = () => {
     <div className="absolute z-0 left-0 right-0 top-0 bottom-0 max-h-[800px] max-w-[1300px] mx-auto">
         <div className="header flex-justify">
             <Image src="/logo.svg" alt="logo" width={80} height={80} />
-            <Link href="/login"><button type="button" className="btn">Login</button></Link>
+            <Link href="/auth/login"><button type="button" className="btn">Login</button></Link>
         </div>
         <AuthBackground />
     </div>

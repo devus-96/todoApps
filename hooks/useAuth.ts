@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { setCookie } from "cookies-next"
 import { HTTPClient } from "@/action/https"
 import { ChangeEvent } from "react"
+import axios from "axios"
 
 
 type passWorldVerify = {
@@ -15,6 +16,8 @@ interface authProps {
     error: string,
     password: passWorldVerify,
     postDatas: (url: string, datas: any) => void,
+    fetchAuthUrl: () => Promise<any>;
+    fetchUserInfo: (code: string) => void;
     verifyPasswrld: (e: ChangeEvent<HTMLInputElement>) => any,
     setError: (error: any) => void
 }
@@ -71,6 +74,29 @@ export const useAuth = create<authProps>((set) => ({
         .finally(() => {
             set((state) => ({loading: state.loading = false}))
         })
+    },
+    async fetchAuthUrl () {
+            try {
+                //localStorage.removeItem('error')
+                const response = await fetch('/api/auth/google')
+                const data = await response.json()
+                return data.authUrl
+            } catch (err: any) {
+                set((state) => ({error: state.error = err}))
+            }
+    },
+    async fetchUserInfo (code) {
+        if (code) {
+            axios.get(`http://127.0.0.1:8000/auth/callback.php?code=${code}`).then ((res) => {
+                setCookie('authCookies', res.data, {
+                    maxAge: 24 * 60 * 60,
+                });
+                window.location.assign('/')
+            }) .catch ((err) => {
+                    localStorage.setItem('error', err.response.data)
+                    window.location.assign("/auth/login")
+            })
+        }
     },
     verifyPasswrld (e: ChangeEvent<HTMLInputElement>) {
         let target = e.target as HTMLInputElement

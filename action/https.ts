@@ -15,8 +15,7 @@ export function HTTPClient () : AxiosInstance {
     const instance = axios.create({
         headers,
         withCredentials: true,
-        baseURL: "http://127.0.0.1:8000",
-        timeout: 2000
+        baseURL: "http://127.0.0.1:8000"
     })
 
     instance.interceptors.request.use((config) => {
