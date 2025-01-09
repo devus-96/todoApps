@@ -11,15 +11,15 @@ export const Message:FC<messageProps> = ({
     type,
     message
 }) => {
-    let getErr = localStorage.getItem('error')
+    let getErr = sessionStorage.getItem('error')
     return <div className={clsx("w-full mt-4 text-sm rounded-lg text-center", {
             "text-yellow-400" : type === "alert",
             "text-green-400" : type === "succes",
             "text-red-400" : type === "failed",
-            "opacity-0 w-0": message.message === undefined && getErr === undefined
+            "opacity-0 w-0": message.message === undefined && getErr === null
         })}>
                 {type === "failed" ? (
-                    (getErr !== '') ? `${getErr}` :
+                    (getErr) ? `${getErr}` :
                     (message.status === undefined) ? `${message.message}` : 
                     (message.status === 500) ? "Something went wrong !!!" : 
                     (message.status != 400 || message.status != 404) ? message.response?.data : 

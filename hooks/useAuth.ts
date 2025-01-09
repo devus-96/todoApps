@@ -57,9 +57,11 @@ export const useAuth = create<authProps>((set) => ({
             loading: state.loading = true,
             error: state.error = ''
         }))
-        let datas = {} as any
+        let datas = {role: "admistrator"} as any
         for (const [key, value] of formData.entries()) {
-            datas[key] = value
+            if (key !== "verify") {
+                datas[key] = value
+            }
         }
         HTTPClient().post(url, JSON.stringify(datas))
         .then((res) => {
@@ -93,7 +95,7 @@ export const useAuth = create<authProps>((set) => ({
                 });
                 window.location.assign('/')
             }) .catch ((err) => {
-                    localStorage.setItem('error', err.response.data)
+                    sessionStorage.setItem('error', err.response.data)
                     window.location.assign("/auth/login")
             })
         }

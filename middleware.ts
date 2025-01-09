@@ -1,9 +1,31 @@
 import { getCookie, setCookie } from "cookies-next";
+import { NextResponse, NextRequest } from "next/server";
 
-export default function () {
-    let token = getCookie("authCookies")
-                console.log(token)
-                setCookie('authCookies', token, {
-                    maxAge: 24 * 60 * 60,
-                  });
+const privateRoute = [
+  '/'
+]
+
+const authRoute = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/callback'
+]
+
+export default function (request: NextRequest) {
+  if (privateRoute.includes(request.nextUrl.pathname)) {
+    if (!request.cookies.has('authCookies')) {
+        return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
+  }
+
+  if (authRoute.includes(request.nextUrl.pathname)) {
+    if (request.cookies.has("authCookies")) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+  }
+  
+}
+
+export const config = {
+  matcher: ["/"]
 }
