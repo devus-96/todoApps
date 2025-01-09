@@ -1,4 +1,3 @@
-import { getCookie, setCookie } from "cookies-next";
 import { NextResponse, NextRequest } from "next/server";
 
 const privateRoute = [
