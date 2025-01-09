@@ -1,9 +1,10 @@
-import { getCookie, setCookie } from "cookies-next";
+import NextAuth from 'next-auth';
+import { authConfig } from './auth.config';
 
-export default function () {
-    let token = getCookie("authCookies")
-                console.log(token)
-                setCookie('authCookies', token, {
-                    maxAge: 24 * 60 * 60,
-                  });
-}
+
+export default NextAuth(authConfig).auth;
+
+export const config = {
+  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+};
