@@ -32,8 +32,8 @@ export const Form = () => {
                         <Message type="failed" message={error} />
                     </div>
 
-                    <input type="name" name="firstName" className="input text-sm" placeholder="enter your firstName" required/>
-                    <input type="name" name="lastName" className="input text-sm" placeholder="enter your lastName" required/>
+                    <input type="name" name="firstname" className="input text-sm" placeholder="enter your firstName" required/>
+                    <input type="name" name="lastname" className="input text-sm" placeholder="enter your lastName" required/>
                     
                     
                     <input type="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" name="email" className="input text-sm" placeholder="enter your email" required/>

@@ -10,6 +10,11 @@ type passWorldVerify = {
     verify: string
 } | any
 
+type User = {
+    fistname: string
+    lastname: string
+} | null
+
 
 interface authProps {
     loading: boolean,
@@ -65,9 +70,11 @@ export const useAuth = create<authProps>((set) => ({
         }
         HTTPClient().post(url, JSON.stringify(datas))
         .then((res) => {
-            setCookie('authCookies', res.data, {
+            setCookie('authCookies', res.data.token, {
                 maxAge: 24 * 60 * 60,
             });
+            sessionStorage.setItem("firstname", res.data.firstname)
+            sessionStorage.setItem("lastname", res.data.lastname)
             window.location.assign('/')
         })
         .catch((err) => {

@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import SideBar from "@/components/sidebar";
+
+const jetBrainsMono = localFont({
+  src: "./fonts/woff/JetBrainsMono-Regular.woff",
+  variable: "--font-jetBrains-mono",
+  weight: "100 900",
+})
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,8 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${jetBrainsMono.variable} ${jetBrainsMono.variable} antialiased`}
       >
+        <SideBar />
         {children}
       </body>
     </html>
