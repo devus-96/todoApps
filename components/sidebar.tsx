@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { useAuth } from "@/hooks/useAuth";
+import { Select } from "./select";
 
 const route = [
     {
@@ -49,6 +49,12 @@ const SideBar = () => {
                             </Link>
                         </div>
                     ))}
+                    <Select 
+                        name="" 
+                        handler={() => {}} 
+                        value="" 
+                        options={["task", 'project']}
+                        />
                 </div>
                 <div className="flex items-center text-sidebarText space-x-4 px-2 py-4">
                     <div className="w-[50px] h-[50px] rounded-full bg-gray-600"></div>
