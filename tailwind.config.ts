@@ -12,11 +12,13 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         bgLoging: "#E5E9F6",
-        sidebarText: "#A6A6A8"
+        sidebarText: "#A6A6A8",
+        terciary: '#ff2779',
+        primary: "#151828",
       },
       backgroundColor: {
         btnColor: "#9eabe4",
-        primary: "#151828",
+        popup: 'rgba(0, 0, 0, .5)',
       },
     },
   },

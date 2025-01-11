@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SideBar from "@/components/sidebar";
+import { Popup } from "@/components/popup";
 
 const jetBrainsMono = localFont({
   src: "./fonts/woff/JetBrainsMono-Regular.woff",
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${jetBrainsMono.variable} ${jetBrainsMono.variable} antialiased`}
       >
         <SideBar />
+        <Popup />
         {children}
       </body>
     </html>

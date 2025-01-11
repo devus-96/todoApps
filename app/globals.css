@@ -10,6 +10,10 @@
   @apply px-14 py-[11px] rounded-full text-sm text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 } 
 
+.smallbtn {
+  @apply rounded px-2 py-1
+}
+
 .btn1 {
   @apply w-full py-[11px] rounded-full bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 } 

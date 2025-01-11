@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { Select } from "./select";
+import { FaFileCirclePlus } from "react-icons/fa6";
 
 const route = [
     {
@@ -38,8 +39,9 @@ const SideBar = () => {
                 <Image src='/logo.svg' className="mt-4 mx-auto" alt="logo" width={100} height={100} />
                 <div className="px-2 h-2/3 mt-12">
                     {route.map((item) => (
-                        <div key={item.name} className={clsx("text-sidebarText mt-4 py-2 px-8 rounded transition duration-300 cursor-pointer hover:bg-btnColor hover:text-gray-800",{
-                            "bg-btnColor text-red-800": pathname === item.route
+                        <div key={item.name} className={clsx("mt-4 py-2 px-8 rounded transition duration-300 cursor-pointer hover:bg-btnColor hover:text-gray-800",{
+                            "bg-btnColor text-gray-800": pathname === item.route,
+                            'text-sidebarText' :  pathname !== item.route
                         })}>
                             <Link href={item.route}>
                                 <div className="flex items-center space-x-4">
@@ -54,6 +56,7 @@ const SideBar = () => {
                         handler={() => {}} 
                         value="" 
                         options={["task", 'project']}
+                        Icons={FaFileCirclePlus}
                         />
                 </div>
                 <div className="flex items-center text-sidebarText space-x-4 px-2 py-4">

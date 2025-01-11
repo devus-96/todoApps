@@ -2,6 +2,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react"
 import { IoMdArrowDropdown } from "react-icons/io"
 import { FaFileCirclePlus } from "react-icons/fa6";
+import { IconType } from "react-icons";
 
 interface CustomLiProps {
     type: string,
@@ -20,6 +21,7 @@ type SelectProps = {
     handler: (e: React.MouseEvent<HTMLLIElement>) => void;
     value: string;
     options: any[];
+    Icons?: IconType
   };
 
 const CustomLi:FC<CustomLiProps> = ({
@@ -47,6 +49,7 @@ export const Select: FC<SelectProps> = ({
     name,
     handler,
     value,
+    Icons
 }) => {
         const [show, setShow] = useState(false)
         let menuRef = useRef<any>(null)
@@ -75,7 +78,7 @@ export const Select: FC<SelectProps> = ({
                 <div onClick={() => {
                     setShow(true)
                 }} className={inputClass}>
-                    <FaFileCirclePlus size={16} />
+                    {Icons && <Icons size={16} />}
                     <span className="">{value !==  "" ? value : "New"}</span>
                     <IoMdArrowDropdown size={24} />
                 </div>
