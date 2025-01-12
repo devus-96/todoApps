@@ -52,9 +52,8 @@ export const currentDate = () => {
   type Props = {
     value?: Date;
     onChange: (date: Date) => void;
-    setTrigger: Dispatch<SetStateAction<boolean>>
+    setTrigger?: Dispatch<SetStateAction<boolean>>
   };
-  const date = new Date()
   
   export const Calendar: React.FC<Props> = ({ value = new Date(), onChange, setTrigger }) => {
     let Realtime = new Date().getTime()
@@ -74,20 +73,20 @@ export const currentDate = () => {
     const handleClickDate = (index: number) => {
       const date = setDate(value, index);
       onChange(date);
-      setTrigger(false)
+      setTrigger && setTrigger(false)
     };
     const handleClickPrev = (index: number) => {
       let date = setDate(value, index);
       let prevMonthDay = set(value, {year: getYear(date), month: getMonth(date) - 2, date: index})
       onChange(prevMonthDay);
-      setTrigger(false)
+      setTrigger && setTrigger(false)
     };
 
     const handleClickNext = (index: number) => {
       let date = setDate(value, index);
       let  NextMonthDay = set(value, {year: getYear(date), month: getMonth(date) + 1, date: index})
       onChange(NextMonthDay);
-      setTrigger(false)
+      setTrigger && setTrigger(false)
     }
 
     const tab = Array.from({ length: prefixDays }).map((_, index: number) => {

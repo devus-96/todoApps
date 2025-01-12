@@ -1,15 +1,7 @@
 "use client"
-import React, { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react"
+import React, { FC, useEffect, useRef, useState } from "react"
 import { IoMdArrowDropdown } from "react-icons/io"
-import { FaFileCirclePlus } from "react-icons/fa6";
 import { IconType } from "react-icons";
-
-interface CustomLiProps {
-    type: string,
-    name: string,
-    onClick:(e: React.MouseEvent<HTMLLIElement>) => void,
-    setShow: Dispatch<SetStateAction<boolean>>
-}
 
 type SelectProps = {
     label?: string;
@@ -19,25 +11,10 @@ type SelectProps = {
     seclectClass?: string,
     name: string,
     handler: (e: React.MouseEvent<HTMLLIElement>) => void;
-    value: string;
     options: any[];
     Icons?: IconType
   };
 
-const CustomLi:FC<CustomLiProps> = ({
-    type,
-    name,
-    onClick,
-    setShow
-}) => {
-    return <li id={type} onClick={(e) => {
-                e.stopPropagation()
-                onClick(e)
-                setShow(false)
-        }} className="flex cursor-pointer p-2  items-center text-base md:text-sm sm:text-sm  2xl:text-lg space-x-2 hover:bg-primary hover:text-white">
-                <p id={type} className="whitespace-nowrap">{name}</p>
-            </li>
-}
 
 export const Select: FC<SelectProps> = ({
     label = "",
@@ -48,10 +25,10 @@ export const Select: FC<SelectProps> = ({
     className = "w-full mt-32 relative border border-secondary rounded",
     name,
     handler,
-    value,
     Icons
 }) => {
         const [show, setShow] = useState(false)
+        const [ index, setIndex ] = useState<number | null>(null)
         let menuRef = useRef<any>(null)
 
         useEffect(() => {
@@ -65,21 +42,26 @@ export const Select: FC<SelectProps> = ({
               document.removeEventListener("mousedown", handler)
             }
           })
-
         return <div className={className}>
                 {label !== "" && <label className={labelClass}> {label}</label>}
-                <ul ref={menuRef} className={`${!show ? "hidden" : seclectClass}`}>
+                <div ref={menuRef} className={`${!show ? "hidden" : seclectClass}`}>
                     {options.map((items, index) => (
-                        <div key={index}>
-                            <CustomLi name={items} onClick={handler} setShow={setShow} type={name}/>
-                        </div>
+                            <li key={index} onClick={(e) => {
+                              e.stopPropagation()
+                              handler(e)
+                              setShow(false)
+                              setIndex(index)
+                              console.log(index)
+                      }} className="flex cursor-pointer p-2  items-center text-base md:text-sm sm:text-sm  2xl:text-lg space-x-2 hover:bg-gray-600 hover:text-white">
+                              <p className="whitespace-nowrap">{items}</p>
+                          </li>
                     ))}
-                </ul>
+                </div>
                 <div onClick={() => {
                     setShow(true)
                 }} className={inputClass}>
                     {Icons && <Icons size={16} />}
-                    <span className="">{value !==  "" ? value : "New"}</span>
+                    <span>{index ===  null ? name : options[index]}</span>
                     <IoMdArrowDropdown size={24} />
                 </div>
         </div>

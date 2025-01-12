@@ -7,13 +7,17 @@ import clsx from "clsx"
 
 interface clockProps {
     setClock: Dispatch<SetStateAction<string>>
+    setClockEnd: Dispatch<SetStateAction<string>>
     setShow:Dispatch<SetStateAction<boolean>>
+    type: string
     show: boolean
     clockName?: string
 }
 
 export const Clock:React.FC<clockProps> = ({
+    type,
     setClock,
+    setClockEnd,
     setShow,
     show,
     clockName = "w-[300px] h-[420px] absolute left-16 top-10 bg-gray-800 py-8 rounded flex justify-center font-[family-name:var(--font-jetBrains-mono)]"
@@ -103,7 +107,11 @@ export const Clock:React.FC<clockProps> = ({
                     <button  
                         className="text-terciary"
                         onClick={() => {
-                            setClock(`${insertHours}:${insertMinutes} ${moment}`)
+                            if (type === 'start') {
+                                setClock(`${insertHours}:${insertMinutes} ${moment}`)
+                            } else {
+                                setClockEnd(`${insertHours}:${insertMinutes} ${moment}`)
+                            }
                             setShow(false)
                         }}
                     >ok</button>

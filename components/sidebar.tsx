@@ -52,9 +52,8 @@ const SideBar = () => {
                         </div>
                     ))}
                     <Select 
-                        name="" 
+                        name="create" 
                         handler={() => {}} 
-                        value="" 
                         options={["task", 'project']}
                         Icons={FaFileCirclePlus}
                         />
