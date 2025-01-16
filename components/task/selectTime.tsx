@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState } from "react"
 
 export function SelectTime ({time, setInsert}: {time: string[], setInsert: Dispatch<SetStateAction<string>>}) {
     const [isActive, setIsActive] = useState('12')
-    console.log(time)
     return <div 
              className="bg-gray-700 w-[250px] h-[250px] rounded-full bottom-12 absolute"
             >

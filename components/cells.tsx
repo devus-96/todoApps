@@ -1,32 +1,43 @@
 "use client"
+import { taskContext } from "@/hooks/useTask";
 import clsx from "clsx";
+import { useContext } from "react";
 interface Props {
-    onClick?: () => void;
-    children?: React.ReactNode;
-    className?: string;
-    isActive?: boolean;
+    pastVerify: boolean
+    futureVerify: boolean
+    handleClick: (time: number) => void
+    time: number,
+    isCurrentDate?:boolean
   }
 
 const Cell:React.FC<Props> =  ({
-    onClick,
-    children,
-    className,
-    isActive
+    pastVerify,
+    time,
+    handleClick,
+    isCurrentDate,
+    futureVerify
 }) =>  {
+    const {setDispatch} = useContext(taskContext)
     return (
         <div
-        onClick={!isActive ? onClick : undefined}
-        className={clsx(
-          "flex flex-col select-none transition-colors",
-          {
-            "cursor-pointer hover:bg-gray-100 active:bg-gray-200":
-              !isActive && onClick,
-            " text-black bg-gray-100": isActive,
-          },
-          className
-        )}
-      >
-        {children}
+        className="flex flex-col select-none transition-colors">
+        <div
+          key={time}
+          onClick={() => {
+            !pastVerify ? handleClick(time) : alert("vous ne pouvez pas programmer un date dans le passe")
+            setDispatch({ calendar: ''})
+          }}
+          className={clsx(
+            "h-[90px] pt-1 pb-1 text-textcolor text-left px-2",
+            {
+              "bg-terciary text-white" : isCurrentDate && !pastVerify ,
+              "bg-gray-200 text-gray-300" : pastVerify,
+              "bg-gray-200 text-gray-900 hover:bg-white cursor-pointer" : futureVerify
+            }
+          )}
+        >
+          <p className="text-left text-sm font-medium">{time}</p>
+        </div>
       </div>
     )
 }

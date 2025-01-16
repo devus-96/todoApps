@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SideBar from "@/components/sidebar";
-import { Popup } from "@/components/popup";
+import { Popup } from "@/components/task/popup";
+import TaskContextProvider from "@/hooks/useTask";
 
 const jetBrainsMono = localFont({
   src: "./fonts/woff/JetBrainsMono-Regular.woff",
@@ -36,9 +37,12 @@ export default function RootLayout({
       <body
         className={`${jetBrainsMono.variable} ${jetBrainsMono.variable} antialiased`}
       >
-        <SideBar />
-        <Popup />
-        {children}
+        <TaskContextProvider>
+          <SideBar />
+          <Popup />
+          {children}
+        </TaskContextProvider>
+
       </body>
     </html>
   );

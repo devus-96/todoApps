@@ -20,6 +20,9 @@ export default {
         btnColor: "#9eabe4",
         popup: 'rgba(0, 0, 0, .5)',
       },
+      boxShadow: {
+        myxl: '5px 5px 5px rgb(0 0 0 / 0.2), -5px -5px 5px rgb(0 0 0 / 0.2)'
+      }
     },
   },
   plugins: [],

@@ -1,41 +1,34 @@
 "use client"
-import { LuLayoutDashboard } from "react-icons/lu";
-import { LuCalendarDays } from "react-icons/lu";
-import { FaTasks } from "react-icons/fa";
-import { GoGear } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { Select } from "./select";
 import { FaFileCirclePlus } from "react-icons/fa6";
+import { taskContext } from "@/hooks/useTask";
+import { useContext, useEffect, useState } from "react";
+import PopUpTags from "./PopUpTags";
+import { Calendar } from "./calendar";
+import { route } from "@/constants/sidebar";
 
-const route = [
-    {
-        name: 'Dashboard',
-        icons: LuLayoutDashboard,
-        route: "/"
-    },
-    {
-        name: 'Calendar',
-        icons: LuCalendarDays,
-        route: "/calendar"
-    },
-    {
-        name: 'Project',
-        icons: FaTasks,
-        route: "/task"
-    },
-    {
-        name: 'Settings',
-        icons: GoGear,
-        route: "/settings"
-    },
-]
+
 
 const SideBar = () => {
     const pathname = usePathname()
-    return <section className="fixed top-0 bottom-0 w-[200px] flex flex-col bg-primary justify-between font-[family-name:var(--font-jetBrains-mono)]">
+    const [select, setSelect] = useState<string>("")
+    const {state, setDispatch} = useContext(taskContext)
+    const [currentDate, setCurrentDate] = useState(new Date())
+
+    useEffect(() => {
+        setDispatch({form: select})
+        setDispatch({date: currentDate})
+    }, [select, currentDate])
+
+    return <>
+            <PopUpTags state={state.calendar}>
+                <Calendar value={currentDate} onChange={setCurrentDate}/>
+            </PopUpTags>
+            <section className="fixed top-0 bottom-0 z-50 w-[200px] flex flex-col bg-primary justify-between font-[family-name:var(--font-jetBrains-mono)]">
                 <Image src='/logo.svg' className="mt-4 mx-auto" alt="logo" width={100} height={100} />
                 <div className="px-2 h-2/3 mt-12">
                     {route.map((item) => (
@@ -53,16 +46,18 @@ const SideBar = () => {
                     ))}
                     <Select 
                         name="create" 
-                        handler={() => {}} 
-                        options={["task", 'project']}
+                        handler={setSelect} 
+                        options={["Task", 'Project']}
                         Icons={FaFileCirclePlus}
-                        />
+                    />
                 </div>
                 <div className="flex items-center text-sidebarText space-x-4 px-2 py-4">
                     <div className="w-[50px] h-[50px] rounded-full bg-gray-600"></div>
                     <p>{sessionStorage.getItem('firstname')} {sessionStorage.getItem('lastname')}</p>
                 </div>
     </section>
+    
+    </> 
 }
 
  export default SideBar

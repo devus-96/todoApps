@@ -33,4 +33,30 @@
 .line {
   @apply w-[40%] h-[1px] bg-gray-700
 }
-
+.inputnameTask {
+  @apply w-full border-b-2 border-b-gray-200 outline-none placeholder:text-xl
+}
+.btnClock {
+  @apply bg-gray-200 text-gray-800 rounded px-4 py-2 cursor-pointer
+}
+.inputClass {
+  @apply flex h-12 bg-gray-200 p-5 text-base sm:text-sm 2xl:text-lg font-normal rounded items-center cursor-pointer justify-between
+}
+.inputclassName {
+  @apply w-full relative border rounded
+}
+.seclectClass {
+  @apply absolute w-full top-[-300px] rounded p-5 mb-2 bg-white shadow
+}
+.textarea {
+  @apply w-full h-[100px] bg-gray-200 rounded-lg border outline-none p-3 resize-none text-sm max-lg:mb-5
+}
+.popup {
+  @apply flex justify-center items-center fixed z-50 top-0 bottom-0 right-0 left-0 bg-popup
+}
+.closePopup {
+  @apply absolute right-80 top-12 cursor-pointer hover:scale-125
+}
+.popupTask {
+  @apply fixed z-10 left-[250px] top-[20px] w-[450px] h-auto shadow-myxl space-y-4 bg-white rounded-xl px-8 py-8 font-[family-name:var(--font-jetBrains-mono)]
+}

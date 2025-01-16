@@ -1,27 +1,21 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { FaRegKeyboard } from "react-icons/fa"
-import { SelectTime } from "./task/selectTime"
+import { SelectTime } from "./selectTime"
 import clsx from "clsx"
+import { taskContext } from "@/hooks/useTask"
 
 interface clockProps {
-    setClock: Dispatch<SetStateAction<string>>
-    setClockEnd: Dispatch<SetStateAction<string>>
-    setShow:Dispatch<SetStateAction<boolean>>
     type: string
-    show: boolean
     clockName?: string
 }
 
 export const Clock:React.FC<clockProps> = ({
     type,
-    setClock,
-    setClockEnd,
-    setShow,
-    show,
-    clockName = "w-[300px] h-[420px] absolute left-16 top-10 bg-gray-800 py-8 rounded flex justify-center font-[family-name:var(--font-jetBrains-mono)]"
+    clockName = "w-[300px] h-[420px] absolute bg-gray-800 py-8 rounded flex justify-center font-[family-name:var(--font-jetBrains-mono)]"
 }) => {
+     const {setDispatch} = useContext(taskContext)
     //appel useState
     const [time, setTime] = useState<string>("hours")
     const [insertHours, setInsertHours] = useState<string>('00')
@@ -29,7 +23,7 @@ export const Clock:React.FC<clockProps> = ({
     const [moment, setMoment] = useState<string>('AM')
     const [insertionMode, setInsertionMode] = useState(false)
 
-    //appel useRef
+    //appel useRefcustom
     const hoursRef = useRef<HTMLInputElement | null>(null)
     const munitesRef = useRef<HTMLInputElement | null>(null)
 
@@ -39,30 +33,26 @@ export const Clock:React.FC<clockProps> = ({
 
     //useRef call
     useEffect (() => {
+        function handleHours (e: Event) {
+            const target = e.target as HTMLInputElement
+            setInsertHours(target.value)
+        }
+        function handleMinutes  (e: Event) {
+            const target = e.target as HTMLInputElement
+            setInsertMinutes(target.value)
+        }
         if (hoursRef.current && munitesRef.current) {
-            hoursRef.current.addEventListener('change', (e) => {
-                const target = e.target as HTMLInputElement
-                setInsertHours(target.value)
-            })
-            munitesRef.current.addEventListener('change', (e) => {
-                const target = e.target as HTMLInputElement
-                setInsertMinutes(target.value)
-            })
+            hoursRef.current.addEventListener('change', (e) => handleHours(e))
+            munitesRef.current.addEventListener('change', (e) => handleMinutes(e))
 
             return () => {
-                hoursRef.current?.removeEventListener('change', (e) => {
-                    const target = e.target as HTMLInputElement
-                    setInsertHours(target.value)
-                })
-                munitesRef.current?.removeEventListener('change',(e) => {
-                    const target = e.target as HTMLInputElement
-                    setInsertMinutes(target.value)
-                })
+                hoursRef.current?.removeEventListener('change', (e) => handleHours(e))
+                munitesRef.current?.removeEventListener('change',(e) => handleMinutes(e))
               }
         }
     })
 
-    return <section className={clsx(clockName, {'hidden' : !show})}>
+    return <section className={clockName}>
             <p className="absolute text-white top-4">select time</p> 
             {time === "hours" || insertionMode ? <SelectTime time={hours} setInsert = {setInsertHours}/> :
              <SelectTime time={minutes} setInsert = {setInsertMinutes}/>}
@@ -108,14 +98,14 @@ export const Clock:React.FC<clockProps> = ({
                         className="text-terciary"
                         onClick={() => {
                             if (type === 'start') {
-                                setClock(`${insertHours}:${insertMinutes} ${moment}`)
+                                setDispatch({clockStart: `${insertHours}:${insertMinutes} ${moment}`})
                             } else {
-                                setClockEnd(`${insertHours}:${insertMinutes} ${moment}`)
+                                setDispatch({clockEnd: `${insertHours}:${insertMinutes} ${moment}`})
                             }
-                            setShow(false)
+                            setDispatch({clock: ''})
                         }}
                     >ok</button>
-                    <button className="text-terciary" onClick={() => setShow(false)}>cancel</button>
+                    <button className="text-terciary" onClick={() => setDispatch({clock: ''})}>cancel</button>
                 </div>
             </div>
     </section>

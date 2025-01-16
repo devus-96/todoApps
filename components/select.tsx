@@ -1,5 +1,5 @@
 "use client"
-import React, { FC, useEffect, useRef, useState } from "react"
+import React, { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react"
 import { IoMdArrowDropdown } from "react-icons/io"
 import { IconType } from "react-icons";
 
@@ -10,7 +10,7 @@ type SelectProps = {
     className?: string;
     seclectClass?: string,
     name: string,
-    handler: (e: React.MouseEvent<HTMLLIElement>) => void;
+    handler:Dispatch<SetStateAction<string>> | ((choose : string) => void);
     options: any[];
     Icons?: IconType
   };
@@ -32,14 +32,14 @@ export const Select: FC<SelectProps> = ({
         let menuRef = useRef<any>(null)
 
         useEffect(() => {
-            let handler = (e: any) => {
+            let handlerClick = (e: any) => {
               if (!menuRef?.current?.contains(e.target)) {
                 setShow(false)
               }
             }
-            document.addEventListener("mousedown", handler)
+            document.addEventListener("mousedown", handlerClick)
             return () => {
-              document.removeEventListener("mousedown", handler)
+              document.removeEventListener("mousedown", handlerClick)
             }
           })
         return <div className={className}>
@@ -48,10 +48,9 @@ export const Select: FC<SelectProps> = ({
                     {options.map((items, index) => (
                             <li key={index} onClick={(e) => {
                               e.stopPropagation()
-                              handler(e)
+                              handler(options[index])
                               setShow(false)
                               setIndex(index)
-                              console.log(index)
                       }} className="flex cursor-pointer p-2  items-center text-base md:text-sm sm:text-sm  2xl:text-lg space-x-2 hover:bg-gray-600 hover:text-white">
                               <p className="whitespace-nowrap">{items}</p>
                           </li>
