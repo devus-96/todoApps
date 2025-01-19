@@ -11,6 +11,7 @@ type SelectProps = {
     seclectClass?: string,
     name: string,
     handler:Dispatch<SetStateAction<string>> | ((choose : string) => void);
+    onclick?: () => void
     options: any[];
     Icons?: IconType
   };
@@ -25,7 +26,8 @@ export const Select: FC<SelectProps> = ({
     className = "w-full mt-32 relative border border-secondary rounded",
     name,
     handler,
-    Icons
+    Icons,
+    onclick
 }) => {
         const [show, setShow] = useState(false)
         const [ index, setIndex ] = useState<number | null>(null)
@@ -51,6 +53,7 @@ export const Select: FC<SelectProps> = ({
                               handler(options[index])
                               setShow(false)
                               setIndex(index)
+                              onclick && onclick()
                       }} className="flex cursor-pointer p-2  items-center text-base md:text-sm sm:text-sm  2xl:text-lg space-x-2 hover:bg-gray-600 hover:text-white">
                               <p className="whitespace-nowrap">{items}</p>
                           </li>

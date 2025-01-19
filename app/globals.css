@@ -37,7 +37,10 @@
   @apply w-full border-b-2 border-b-gray-200 outline-none placeholder:text-xl
 }
 .btnClock {
-  @apply bg-gray-200 text-gray-800 rounded px-4 py-2 cursor-pointer
+  @apply text-gray-800 rounded px-4 py-2 cursor-pointer
+}
+.btnWeekly {
+  @apply w-8 h-8 flex rounded-full 
 }
 .inputClass {
   @apply flex h-12 bg-gray-200 p-5 text-base sm:text-sm 2xl:text-lg font-normal rounded items-center cursor-pointer justify-between
@@ -58,5 +61,5 @@
   @apply absolute right-80 top-12 cursor-pointer hover:scale-125
 }
 .popupTask {
-  @apply fixed z-10 left-[250px] top-[20px] w-[450px] h-auto shadow-myxl space-y-4 bg-white rounded-xl px-8 py-8 font-[family-name:var(--font-jetBrains-mono)]
+  @apply absolute z-10 left-[250px] top-[20px] w-[450px] h-auto shadow-myxl space-y-4 bg-white rounded-xl px-8 py-8 font-[family-name:var(--font-jetBrains-mono)]
 }

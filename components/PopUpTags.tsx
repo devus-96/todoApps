@@ -15,7 +15,7 @@ function PopUpTags ({state, children}: {state: string, children: React.ReactNode
             <IoIosCloseCircleOutline 
               size={50} color='#fff' 
               className='closePopup' 
-              onClick={() => setDispatch({ calendar: '',clock: '', custom: '',})}
+              onClick={() => setDispatch({ calendar: '',clock: '', custom: '', routine: ''})}
             />
               {children}
             </section>

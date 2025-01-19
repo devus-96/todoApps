@@ -11,8 +11,6 @@ import PopUpTags from "./PopUpTags";
 import { Calendar } from "./calendar";
 import { route } from "@/constants/sidebar";
 
-
-
 const SideBar = () => {
     const pathname = usePathname()
     const [select, setSelect] = useState<string>("")
@@ -21,7 +19,7 @@ const SideBar = () => {
 
     useEffect(() => {
         setDispatch({form: select})
-        setDispatch({date: currentDate})
+        !state.isDeadline ? setDispatch({date: currentDate}) : setDispatch({deadline: currentDate})
     }, [select, currentDate])
 
     return <>

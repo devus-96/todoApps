@@ -1,11 +1,21 @@
 export const weeks = [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thur",
-    "Fri",
-    "Sat",
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+
+  export const weeksMin = [
+    "sund",
+    "mon",
+    "tue",
+    "wed",
+    "thur",
+    "fri",
+    "satur",
   ];
 
 export const Month = [

@@ -3,7 +3,7 @@ import { format,set,getYear,getMonth,
 } from "date-fns";
 import Cell from "./cells";
 import { useCalendar } from "@/hooks/useCalendar";
-import { weeks } from "@/constants/task";
+import { weeksMin } from "@/constants/task";
   
   type Props = {
     value?: Date;
@@ -37,7 +37,7 @@ import { weeks } from "@/constants/task";
           </div>  
         </div>
         <div className="w-full grid grid-cols-7 pb-2">
-                {weeks.map((day, index) => (
+                {weeksMin.map((day, index) => (
                     <p key={index} className="text-center text-xs text-white">{day}</p>
                 ))}
           </div>
