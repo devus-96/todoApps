@@ -1,3 +1,5 @@
+"use client"
+import React from "react"
 import { taskContext } from "@/hooks/useTask"
 import clsx from "clsx"
 import { format } from "date-fns"
@@ -6,49 +8,44 @@ import { Select } from "../select"
 import { optionsRepetition } from "@/constants/task"
 import { Spinner } from "../spinner"
 import { useForm } from "@/hooks/useForm"
-import PopUpTags from "../PopUpTags"
-import Routine from "./routine"
 
 interface PopUpTaskProps {
     setType: Dispatch<SetStateAction<string>>
+    output: any
 }
 
 const PopUpTask:React.FC<PopUpTaskProps> = ({
-    setType
+    setType,
+    output
 }) => {
     const {state, setDispatch} = useContext(taskContext)
     const [select, setSelect] = useState<string>('')
-    const [output, setOutput] = useState<any>(null)
     const { 
-            handleEmail, 
-            emails, 
             handleOption, 
             handleChange, 
             value, 
             startDateRef,
             endRef,
             startRef,
-            handleClick, 
             dedlineRef,
             setValue
             } = useForm(state.date, state.deadline, state.clockStart, state.clockEnd)
     
     useEffect(() => {
         setValue({next_time: select})
+        if (select === 'custom') {
+            setDispatch({routine: 'routine'})
+            setSelect('Does not repeat')
+        }
         if (select === 'Does not repeat') {
             setValue({...value, next_time: false})
         } else if (output !== null) {
             setValue({...value, next_time: output})
-            setDispatch({routine: 'routine'})
         } else {
             setValue({...value, next_time: select})
         }
     }, [select, state.routine])
-    console.log(value)
     return <>
-            <PopUpTags state={state.routine}>
-                <Routine  setOutput={setOutput} />
-            </PopUpTags>
 
              <div className={clsx({
                     'hidden' : state.form === '',
@@ -72,10 +69,10 @@ const PopUpTask:React.FC<PopUpTaskProps> = ({
                                 }} 
                                 name="start_date"
                                 type="button" value={`${format(state.date, "ccc dd LLLL yyyy")}`} 
-                                className="btnClock bg-gray-200 text-sm"
+                                className="btnClock bg-gray-100 text-sm"
                             />
                         </div>
-                        {state.form === 'Project' &&
+                       
                         <div className="">
                             <p>end date</p>
                             <input 
@@ -87,10 +84,10 @@ const PopUpTask:React.FC<PopUpTaskProps> = ({
                                 }} 
                                 name="deadline"
                                 type="button" value={`${format(state.deadline, "ccc dd LLLL yyyy")}`} 
-                                className="btnClock bg-gray-200 text-sm"
+                                className="btnClock bg-gray-100 text-sm"
                             />
                         </div>
-                        }
+                        
                     </div>
                     <div className="w-full flex items-center space-x-4">
                         <input ref={startRef} type="button" value={state.clockStart} onClick={() => {

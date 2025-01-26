@@ -16,7 +16,7 @@ export const route = [
     {
         name: 'Project',
         icons: FaTasks,
-        route: "/task"
+        route: "/project"
     },
     {
         name: 'Settings',

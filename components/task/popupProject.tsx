@@ -1,3 +1,4 @@
+import React from "react"
 import { taskContext } from "@/hooks/useTask"
 import clsx from "clsx"
 import { format } from "date-fns"
@@ -22,9 +23,9 @@ const roles = [
 
 const Step = ({setStep, step}: {setStep: Dispatch<SetStateAction<'step 1' | 'step 2' | 'step 3'>>, step: string}) => {
     return <div className='w-full flex items-center justify-between'>
-            <button className={clsx('btnClock', {'bg-terciary': step === 'step 1', 'bg-gray-200': step !== 'step 1'})} onClick={() => setStep('step 1')}>step 1 </button>
-            <button className={clsx('btnClock', {'bg-terciary': step === 'step 2', 'bg-gray-200': step !== 'step 2'})} onClick={() => setStep('step 2')}>step 2 </button>
-            <button className={clsx('btnClock', {'bg-terciary': step === 'step 3', 'bg-gray-200': step !== 'step 2'})} onClick={() => setStep('step 3')}>step 3 </button>
+            <button className={clsx('btnClock', {'bg-terciary text-white': step === 'step 1', 'bg-gray-100 text-gray-800': step !== 'step 1'})} onClick={() => setStep('step 1')}>step 1 </button>
+            <button className={clsx('btnClock', {'bg-terciary text-white': step === 'step 2', 'bg-gray-100 text-gray-800': step !== 'step 2'})} onClick={() => setStep('step 2')}>step 2 </button>
+            <button className={clsx('btnClock', {'bg-terciary text-white': step === 'step 3', 'bg-gray-100 text-gray-800': step !== 'step 2'})} onClick={() => setStep('step 3')}>step 3 </button>
         </div>
 }
 
@@ -58,7 +59,7 @@ const PopupProject = () => {
                     <Step setStep={setStep} step={step} />
                     <div className="w-full flex items-center justify-between">
                         <div className="">
-                            <p>start date</p>
+                            <p className="text-sm text-gray-800">start date</p>
                             <input 
                                 ref={startDateRef}
                                 onClick={(e: any) => {
@@ -67,11 +68,11 @@ const PopupProject = () => {
                                 }} 
                                 name="start_date"
                                 type="button" value={`${format(state.date, "ccc dd LLLL yyyy")}`} 
-                                className="btnClock bg-gray-200 text-sm"
+                                className="btnClock bg-gray-100 text-sm"
                             />
                         </div>
                         <div className="">
-                            <p>end date</p>
+                            <p className="text-sm text-gray-800">end date</p>
                             <input 
                                 ref={dedlineRef}
                                 onClick={(e: any) => {
@@ -81,7 +82,7 @@ const PopupProject = () => {
                                 }} 
                                 name="deadline"
                                 type="button" value={`${format(state.deadline, "ccc dd LLLL yyyy")}`} 
-                                className="btnClock bg-gray-200 text-sm"
+                                className="btnClock bg-gray-100 text-sm"
                             />
                         </div>
                     </div>
@@ -101,15 +102,15 @@ const PopupProject = () => {
                         <p className="">Invite your  coworkers</p>
                         <input type="email" name="email" className="input text-sm" onKeyUp={handleEmail} />
                         <div className="grid grid-cols-1 gap-4 border p-4">
-                                {emails.current.map((item: string) => (
-                                    <div className="text-sm flex items-center justify-between bg-blue-200 p-4">
+                                {emails.current.map((item: string, index) => (
+                                    <div key={index} className="text-sm flex items-center justify-between bg-blue-200 p-4">
                                         <p>{item}</p>
                                         <IoMdClose size={16} className="cursor-pointer" onClick={() => handleClick(item)}/>
                                     </div>
                                 ))}
                         </div>
-                        {roles.map((item) => (
-                            <div className={clsx("relative flex flex-col p-4 border", {'bg-blue-200': value.role === item.role})}>
+                        {roles.map((item, index) => (
+                            <div key={index} className={clsx("relative flex flex-col p-4 border", {'bg-blue-200': value.role === item.role})}>
                                 <input type="radio" name="role" value={item.role} onChange={handleOption} className="absolute z-2 right-0 w-full h-24 2xl:h-32 cursor-pointer m-auto opacity-0" />
                                 <h1 className="font-bold">{item.role}</h1>
                                 <h1 className="text-xs text-gray-600">{item.description}</h1>

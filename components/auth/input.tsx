@@ -1,8 +1,9 @@
 "use client"
+import React from "react"
 import { ChangeEvent, useState } from "react"
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6"
 
-export const InputPasswrld = ({placeholder, name, handle}: {placeholder: string, name: string, handle?: (e: ChangeEvent<HTMLInputElement>) => any}) => {
+export const InputPasswrld = ({placeholder, name, handle}: {placeholder: string, name: string, handle?: (e: ChangeEvent<HTMLInputElement>) => void}) => {
     const [open, setOpen] = useState(true)
     return <div className="w-full input flex-justify">
                 <input 

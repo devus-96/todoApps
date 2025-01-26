@@ -2,13 +2,16 @@
 
 import clsx from "clsx"
 import Image from "next/image"
+import React from "react"
 
 type bubble = {
     type : "big" | "moyen" | "small" | "very-small",
     className : string
 }
 
-const Bubble:React.FC<bubble> = ({type, className}) => {
+const Bubble:React.FC<bubble> = ({
+    type, className
+}) => {
     return <div className={`${clsx(`${className} rounded-full border border-gray-700`, {
             "w-10 h-10" : type === "big",
             "w-8 h-8" : type === "moyen",

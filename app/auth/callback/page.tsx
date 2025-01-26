@@ -1,10 +1,6 @@
 "use client"
-
-import { setCookie } from "cookies-next"
-import { useRouter } from "next/router"
+import React from "react"
 import { useEffect } from "react"
-import { HTTPClient } from "@/action/https"
-import axios from "axios"
 import { useAuth } from "@/hooks/useAuth"
 
 function Callback () {

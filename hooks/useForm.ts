@@ -37,7 +37,7 @@ export const useForm = (statDate: Date, deadLine: Date, starTime: string, endTim
 
     const handleOption = (e: React.FormEvent) => {
         checked === false ? setChecked(true) : setChecked(false)
-        let target = e.target as HTMLInputElement
+        const target = e.target as HTMLInputElement
         if (target.value) {
             const valueChanged: Record<string, string> = {
                 [target.name]: target.value,
@@ -52,7 +52,7 @@ export const useForm = (statDate: Date, deadLine: Date, starTime: string, endTim
      }
 
      const handleEmail = (e: React.KeyboardEvent) => {
-        let target = e.target as HTMLInputElement
+        const target = e.target as HTMLInputElement
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (e.key === "Enter") {
             if (regex.test(target.value)) {

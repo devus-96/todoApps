@@ -1,5 +1,5 @@
+import React from 'react';
 import Image from "next/image"
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Link from "next/link";
 import { Form } from "@/components/auth/form";
 import { AuthBackground } from "@/components/auth/background";

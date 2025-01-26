@@ -1,5 +1,5 @@
 "use client"
-import { ChangeEvent, createContext } from "react";
+import { createContext } from "react";
 import { useReducer, useRef } from "react";
 
 type choosen = {
@@ -10,7 +10,7 @@ export const taskContext = createContext({
     state: {
         calendar: '',
         clock: '',
-        custom: {time: 0, each: '', occWeek: '', occMonth: '', ends: ''},
+        typeOfCalendar: '',
         form: '',
         routine: '',
         allday: false,
@@ -23,14 +23,13 @@ export const taskContext = createContext({
         isDeadline: false
     },
     setDispatch: (param: choosen) => {},
-    handleChange: (e: ChangeEvent) => {}
 })
 
 export default function TaskContextProvider ({children}: {children: React.ReactNode}) {
     const [state, dispatch] = useReducer(displayPopup, {
         calendar: '',
         clock: '',
-        custom: '',
+        typeOfCalendar: '',
         form: '',
         routine: '',
         allday: false,
@@ -45,7 +44,7 @@ export default function TaskContextProvider ({children}: {children: React.ReactN
     let areDispalyed = useRef<choosen>({
         calendar: '',
         clock: '',
-        custom: '',
+        typeOfCalendar: '',
         form: '',
         routine: '',
         allday: false,
@@ -67,16 +66,5 @@ export default function TaskContextProvider ({children}: {children: React.ReactN
         dispatch({display: areDispalyed.current})
     }
 
-    function handleChange (e: ChangeEvent) {
-        let target = e.target as HTMLInputElement
-        const key = target.name as 'name' | 'description'
-        if ((target.type === "text" || target.type === 'textarea')) {
-            areDispalyed.current[key] = target.value
-        } else {
-            areDispalyed.current[key] = target.checked
-        }
-        dispatch({display: areDispalyed.current})
-    }
-
-    return <taskContext.Provider value={{state, setDispatch, handleChange}}>{children}</taskContext.Provider>
+    return <taskContext.Provider value={{state, setDispatch}}>{children}</taskContext.Provider>
 }

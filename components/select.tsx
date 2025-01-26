@@ -23,7 +23,7 @@ export const Select: FC<SelectProps> = ({
     inputClass = "flex h-12 bg-gradient-to-r from-[#7b91f1] to-[#ff2779] p-5 text-base sm:text-sm 2xl:text-lg font-normal rounded items-center cursor-pointer justify-between",
     options,
     seclectClass = "absolute w-full top-[-120px] rounded p-5 mb-2 bg-white shadow",
-    className = "w-full mt-32 relative border border-secondary rounded",
+    className = "w-full relative border border-secondary rounded",
     name,
     handler,
     Icons,
@@ -31,11 +31,12 @@ export const Select: FC<SelectProps> = ({
 }) => {
         const [show, setShow] = useState(false)
         const [ index, setIndex ] = useState<number | null>(null)
-        let menuRef = useRef<any>(null)
+        const menuRef = useRef<HTMLDivElement>(null)
 
         useEffect(() => {
-            let handlerClick = (e: any) => {
-              if (!menuRef?.current?.contains(e.target)) {
+            const handlerClick = (e: MouseEvent) => {
+              const target = e.target as Document
+              if (!menuRef?.current?.contains(target)) {
                 setShow(false)
               }
             }

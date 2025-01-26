@@ -1,0 +1,47 @@
+# Nom du workflow GitHub Actions
+name: Vercel Preview Deployment
+
+# Déclaration des variables d'environnement pour Vercel
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # L'identifiant de votre organisation Vercel (stocké en tant que secret GitHub)
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }} # L'identifiant de votre projet Vercel (stocké en tant que secret GitHub)
+
+# Événements déclencheurs du workflow
+on:
+  workflow_run:
+    workflows: ['CI']
+    types:
+      - completed
+
+  workflow_dispatch:
+
+# Définition des jobs du workflow
+jobs:
+  Deploy-Preview: # Nom du job
+    runs-on: ubuntu-latest # Spécifie le système d'exploitation sur lequel le job s'exécute
+    #if: ${{  github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      # Étape 1 : Récupérer le code source du dépôt
+      - uses: actions/checkout@v2 # Action officielle pour cloner le dépôt
+
+      # Étape 2 : Installer le CLI de Vercel
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest # Installe la dernière version de l'outil CLI de Vercel
+
+      # Étape 3 : Récupérer les informations de l'environnement Vercel
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        # Récupère les variables d'environnement de Vercel pour l'environnement de prévisualisation
+        # Le jeton d'authentification est fourni via un secret GitHub
+
+      # Étape 4 : Construire les artefacts du projet
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        # Construit le projet localement en utilisant la commande `vercel build`
+
+      # Étape 5 : Déployer les artefacts sur Vercel
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} .
+        # Déploie les artefacts préconstruits vers Vercel
+        # Le déploiement est basé sur les fichiers générés dans l'étape précédente
+

@@ -1,5 +1,5 @@
 "use client"
-
+import React from "react";
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { Select } from "../select";
 import { weeks } from "@/constants/task";
@@ -9,15 +9,6 @@ import { Calendar } from "../calendar";
 import { taskContext } from "@/hooks/useTask";
 import { format } from "date-fns";
 import { useForm } from "@/hooks/useForm";
-
-type repeat = {
-    time: number
-    each: string
-    occWeek: string | string[]
-    occMonth: string
-    ends: string | Date | number,
-    never: boolean
-}
 
 export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateAction<any>>}) {
     const [ select, setSelect ] = useState('day')
@@ -36,7 +27,7 @@ export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateActio
             } = useForm(state.deadline, state.date, state.clockStart, state.clockEnd)
 
     useEffect (() => {
-        let tab = active.map((item) => weeks[item])
+        const tab = active.map((item) => weeks[item])
         setValue({
             ...value, 
             end: format(date, "ccc dd LLLL yyyy"), 

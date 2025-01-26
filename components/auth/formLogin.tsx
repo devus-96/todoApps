@@ -6,7 +6,7 @@ import { InputPasswrld } from "./input"
 import Link from "next/link"
 import { FaGoogle } from "react-icons/fa6"
 import { useState, useEffect } from "react"
-import { resolve } from "node:path"
+import React from "react"
 
 export const FormLogin = () => { 
     const { 
@@ -49,7 +49,7 @@ export const FormLogin = () => {
                     </div>
                     <div>
                         <div onClick={handleGoogleLogin} className="w-full py-[11px] rounded-full text-sm bg-white border border-black cursor-pointer hover:bg-gray-400 hover:text-white focus:ring-2 focus:ring-gray-300 active:bg-gray-600 transition-colors duration-300 flex-center gap-4 hover:border-gray-400">{loading ? <Spinner className="w-[30px] p-0"/> : <FaGoogle size={20} /> }Sign in with Google</div>
-                        <p className="text-sm text-gray-500 mt-4">Don't have an account ? <Link href='/auth/register' className="text-[#9eabe4] underline ">sign up</Link></p>
+                        <p className="text-sm text-gray-500 mt-4">Don`&apos;`t have an account ? <Link href='/auth/register' className="text-[#9eabe4] underline ">sign up</Link></p>
                     </div>
             </form>
 }

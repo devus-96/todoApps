@@ -1,5 +1,6 @@
 import { FC } from "react"
 import clsx from "clsx"
+import React from "react"
 
 interface messageProps {
     type: string
@@ -11,7 +12,7 @@ export const Message:FC<messageProps> = ({
     type,
     message
 }) => {
-    let getErr = sessionStorage.getItem('error')
+    const getErr = sessionStorage.getItem('error')
     return <div className={clsx("w-full mt-4 text-sm rounded-lg text-center", {
             "text-yellow-400" : type === "alert",
             "text-green-400" : type === "succes",
