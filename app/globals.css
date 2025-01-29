@@ -6,6 +6,10 @@
   @apply absolute top-0 left-0 right-0 z-10 px-12 py-4 max-lg:opacity-0
 }
 
+.bold {
+  @apply font-[family-name:var(--font-jetBrainsExtraBold-mono)]
+}
+
 .btn {
   @apply px-14 py-[11px] rounded-full text-sm text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 }
@@ -16,7 +20,16 @@
 
 .btn1 {
   @apply w-full py-[11px] rounded-full bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
+}
+
+.btnActive {
+  @apply w-full py-[11px] rounded bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 } 
+
+.btnInactive {
+  @apply w-full py-[11px] rounded border cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
+} 
+
 
 .input {
   @apply px-4 py-[11px] w-full border border-black rounded-full outline-none text-black placeholder:text-gray-500
@@ -55,13 +68,13 @@
   @apply w-full h-[100px] bg-gray-100 rounded-lg border outline-none p-3 resize-none text-sm max-lg:mb-5
 }
 .popup {
-  @apply flex justify-center items-center fixed z-50 top-0 bottom-0 right-0 left-0 bg-popup
+  @apply flex justify-center items-center fixed z-[1000] top-0 bottom-0 right-0 left-0 bg-popup
 }
 .closePopup {
   @apply absolute right-80 top-12 cursor-pointer hover:scale-125
 }
 .popupTask {
-  @apply fixed z-10 left-[250px] top-[25px] w-[450px] h-auto shadow-myxl space-y-4 bg-bgLoging rounded-xl px-8 py-8 font-[family-name:var(--font-jetBrains-mono)]
+  @apply fixed z-50 left-[250px] top-[25px] w-[450px] h-auto shadow-myxl space-y-4 bg-bgLoging rounded-xl px-8 py-8 font-[family-name:var(--font-jetBrains-mono)]
 }
 @layer base {
   :root {

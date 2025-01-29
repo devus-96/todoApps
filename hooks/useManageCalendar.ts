@@ -12,7 +12,6 @@ export function useManageCalendar (date: Date) {
      const colorOptions = useRef(['#93c5fd', '#bef264', '#fde047', '#fdba74', '#fca5a5', '#fcd34d', '#86efac', '#6ee7b7', '#5eead4', '#d8b4fe', '#f9a8d4']);
      
     function converToTime (time: string) {
-        
         const tab = time?.split(':')
         if (parseInt(tab[0]) > 12) {
             if (parseInt(tab[0]) - 12 < 10) {
@@ -21,9 +20,8 @@ export function useManageCalendar (date: Date) {
                 return [`${parseInt(tab[0]) - 12 }PM`, tab[1]]
             }
         } else {
-            return [`${tab[0]}AM`, tab[1]]
+            return [`${tab[0]}AM`, tab[0], tab[1]]
         }
-    
     }
 
     function converToMinute (startTime: string, endTime: string) {
@@ -61,6 +59,36 @@ export function useManageCalendar (date: Date) {
         }
       }
 
+      function currDate (startDate: string) {
+        const currDate = format(new Date(), "dd/MM/yyyy")
+        if (currDate === startDate) {
+            return true
+        }
+      }
+
+      function currTask (start: string, end: string, startDate: string) {
+        const current = new Date().getHours() * 60 + new Date().getMinutes() 
+        const currDate = format(new Date(), "dd/MM/yyyy")
+        const startTask = parseInt(start?.split(':')[0]) * 60 + parseInt(start?.split(':')[1])
+        const endTask = parseInt(end?.split(':')[0]) * 60 + parseInt(end?.split(':')[1])
+
+        if ((startTask <= current) && (current <= endTask) && currDate === startDate) {
+            return true
+        }
+        return false
+      }
+
+      function progress (end: string, start: string) {
+        const current = new Date().getHours() * 60 + new Date().getMinutes() 
+        const endTask = parseInt(end?.split(':')[0]) * 60 + parseInt(end?.split(':')[1])
+        const startTask = parseInt(start?.split(':')[0]) * 60 + parseInt(start?.split(':')[1])
+
+        const plage = endTask - startTask
+        const plage2 = endTask - current
+
+        return (plage2/plage) * 100
+      }
+
       function difference (start: string, end: string) {
         const minuteStart = parseInt(start?.split(":")[0]) * 60 + parseInt(start?.split(":")[1])
         const minutesEnd = parseInt(end?.split(":")[0]) * 60 + parseInt(end?.split(":")[1])
@@ -72,8 +100,8 @@ export function useManageCalendar (date: Date) {
       }
 
       function sortByTime (start: any, end: any) {
-        const minuteStart = parseInt(start?.start_time.split(":")[0]) * 60 + parseInt(start?.start_time.split(":")[1])
-        const minutesEnd = parseInt(end?.start_time.split(":")[0]) * 60 + parseInt(end?.start_time.split(":")[1])
+        const minuteStart = parseInt(start?.start_time?.split(":")[0]) * 60 + parseInt(start?.start_time?.split(":")[1])
+        const minutesEnd = parseInt(end?.start_time?.split(":")[0]) * 60 + parseInt(end?.start_time?.split(":")[1])
 
         return minuteStart - minutesEnd
 
@@ -87,6 +115,9 @@ export function useManageCalendar (date: Date) {
         dayOfWeek,
         colorOptions,
         difference,
-        sortByTime
+        sortByTime,
+        currTask,
+        currDate,
+        progress
     }
 }

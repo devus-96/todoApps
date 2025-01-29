@@ -11,23 +11,25 @@ import { useContext, useEffect, useState } from "react";
 import PopUpTags from "./PopUpTags";
 import { Calendar } from "./calendar";
 import { route } from "@/constants/sidebar";
+import { TaskDetails } from "./calendar/taskDetails";
 
 const SideBar = () => {
     const pathname = usePathname()
     const [select, setSelect] = useState<string>("")
-    const [typeCalendar, setTypeCalendar] = useState('')
     const {state, setDispatch} = useContext(taskContext)
     const [currentDate, setCurrentDate] = useState(new Date())
 
     useEffect(() => {
         setDispatch({form: select})
-        setDispatch({typeOfCalendar: typeCalendar})
         !state.isDeadline ? setDispatch({date: currentDate}) : setDispatch({deadline: currentDate})
-    }, [select, currentDate, typeCalendar, state.isDeadline])
+    }, [select, currentDate, state.isDeadline])
 
     return <>
             <PopUpTags state={state.calendar}>
                 <Calendar value={currentDate} onChange={setCurrentDate}/>
+            </PopUpTags>
+            <PopUpTags state={state.details}>
+                <TaskDetails item={state.details}/>
             </PopUpTags>
             <section className="fixed top-0 bottom-0 z-50 w-[200px] flex flex-col bg-primary justify-between font-[family-name:var(--font-jetBrains-mono)]">
                 <Image src='/logo.svg' className="mt-4 mx-auto" alt="logo" width={100} height={100} />
@@ -46,14 +48,6 @@ const SideBar = () => {
                         </div>
                     ))}
                     <div className="space-y-4  py-4 px-2">
-                        <Select 
-                            name="month" 
-                            handler={setTypeCalendar} 
-                            options={["day", 'week', 'month']}
-                            inputClass="inputClass bg-primary"
-                            className = "w-full relative border rounded text-sidebarText"
-                            seclectClass = 'absolute w-full top-[100px] rounded p-5 mb-2 bg-white text-gray-800'
-                        />
                         <Select 
                             name="create" 
                             handler={setSelect} 

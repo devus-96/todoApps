@@ -1,357 +1,155 @@
-[
+{
+  "project" : [
     {
-      "id": 946,
-      "name": "project 19",
-      "creation": "23/01/2025",
-      "start_date": "09/02/2025",
-      "deadline": "26/02/2025",
-      "status": "canceled",
-      "task": [
+      "id": 87,
+      "name": "project 66",
+      "creation": "02/01/2025",
+      "start_date": "02/01/2025",
+      "deadline": "19/02/2025",
+      "status": "plan",
+      "tasks": [
         {
-            "id": 360,
-            "name": "project84",
-            "creation": "23/01/2025",
-            "start_time": "10:52",
-            "end_time": "19:15",
-            "start_date": "03/02/2025",
-            "deadline": "11/02/2025",
-            "status": "in progress",
-            "email": "membre20@example.com"
+            "id": "70",
+            "name": "faire le design system",
+            "creation":  "02/01/2025",
+            "start_date": "03/01/2025",
+            "deadline": "07/02/2025",
+            "schedule": [
+              {
+                "date": "04/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              },
+              {
+                "date": "05/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              },
+              {
+                "date": "06/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              }
+            ],
+            "status": "plan",
+            "assignment": ["membre21@example.com"]
           },
           {
-            "id": 545,
-            "name": "project64",
-            "creation": "23/01/2025",
-            "start_time": "11:05",
-            "end_time": "04:08",
-            "start_date": "09/02/2025",
+            "id": "345",
+            "name": "faire le design de l'application sur figma",
+            "creation":  "20/01/2025",
+            "start_date": "03/01/2025",
             "deadline": "14/02/2025",
+            "schedule": [
+              {
+                "date": "04/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              },
+              {
+                "date": "06/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              },
+              {
+                "date": "08/01/2025",
+                "start_time": "07:00",
+                "end_time": "12:30"
+              },
+              {
+                "date": "10/01/2025",
+                "start_time": "08:00",
+                "end_time": "10:30"
+              }
+            ],
             "status": "completed",
-            "email": "membre10@example.com"
+            "assignment": ["membre60@example.com"]
           },
           {
-            "id": 568,
-            "name": "project83",
-            "creation": "23/01/2025",
-            "start_time": "03:28",
-            "end_time": "15:28",
-            "start_date": "01/02/2025",
-            "deadline": "24/02/2025",
-            "status": "completed",
-            "email": "membre51@example.com"
-          },
-          {
-            "id": 41,
-            "name": "project98",
-            "creation": "23/01/2025",
-            "start_time": "14:48",
-            "end_time": "23:35",
-            "start_date": "16/02/2025",
-            "deadline": "02/03/2025",
-            "status": "completed",
-            "email": "membre52@example.com"
-          }
-      ],
-      "menbers": [
-        {
-          "name": "Membre 62",
-          "role": "Testeur",
-          "email": "membre16@example.com"
-        },
-        {
-          "name": "Membre 12",
-          "role": "Chef de projet",
-          "email": "membre61@example.com"
-        },
-        {
-          "name": "Membre 60",
-          "role": "Designer",
-          "email": "membre69@example.com"
-        }
-      ]
-    },
-    {
-      "id": 376,
-      "name": "project 24",
-      "creation": "23/01/2025",
-      "start_date": "27/01/2025",
-      "deadline": "25/02/2025",
-      "status": "in progess",
-      "task": [
-        {
-            "id": 356,
-            "name": "project50",
-            "creation": "23/01/2025",
-            "start_time": "22:56",
-            "end_time": "09:13",
-            "start_date": "11/02/2025",
-            "deadline": "22/02/2025",
-            "status": "in progress",
-            "email": "membre28@example.com"
-          },
-          {
-            "id": 472,
-            "name": "project14",
-            "creation": "23/01/2025",
-            "start_time": "05:09",
-            "end_time": "17:31",
-            "start_date": "13/02/2025",
-            "deadline": "15/03/2025",
-            "status": "canceled",
-            "email": "membre38@example.com"
-          },
-          {
-            "id": 207,
-            "name": "project52",
-            "creation": "23/01/2025",
-            "start_time": "07:25",
-            "end_time": "21:48",
-            "start_date": "11/02/2025",
+            "id": "345",
+            "name": "realiser l'authentification frontend avec nextjs et backend avec php",
+            "creation":  "20/01/2025",
+            "start_date": "06/01/2025",
             "deadline": "15/02/2025",
-            "status": "waiting",
-            "email": "membre26@example.com"
-          },
-          {
-            "id": 342,
-            "name": "project27",
-            "creation": "23/01/2025",
-            "start_time": "05:27",
-            "end_time": "06:11",
-            "start_date": "14/02/2025",
-            "deadline": "09/03/2025",
-            "status": "in progress",
-            "email": "membre15@example.com"
-          }
-      ],
-      "menbers": [
-        {
-          "name": "Membre 40",
-          "role": "Testeur",
-          "email": "membre4@example.com"
-        },
-        {
-          "name": "Membre 11",
-          "role": "Testeur",
-          "email": "membre96@example.com"
-        },
-        {
-          "name": "Membre 3",
-          "role": "Designer",
-          "email": "membre30@example.com"
-        }
-      ]
-    },
-    {
-      "id": 784,
-      "name": "project 91",
-      "creation": "23/01/2025",
-      "start_date": "30/01/2025",
-      "deadline": "23/03/2025",
-      "status": "plan",
-      "task": [
-        {
-            "id": 959,
-            "name": "project3",
-            "creation": "23/01/2025",
-            "start_time": "12:27",
-            "end_time": "10:36",
-            "start_date": "12/02/2025",
-            "deadline": "26/02/2025",
-            "status": "plan",
-            "email": "membre56@example.com"
-          },
-          {
-            "id": 637,
-            "name": "project83",
-            "creation": "23/01/2025",
-            "start_time": "09:26",
-            "end_time": "09:28",
-            "start_date": "21/02/2025",
-            "deadline": "18/03/2025",
-            "status": "plan",
-            "email": "membre0@example.com"
-          },
-          {
-            "id": 893,
-            "name": "project33",
-            "creation": "23/01/2025",
-            "start_time": "03:23",
-            "end_time": "23:48",
-            "start_date": "10/02/2025",
-            "deadline": "03/03/2025",
-            "status": "canceled",
-            "email": "membre37@example.com"
-          },
-          {
-            "id": 120,
-            "name": "project7",
-            "creation": "23/01/2025",
-            "start_time": "00:01",
-            "end_time": "05:38",
-            "start_date": "28/01/2025",
-            "deadline": "20/02/2025",
-            "status": "waiting",
-            "email": "membre38@example.com"
-          }
-      ],
-      "menbers": [
-        {
-          "name": "Membre 30",
-          "role": "Chef de projet",
-          "email": "membre45@example.com"
-        },
-        {
-          "name": "Membre 63",
-          "role": "Testeur",
-          "email": "membre43@example.com"
-        },
-        {
-          "name": "Membre 35",
-          "role": "Développeur",
-          "email": "membre48@example.com"
-        }
-      ]
-    },
-    {
-      "id": 191,
-      "name": "project 36",
-      "creation": "23/01/2025",
-      "start_date": "03/02/2025",
-      "deadline": "29/03/2025",
-      "status": "plan",
-      "task": [
-        {
-            "id": 671,
-            "name": "project50",
-            "creation": "23/01/2025",
-            "start_time": "16:32",
-            "end_time": "03:07",
-            "start_date": "25/01/2025",
-            "deadline": "26/01/2025",
-            "status": "plan",
-            "email": "membre54@example.com"
-          },
-          {
-            "id": 83,
-            "name": "project94",
-            "creation": "23/01/2025",
-            "start_time": "09:20",
-            "end_time": "02:57",
-            "start_date": "08/02/2025",
-            "deadline": "21/02/2025",
-            "status": "plan",
-            "email": "membre59@example.com"
-          },
-          {
-            "id": 306,
-            "name": "project49",
-            "creation": "23/01/2025",
-            "start_time": "00:55",
-            "end_time": "09:41",
-            "start_date": "19/02/2025",
-            "deadline": "16/03/2025",
+            "schedule": [],
             "status": "completed",
-            "email": "membre51@example.com"
+            "assignment": ["membre60@example.com", "membre21@example.com", "membre80@example.com"]
           },
           {
-            "id": 970,
-            "name": "project92",
-            "creation": "23/01/2025",
-            "start_time": "23:24",
-            "end_time": "10:11",
-            "start_date": "19/02/2025",
-            "deadline": "02/03/2025",
-            "status": "waiting",
-            "email": "membre42@example.com"
+            "id": "345",
+            "name": "realiser l'authentification frontend avec nextjs et backend avec php",
+            "creation":  "02/01/2025",
+            "start_date": "10/01/2025",
+            "deadline": "14/02/2025",
+            "schedule": [
+              {
+                "date": "04/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              },
+              {
+                "date": "06/01/2025",
+                "start_time": "08:00",
+                "end_time": "16:30"
+              },
+              {
+                "date": "08/01/2025",
+                "start_time": "07:00",
+                "end_time": "12:30"
+              },
+              {
+                "date": "10/01/2025",
+                "start_time": "08:00",
+                "end_time": "10:30"
+              }
+            ],
+            "status": "completed",
+            "assignment": ["membre60@example.com", "membre21@example.com", "membre80@example.com"]
+          },
+          {
+            "id": "345",
+            "name": "middleware",
+            "creation":  "20/01/2025",
+            "start_date": "02/01/2025",
+            "deadline": "10/02/2025",
+            "schedule": [],
+            "status": "completed",
+            "assignment": ["membre60@example.com"]
+          },
+          {
+            "id": "345",
+            "name": "conceptualiser le backend",
+            "creation":  "20/01/2025",
+            "start_date": "02/01/2025",
+            "deadline": "19/02/2025",
+            "schedule": [
+              {
+                "date": "04/01/2025",
+                "start_time": "08:00",
+                "end_time": "10:30"
+              }
+            ],
+            "status": "completed",
+            "assignment": ["membre60@example.com"]
           }
       ],
       "menbers": [
         {
-          "name": "Membre 56",
-          "role": "Chef de projet",
-          "email": "membre3@example.com"
+          "name": "M7embre 77",
+          "role": "administrator",
+          "email": "membre21@example.com"
         },
         {
-          "name": "Membre 55",
-          "role": "Développeur",
-          "email": "membre3@example.com"
+          "name": "M1embre 15",
+          "role": "menber",
+          "email": "membre60@example.com"
         },
         {
-          "name": "Membre 74",
-          "role": "Développeur",
-          "email": "membre14@example.com"
-        }
-      ]
-    },
-    {
-      "id": 181,
-      "name": "project 67",
-      "creation": "23/01/2025",
-      "start_date": "11/02/2025",
-      "deadline": "16/04/2025",
-      "status": "in progress",
-      "task": [
-        {
-            "id": 30,
-            "name": "project22",
-            "creation": "23/01/2025",
-            "start_time": "15:24",
-            "end_time": "18:09",
-            "start_date": "24/01/2025",
-            "deadline": "03/02/2025",
-            "status": "waiting",
-            "email": "membre49@example.com"
-          },
-          {
-            "id": 255,
-            "name": "project92",
-            "creation": "23/01/2025",
-            "start_time": "19:32",
-            "end_time": "03:36",
-            "start_date": "08/02/2025",
-            "deadline": "24/02/2025",
-            "status": "canceled",
-            "email": "membre19@example.com"
-          },
-          {
-            "id": 999,
-            "name": "project98",
-            "creation": "23/01/2025",
-            "start_time": "02:45",
-            "end_time": "05:28",
-            "start_date": "19/02/2025",
-            "deadline": "24/02/2025",
-            "status": "plan",
-            "email": "membre48@example.com"
-          },
-          {
-            "id": 832,
-            "name": "project43",
-            "creation": "23/01/2025",
-            "start_time": "01:04",
-            "end_time": "03:16",
-            "start_date": "05/02/2025",
-            "deadline": "09/02/2025",
-            "status": "plan",
-            "email": "membre46@example.com"
-          }
-      ],
-      "menbers": [
-        {
-          "name": "Membre 81",
-          "role": "Designer",
-          "email": "membre83@example.com"
-        },
-        {
-          "name": "Membre 35",
-          "role": "Chef de projet",
-          "email": "membre71@example.com"
-        },
-        {
-          "name": "Membre 37",
-          "role": "Designer",
-          "email": "membre23@example.com"
+          "name": "M4embre 74",
+          "role": "menber",
+          "email": "membre80@example.com"
         }
       ]
     }
   ]
+}

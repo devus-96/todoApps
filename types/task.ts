@@ -10,7 +10,7 @@ export type tabTask = {
           "end_time": string,
           "start_date":string,
           "status": string,
-          "description": string
+         
 }
 
 export type separeType = [string, tabTask[]]

@@ -166,71 +166,6 @@
         "status": "in progress"
       }
     ],
-    "31/12/2024": [
-      {
-        "id": 480,
-        "name": "project77",
-        "creation": "24/01/2025",
-        "start_time": "10:42",
-        "end_time": "01:11",
-        "start_date": "31/12/2024",
-        "status": "canceled"
-      },
-      {
-        "id": 635,
-        "name": "project30",
-        "creation": "24/01/2025",
-        "start_time": "01:08",
-        "end_time": "12:00",
-        "start_date": "31/12/2024",
-        "status": "in progress"
-      },
-      {
-        "id": 749,
-        "name": "project62",
-        "creation": "24/01/2025",
-        "start_time": "08:51",
-        "end_time": "12:44",
-        "start_date": "31/12/2024",
-        "status": "completed"
-      },
-      {
-        "id": 999,
-        "name": "project11",
-        "creation": "24/01/2025",
-        "start_time": "02:04",
-        "end_time": "05:04",
-        "start_date": "31/12/2024",
-        "status": "completed"
-      },
-      {
-        "id": 367,
-        "name": "project67",
-        "creation": "24/01/2025",
-        "start_time": "02:30",
-        "end_time": "15:38",
-        "start_date": "31/12/2024",
-        "status": "waiting"
-      },
-      {
-        "id": 591,
-        "name": "project77",
-        "creation": "24/01/2025",
-        "start_time": "14:07",
-        "end_time": "05:18",
-        "start_date": "31/12/2024",
-        "status": "completed"
-      },
-      {
-        "id": 149,
-        "name": "project25",
-        "creation": "24/01/2025",
-        "start_time": "16:01",
-        "end_time": "03:46",
-        "start_date": "31/12/2024",
-        "status": "plan"
-      }
-    ],
     "04/01/2025": [
       {
         "id": 806,
@@ -543,7 +478,7 @@
         "id": 771,
         "name": "project26",
         "creation": "24/01/2025",
-        "start_time": "09:06",
+        "start_time": "08:00",
         "end_time": "17:44",
         "start_date": "01/02/2025",
         "status": "canceled"
@@ -552,7 +487,7 @@
         "id": 120,
         "name": "project84",
         "creation": "24/01/2025",
-        "start_time": "02:09",
+        "start_time": "17:44",
         "end_time": "21:37",
         "start_date": "01/02/2025",
         "status": "in progress"
@@ -561,28 +496,10 @@
         "id": 233,
         "name": "project89",
         "creation": "24/01/2025",
-        "start_time": "14:49",
-        "end_time": "06:50",
+        "start_time": "22:49",
+        "end_time": "00:50",
         "start_date": "01/02/2025",
         "status": "completed"
-      },
-      {
-        "id": 569,
-        "name": "project73",
-        "creation": "24/01/2025",
-        "start_time": "21:42",
-        "end_time": "21:58",
-        "start_date": "01/02/2025",
-        "status": "canceled"
-      },
-      {
-        "id": 695,
-        "name": "project27",
-        "creation": "24/01/2025",
-        "start_time": "22:16",
-        "end_time": "06:41",
-        "start_date": "01/02/2025",
-        "status": "plan"
       }
     ],
     "20/01/2025": [
@@ -957,59 +874,171 @@
         "status": "in progress"
       }
     ],
-    "02/01/2025":[
+    "27/01/2025":[
       {
       "id": "70",
         "name": "dormir",
         "creation": "23/01/2025",
         "start_time": "01:00",
         "end_time": "04:00",
-        "start_date": "02/01/2025",
+        "start_date": "27/01/2025",
         "status": "completed"
       },
       {
         "id": "345",
         "name": "etudier mon cour de chimie",
-        "creation": "02/01/2025",
+        "creation": "27/01/2025",
         "start_time": "04:30",
         "end_time": "07:15",
-        "start_date": "02/01/2025",
+        "start_date": "27/01/2025",
         "status": "completed"
       },
       {
         "id": "345",
         "name": "travailler pour mon entreprise",
-        "creation": "02/01/2025",
+        "creation": "27/01/2025",
         "start_time": "08:00",
         "end_time": "16:00",
-        "start_date": "02/01/2025",
+        "start_date": "27/01/2025",
         "status": "waiting"
       },
       {
         "id": "91",
         "name": "avoir des appels avec des clients",
-        "creation": "02/01/2025",
+        "creation": "27/01/2025",
         "start_time": "16:00",
         "end_time": "18:00",
-        "start_date": "02/01/2025",
+        "start_date": "27/01/2025",
         "status": "completed"
       },
       {
         "id": "773",
         "name": "distraction (regarder la tele)",
-        "creation": "02/01/2025",
+        "creation": "27/01/2025",
         "start_time": "18:30",
         "end_time": "20:00",
-        "start_date": "02/01/2025",
+        "start_date": "27/01/2025",
         "status": "completed"
       },
       {
         "id": "666",
         "name": "diner avec mes gosse",
-        "creation": "02/01/2025",
+        "creation": "27/01/2025",
         "start_time": "20:00",
         "end_time": "21:00",
-        "start_date": "02/01/2025",
+        "start_date": "27/01/2025",
+        "status": "completed"
+      }
+    ],
+    "28/01/2025":[
+      {
+      "id": "70",
+        "name": "dormir",
+        "creation": "23/01/2025",
+        "start_time": "01:00",
+        "end_time": "04:00",
+        "start_date": "28/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "345",
+        "name": "etudier mon cour de chimie",
+        "creation": "27/01/2025",
+        "start_time": "04:30",
+        "end_time": "07:15",
+        "start_date": "28/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "345",
+        "name": "travailler pour mon entreprise",
+        "creation": "27/01/2025",
+        "start_time": "08:00",
+        "end_time": "16:00",
+        "start_date": "28/01/2025",
+        "status": "waiting"
+      },
+      {
+        "id": "91",
+        "name": "avoir des appels avec des clients",
+        "creation": "27/01/2025",
+        "start_time": "16:00",
+        "end_time": "18:00",
+        "start_date": "28/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "773",
+        "name": "distraction (regarder la tele)",
+        "creation": "27/01/2025",
+        "start_time": "18:30",
+        "end_time": "20:00",
+        "start_date": "28/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "666",
+        "name": "diner avec mes gosse",
+        "creation": "27/01/2025",
+        "start_time": "20:00",
+        "end_time": "21:00",
+        "start_date": "28/01/2025",
+        "status": "completed"
+      }
+    ],
+    "29/01/2025":[
+      {
+      "id": "70",
+        "name": "dormir",
+        "creation": "23/01/2025",
+        "start_time": "01:12",
+        "end_time": "08:00",
+        "start_date": "29/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "345",
+        "name": "etudier mon cour de chimie",
+        "creation": "27/01/2025",
+        "start_time": "08:30",
+        "end_time": "10:15",
+        "start_date": "29/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "345",
+        "name": "travailler pour mon entreprise",
+        "creation": "27/01/2025",
+        "start_time": "11:00",
+        "end_time": "15:48",
+        "start_date": "29/01/2025",
+        "status": "waiting"
+      },
+      {
+        "id": "91",
+        "name": "avoir des appels avec des clients",
+        "creation": "27/01/2025",
+        "start_time": "16:00",
+        "end_time": "18:45",
+        "start_date": "29/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "773",
+        "name": "distraction (regarder la tele)",
+        "creation": "27/01/2025",
+        "start_time": "18:50",
+        "end_time": "20:00",
+        "start_date": "29/01/2025",
+        "status": "completed"
+      },
+      {
+        "id": "666",
+        "name": "diner avec mes gosse",
+        "creation": "27/01/2025",
+        "start_time": "20:00",
+        "end_time": "24:00",
+        "start_date": "29/01/2025",
         "status": "completed"
       }
     ]

@@ -10,6 +10,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { Dispatch, SetStateAction } from "react";
 import { task } from "@/types/task"
+import { ProjectType } from "@/types/project";
   
   type Props = {
     className?: string
@@ -18,7 +19,8 @@ import { task } from "@/types/task"
     divClassCells?: string
     textColor?: string
     cellsClass?: string
-    data?: task;
+    data?: task
+    project?: ProjectType[]
     showHeader?:boolean
     value?: Date;
     onChange: (date: Date) => void;
@@ -33,6 +35,7 @@ import { task } from "@/types/task"
     cellsClass,
     divClassCells,
     data,
+    project,
     showHeader = true,
     value = new Date(), 
     onChange,
@@ -85,6 +88,7 @@ import { task } from "@/types/task"
               cellsClass={cellsClass}
               currentDate={curr}
               data={data}
+              project={project}
               setCurrentDate={setCurrentDate}
             />
           )
@@ -106,6 +110,7 @@ import { task } from "@/types/task"
                 cellsClass={cellsClass}
                 currentDate={curr}
                 data={data}
+                project={project}
                 setCurrentDate={setCurrentDate}
               />
             );
@@ -123,6 +128,7 @@ import { task } from "@/types/task"
               cellsClass={cellsClass}
               currentDate={curr}
               data={data}
+              project={project}
               setCurrentDate={setCurrentDate}
             />
           )

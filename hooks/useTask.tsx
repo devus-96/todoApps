@@ -1,9 +1,10 @@
 "use client"
 import { createContext } from "react";
 import { useReducer, useRef } from "react";
+import { tabTask } from "@/types/task";
 
 type choosen = {
-    [key: string]: string | Date | boolean
+    [key: string]: string | Date | boolean | tabTask | any
 }
 
 export const taskContext = createContext({
@@ -11,7 +12,9 @@ export const taskContext = createContext({
         calendar: '',
         clock: '',
         typeOfCalendar: '',
+        dataType: 'project',
         form: '',
+        details: null,
         routine: '',
         allday: false,
         clockEnd: '00:00AM',
@@ -30,7 +33,9 @@ export default function TaskContextProvider ({children}: {children: React.ReactN
         calendar: '',
         clock: '',
         typeOfCalendar: '',
+        dataType: 'task',
         form: '',
+        details: null,
         routine: '',
         allday: false,
         clockEnd: '00:00AM',
@@ -45,7 +50,9 @@ export default function TaskContextProvider ({children}: {children: React.ReactN
         calendar: '',
         clock: '',
         typeOfCalendar: '',
+        dataType: 'task',
         form: '',
+        details: null ,
         routine: '',
         allday: false,
         clockEnd: '00:00AM',
