@@ -1,13 +1,13 @@
 import { eachDayOfInterval, format, getDate, getMonth, getYear, lastDayOfISOWeek, previousSunday, set } from "date-fns"
 import { useRef } from "react"
-import { task } from "@/types/task"
+import { tabTask, task } from "@/types/task"
 import { separeType } from "@/types/task"
 import { hoursOfDays } from "@/constants/calendar"
 
 export function useManageCalendar (date: Date) {
      const thisSunday = format(lastDayOfISOWeek(date), "yyyy, MM, dd")
      const pastSunday = previousSunday(new Date(thisSunday))
-     let thisSaturday = set(thisSunday, {year: getYear(thisSunday), month: getMonth(thisSunday), date: getDate(thisSunday) -1})
+     const thisSaturday = set(thisSunday, {year: getYear(thisSunday), month: getMonth(thisSunday), date: getDate(thisSunday) -1})
      const dayOfWeek = eachDayOfInterval({start: new Date(pastSunday), end: new Date(thisSaturday)})
      const colorOptions = useRef(['#93c5fd', '#bef264', '#fde047', '#fdba74', '#fca5a5', '#fcd34d', '#86efac', '#6ee7b7', '#5eead4', '#d8b4fe', '#f9a8d4']);
      
@@ -41,7 +41,7 @@ export function useManageCalendar (date: Date) {
     function converToText (enter: typeof hoursOfDays) {
         let tab: string[] = []
         
-        for (let [key, value] of Object.entries(enter)) {
+        for (let [key, _] of Object.entries(enter)) {
             tab = [...tab, key]
         }
 
@@ -51,7 +51,7 @@ export function useManageCalendar (date: Date) {
     function separe (data: task) {
         if (data) {
           let tab: separeType[] = []
-          for (let [key, value] of Object.entries(data)) {
+          for (const [key, value] of Object.entries(data)) {
             tab = [...tab, [key, value]]
           }
   
@@ -99,7 +99,7 @@ export function useManageCalendar (date: Date) {
 
       }
 
-      function sortByTime (start: any, end: any) {
+      function sortByTime (start: tabTask, end: tabTask) {
         const minuteStart = parseInt(start?.start_time?.split(":")[0]) * 60 + parseInt(start?.start_time?.split(":")[1])
         const minutesEnd = parseInt(end?.start_time?.split(":")[0]) * 60 + parseInt(end?.start_time?.split(":")[1])
 

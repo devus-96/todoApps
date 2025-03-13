@@ -21,7 +21,11 @@ const SideBar = () => {
 
     useEffect(() => {
         setDispatch({form: select})
-        !state.isDeadline ? setDispatch({date: currentDate}) : setDispatch({deadline: currentDate})
+        if (!state.isDeadline) {
+            setDispatch({date: currentDate})
+        } else {
+            setDispatch({deadline: currentDate})
+        }
     }, [select, currentDate, state.isDeadline])
 
     return <>
@@ -31,21 +35,23 @@ const SideBar = () => {
             <PopUpTags state={state.details}>
                 <TaskDetails item={state.details}/>
             </PopUpTags>
-            <section className="fixed top-0 bottom-0 z-50 w-[200px] flex flex-col bg-primary justify-between font-[family-name:var(--font-jetBrains-mono)]">
+            <section className={clsx("fixed top-0 bottom-0 z-50 w-[200px] flex flex-col bg-primary justify-between font-[family-name:var(--font-jetBrains-mono)]", {"hidden" : pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/auth/callback'})}>
                 <Image src='/logo.svg' className="mt-4 mx-auto" alt="logo" width={100} height={100} />
                 <div className="px-2 h-2/3">
                     {route.map((item) => (
-                        <div key={item.name} className={clsx("mt-4 py-2 px-8 rounded transition duration-300 cursor-pointer hover:bg-btnColor hover:text-gray-800",{
+                        <Link href={item.route} key={item.name}>
+                        <div className={clsx("mt-4 py-2 px-8 rounded transition duration-300 cursor-pointer hover:bg-btnColor hover:text-gray-800",{
                             "bg-btnColor text-gray-800": pathname === item.route,
                             'text-sidebarText' :  pathname !== item.route
                         })}>
-                            <Link href={item.route}>
+                            
                                 <div className="flex items-center space-x-4">
-                                    <item.icons />
-                                    <p>{item.name}</p>
+                                    <item.icons size={12} />
+                                    <p className="text-sm">{item.name}</p>
                                 </div>
-                            </Link>
+                           
                         </div>
+                        </Link>
                     ))}
                     <div className="space-y-4  py-4 px-2">
                         <Select 
@@ -61,7 +67,6 @@ const SideBar = () => {
                 </div>
                 <div className="flex items-center text-sidebarText space-x-4 px-2 py-4">
                     <div className="w-[50px] h-[50px] rounded-full bg-gray-600"></div>
-                    <p>{sessionStorage.getItem('firstname')} {sessionStorage.getItem('lastname')}</p>
                 </div>
     </section>
     

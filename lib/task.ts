@@ -1,9 +1,9 @@
 function generateRandomJson() {
     const statusOptions = ['in progress', 'completed', 'waiting', 'canceled', 'plan'];
   
-    const startDate = new Date(); // Date de début pour les calculs
+    //const startDate = new Date(); // Date de début pour les calculs
     const randomDaysStart = Math.floor(Math.random() * 30); // Nombre de jours aléatoires à ajouter pour la date de début
-    const randomDaysDeadline = randomDaysStart + Math.floor(Math.random() * 30) + 1; // Nombre de jours aléatoires à ajouter pour la date de fin (au moins 1 jour après le début)
+    //const randomDaysDeadline = randomDaysStart + Math.floor(Math.random() * 30) + 1; // Nombre de jours aléatoires à ajouter pour la date de fin (au moins 1 jour après le début)
   
     const startTimeHour = Math.floor(Math.random() * 24).toString().padStart(2, '0');
     const startTimeMinute = Math.floor(Math.random() * 60).toString().padStart(2, '0');

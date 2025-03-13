@@ -1,10 +1,10 @@
-import { FC } from "react"
-import clsx from "clsx"
+import { FC, useEffect, useState } from "react"
 import React from "react"
+import { AxiosError } from "axios"
 
 interface messageProps {
     type: string
-    message: any
+    message: unknown
 }
 
 
@@ -12,20 +12,38 @@ export const Message:FC<messageProps> = ({
     type,
     message
 }) => {
-    const getErr = sessionStorage.getItem('error')
-    return <div className={clsx("w-full mt-4 text-sm rounded-lg text-center", {
-            "text-yellow-400" : type === "alert",
-            "text-green-400" : type === "succes",
-            "text-red-400" : type === "failed",
-            "opacity-0 w-0": message.message === undefined && getErr === null
-        })}>
-                {type === "failed" ? (
-                    (getErr) ? `${getErr}` :
-                    (message.status === undefined) ? `${message.message}` : 
-                    (message.status === 500) ? "Something went wrong !!!" : 
-                    (message.status != 400 || message.status != 404) ? message.response?.data : 
-                    "Something went wrong !!! please the develloper to fix problem.(655858860)"
-                ): ""}
-        </div>
+    const [mood, setMood] = useState<{state: string, message: any}>()
 
+    useEffect(() => {
+        if (message instanceof AxiosError) {
+            switch (message.status) {
+                case 400:
+                    setMood({state: 'warning', message: message.response?.data.message});
+                    break;
+                case 401:
+                    setMood({state: 'warning', message: message.response?.data.message});
+                    break;
+                case 500:
+                    setMood({state: 'failed', message: message.message})
+                    break;
+            }
+            if (message.status === undefined) setMood({state: 'failed', message: message.message + "check your network connection"})
+        } else if (message instanceof Error) {
+            setMood({state: 'failed', message: message.message})
+        }
+        else {
+            return
+        }
+    }, [message])
+
+    
+    return <div> 
+        <div className="w-full mt-4 text-sm rounded-lg text-center">
+               <p style={{
+                    color: mood?.state === 'warning' ? '#eab308' : '#ef4444'
+               }}>{mood?.message}</p>
+        </div>
+    
+    </div>
+    
 } 

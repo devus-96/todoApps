@@ -6,8 +6,14 @@ import { useContext } from "react";
 import clsx from "clsx";
 import { tabTask } from "@/types/task";
 
+interface tagsPros {
+  state: string
+  children: React.ReactNode
+}
+
 function PopUpTags ({state, children}: {state: string | tabTask | null, children: React.ReactNode}) {
     const {setDispatch} = useContext(taskContext)
+
     return <section onClick={() => {
     }} className={clsx({
                         'hidden' : !state,

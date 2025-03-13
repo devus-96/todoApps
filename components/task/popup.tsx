@@ -9,23 +9,12 @@ import PopupProject from './popupProject';
 import PopUpTask from './popupTask';
 import Routine from './routine';
 
-
-type task = {
-    name: string
-    date: Date
-    startTime: string
-    endTime: string
-    allday: boolean
-    repetition: boolean | string | any[]
-    description: string
-}
-
 export const Popup = () => {
     // state call
     const [ type, setType ] = useState('start')
     const menuRef = useRef<HTMLDivElement>(null)
     const {state, setDispatch} = useContext(taskContext)
-    const [output, setOutput] = useState<any>(null)
+    const [output, setOutput] = useState<unknown>(null)
 
     useEffect(() => {
         const handlerClick = (e: MouseEvent) => {

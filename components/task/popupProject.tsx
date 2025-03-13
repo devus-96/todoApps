@@ -62,7 +62,7 @@ const PopupProject = () => {
                             <p className="text-sm text-gray-800">start date</p>
                             <input 
                                 ref={startDateRef}
-                                onClick={(e: any) => {
+                                onClick={(e) => {
                                     handleChange(e)
                                     setDispatch({calendar: 'calendar'})
                                 }} 
@@ -75,7 +75,7 @@ const PopupProject = () => {
                             <p className="text-sm text-gray-800">end date</p>
                             <input 
                                 ref={dedlineRef}
-                                onClick={(e: any) => {
+                                onClick={(e) => {
                                     setDispatch({calendar: 'calendar'})
                                     setDispatch({isDeadline: true})
                                     handleChange(e)

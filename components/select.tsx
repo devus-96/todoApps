@@ -12,7 +12,7 @@ type SelectProps = {
     name: string,
     handler:Dispatch<SetStateAction<string>> | ((choose : string) => void);
     onclick?: () => void
-    options: any[];
+    options: string[];
     Icons?: IconType
   };
 
@@ -54,7 +54,7 @@ export const Select: FC<SelectProps> = ({
                               handler(options[index])
                               setShow(false)
                               setIndex(index)
-                              onclick && onclick()
+                              onclick !== undefined && onclick()
                       }} className="flex cursor-pointer p-2  items-center text-base md:text-sm sm:text-sm  2xl:text-lg space-x-2 hover:bg-gray-600 hover:text-white">
                               <p className="whitespace-nowrap">{items}</p>
                           </li>

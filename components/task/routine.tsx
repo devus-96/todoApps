@@ -10,7 +10,7 @@ import { taskContext } from "@/hooks/useTask";
 import { format } from "date-fns";
 import { useForm } from "@/hooks/useForm";
 
-export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateAction<any>>}) {
+export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateAction<unknown>>}) {
     const [ select, setSelect ] = useState('day')
     const [monthly, setMonthly] = useState('')
     const [active, setActive] = useState<number[]>([])

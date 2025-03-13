@@ -1,3 +1,4 @@
+import React from "react";
 import { tabTask } from "@/types/task";
 
 export function TaskDetails ({item}: {item: tabTask | null}) {

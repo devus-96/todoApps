@@ -47,7 +47,7 @@ function Week ({date, data}: {date:Date, data: task | undefined}) {
                         }}>
                         <div className="w-full h-[2px] bg-red-500"></div>
                 </div>
-                {dayOfWeek.map((day: any, id) => (
+                {dayOfWeek.map((day, id) => (
                     <div key={id} className="w-auto grid grid-cols-1 relative">
                         <div className="absolute top-0 left-0 right-0">
                             {converToText(hoursOfDays).map((time, index) => (

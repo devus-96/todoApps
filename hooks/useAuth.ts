@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { setCookie } from "cookies-next"
-import { HTTPClient } from "@/action/https"
+import { HTTPClient } from "@/lib/https"
 import { ChangeEvent } from "react"
 import axios from "axios"
 
@@ -8,22 +8,16 @@ import axios from "axios"
 type passWorldVerify = {
     passworld: string
     verify: string
-} | any
-
-type User = {
-    fistname: string
-    lastname: string
-} | null
-
+} | {}
 
 interface authProps {
     loading: boolean,
     error: string,
     password: passWorldVerify,
-    postDatas: (url: string, datas: any) => void,
+    postDatas: (url: string, datas: FormData) => void,
     fetchAuthUrl: () => Promise<any>;
     fetchUserInfo: (code: string) => void;
-    verifyPasswrld: (e: ChangeEvent<HTMLInputElement>) => any,
+    verifyPasswrld: (e: ChangeEvent<HTMLInputElement>) => void,
     setError: (error: any) => void
 }
 
@@ -62,7 +56,7 @@ export const useAuth = create<authProps>((set) => ({
             loading: state.loading = true,
             error: state.error = ''
         }))
-        let datas = {role: "admistrator"} as any
+        const datas = {} as any
         for (const [key, value] of formData.entries()) {
             if (key !== "verify") {
                 datas[key] = value
@@ -88,27 +82,28 @@ export const useAuth = create<authProps>((set) => ({
             try {
                 //localStorage.removeItem('error')
                 const response = await fetch('/api/auth/google')
-                const data = await response.json()
-                return data.authUrl
+                return await response.json()
             } catch (err: any) {
                 set((state) => ({error: state.error = err}))
             }
     },
     async fetchUserInfo (code) {
         if (code) {
-            axios.get(`http://127.0.0.1:8000/auth/callback.php?code=${code}`).then ((res) => {
+            axios.get(`http://127.0.0.1:8000/auth/google-auth.php?code=${code}`).then ((res) => {
                 setCookie('authCookies', res.data, {
                     maxAge: 24 * 60 * 60,
                 });
-                window.location.assign('/')
+                sessionStorage.setItem('provider', 'google')
+                //window.location.assign('/')
             }) .catch ((err) => {
-                    sessionStorage.setItem('error', err.response.data)
-                    window.location.assign("/auth/login")
+                    //sessionStorage.setItem('error', err.response.data)
+                    //window.location.assign("/auth/login")
+                    console.log(err)
             })
         }
     },
     verifyPasswrld (e: ChangeEvent<HTMLInputElement>) {
-        let target = e.target as HTMLInputElement
+        const target = e.target as HTMLInputElement
         const password = {
             [target.name] : target.value
         }

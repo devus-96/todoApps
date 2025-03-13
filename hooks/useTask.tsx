@@ -2,9 +2,10 @@
 import { createContext } from "react";
 import { useReducer, useRef } from "react";
 import { tabTask } from "@/types/task";
+import { screamManage } from "@/types/global";
 
 type choosen = {
-    [key: string]: string | Date | boolean | tabTask | any
+    [key: string]: string | Date | boolean | tabTask | null
 }
 
 export const taskContext = createContext({

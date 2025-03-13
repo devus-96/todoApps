@@ -92,7 +92,10 @@ export const Clock:React.FC<clockProps> = ({
                     color="#fff" 
                     className="cursor-pointer"
                     size={24}
-                    onClick={() => {insertionMode === false ? setInsertionMode(true) : setInsertionMode(false)}}
+                    onClick={() => {
+                        
+                        insertionMode === false ? setInsertionMode(true) : setInsertionMode(false)
+                    }}
                 />
                 <div className="space-x-4">
                     <button  

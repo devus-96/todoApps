@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 export const useForm = (statDate: Date, deadLine: Date, starTime: string, endTime: string) => {
     const [checked, setChecked] = useState<boolean>(false)
     const emails = useRef<string[]>([])
-    const [value, setValue] = useState<any>({})
+    const [value, setValue] = useState<Record<string,unknown>>({})
     const startDateRef = useRef<HTMLInputElement | null>(null)
     const dedlineRef = useRef<HTMLInputElement | null>(null)
     const startRef = useRef<HTMLInputElement | null>(null)
@@ -27,8 +27,7 @@ export const useForm = (statDate: Date, deadLine: Date, starTime: string, endTim
     }, [statDate, deadLine, starTime,endTime])
 
     function handleChange (e: React.FormEvent | React.ChangeEvent) {
-        let target = e.target as HTMLInputElement
-        console.log(target.value)
+        const target = e.target as HTMLInputElement
         const valueChanged: Record<string, string> = {
             [target.name]: target.value,
         };
@@ -36,7 +35,11 @@ export const useForm = (statDate: Date, deadLine: Date, starTime: string, endTim
     }
 
     const handleOption = (e: React.FormEvent) => {
-        checked === false ? setChecked(true) : setChecked(false)
+        if (checked) {
+            setChecked(true)
+        } else {
+            setChecked(false)
+        }
         const target = e.target as HTMLInputElement
         if (target.value) {
             const valueChanged: Record<string, string> = {

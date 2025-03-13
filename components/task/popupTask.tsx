@@ -11,7 +11,7 @@ import { useForm } from "@/hooks/useForm"
 
 interface PopUpTaskProps {
     setType: Dispatch<SetStateAction<string>>
-    output: any
+    output: unknown
 }
 
 const PopUpTask:React.FC<PopUpTaskProps> = ({
@@ -63,7 +63,7 @@ const PopUpTask:React.FC<PopUpTaskProps> = ({
                             <p>start date</p>
                             <input 
                                 ref={startDateRef}
-                                onClick={(e: any) => {
+                                onClick={(e) => {
                                     handleChange(e)
                                     setDispatch({calendar: 'calendar'})
                                 }} 
@@ -77,7 +77,7 @@ const PopUpTask:React.FC<PopUpTaskProps> = ({
                             <p>end date</p>
                             <input 
                                 ref={dedlineRef}
-                                onClick={(e: any) => {
+                                onClick={(e) => {
                                     setDispatch({calendar: 'calendar'})
                                     setDispatch({isDeadline: true})
                                     handleChange(e)

@@ -26,14 +26,14 @@ export function useCalendar (value = new Date(), onChange: (date: Date) => void)
     };
 
     const setToPrev = (index: number) => {
-          let date = setDate(value, index);
-          let prevMonthDay = set(value, {year: getYear(date), month: getMonth(date) - 1, date: index})
+          const date = setDate(value, index);
+          const prevMonthDay = set(value, {year: getYear(date), month: getMonth(date) - 1, date: index})
           onChange(prevMonthDay);
     };
     
     const setToNext = (index: number) => {
-        let date = setDate(value, index);
-        let  NextMonthDay = set(value, {year: getYear(date), month: getMonth(date) + 1, date: index})
+        const date = setDate(value, index);
+        const NextMonthDay = set(value, {year: getYear(date), month: getMonth(date) + 1, date: index})
         onChange(NextMonthDay);
     }
 

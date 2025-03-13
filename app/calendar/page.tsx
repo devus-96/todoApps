@@ -1,4 +1,5 @@
 'use client'
+import React from "react"
 import { useContext, useEffect, useState } from "react"
 import { Calendar } from "@/components/calendar"
 import { Header } from "@/components/calendar/header"
@@ -17,12 +18,12 @@ function CalendarPage () {
 
     useEffect(() => {
         if (state.dataType === 'task') {
-            axios.get('http://localhost:8001/task').then((res) => {
+            axios.get('http://localhost:8002/task').then((res) => {
                 setData(res?.data)
                 setDispatch({ date: new Date()})
             })  
         } else if (state.dataType === 'project') {
-            axios.get('http://localhost:8002/project').then((res) => {
+            axios.get('http://localhost:8001/project').then((res) => {
                 setProject(res?.data)
                 setDispatch({ date: new Date()})
             })
@@ -55,8 +56,3 @@ function CalendarPage () {
 }
 
 export default CalendarPage
-
-/*
-
-
-*/

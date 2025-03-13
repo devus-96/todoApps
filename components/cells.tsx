@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { useManageCalendar } from "@/hooks/useManageCalendar";
 import { taskContext } from "@/hooks/useTask";
 import { task } from "@/types/task";
-import { ProjectType, taskProject } from "@/types/project";
+import { ProjectType } from "@/types/project";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { Dispatch, SetStateAction, useContext } from "react";
@@ -28,7 +28,6 @@ interface Props {
     const calendarRef = useRef<HTMLDivElement | null>(null)
     useEffect(() => {
       if (calendarRef.current) {
-        console.log(calendarRef.current)
         Array.from(calendarRef.current.children).forEach((div, index) => {
           console.log(div)
           if (index  > 1) {
@@ -41,12 +40,12 @@ interface Props {
     })
     return <div className="">
             {data && data?.map((item, index: number) => {
-              return <div key={index}>
+              return <div key={index} ref={calendarRef}>
               {item.tasks.map((task, index) => {
                 return <div key={index}>
-                  {task.schedule.map((plan, id) => {
+                  {task.schedule.map((plan) => {
                     if (plan.date === format(currentDate, "dd/MM/yyyy")) {
-                      return <div  key={index} style={{
+                      return <div key={index} style={{
                         borderColor:colorOptions.current[Math.floor(Math.random() * colorOptions.current.length)]
                       }} className="text-start bg-white border-l-[6px] p-2">
                           <h1 className="text-xs font-bold bold">{item.name}</h1>
@@ -65,7 +64,6 @@ interface Props {
                   })}
                 </div>
               })}
-              {calendarRef.current?.children.length > 2 && <p className="text-xs hover:underline">see {calendarRef.current?.children.length-2} more</p>}
               </div>
             })}
     </div>
@@ -105,10 +103,10 @@ interface Props {
       separe
     } = useManageCalendar(currentDate)
     return <div>
-          {data && separe(data)?.map((item: any, id: number) => {
+          {data && separe(data)?.map((item, id: number) => {
             if (item[0] === format(currentDate, "dd/MM/yyyy")) {
               return <div key={id} className="space-y-2">
-                {item[1].map((day: any, index: number) => {
+                {item[1].map((day, index: number) => {
                   if (index <= 1) {
                     return <div key={index} style={{
                       background:colorOptions.current[Math.floor(Math.random() * colorOptions.current.length)]

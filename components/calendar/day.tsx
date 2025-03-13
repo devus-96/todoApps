@@ -22,7 +22,7 @@ export default function Day ({data, date}: {data: task | undefined, date: Date})
                     {data && separe(data)?.map((item, index: number) => {
                         if (format(date, "dd/MM/yyyy") === item[0]) {
                         return <div key={index}>
-                                {item[1].sort(sortByTime).map((day: any, index: number) => {
+                                {item[1].sort(sortByTime).map((day, index: number) => {
                                     console.log(item[1][index+1])
                                 return <div key={index} className="space-y-2">
                                         <div key={index} className="w-full flex items-center justify-end capitalize">
