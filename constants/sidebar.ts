@@ -6,6 +6,8 @@ import { Target } from 'lucide-react';
 import { History } from 'lucide-react';
 import { Trash2 } from 'lucide-react';
 import { Cog } from 'lucide-react';
+import { Users } from 'lucide-react';
+import { Projector } from 'lucide-react';
 
 export const userRoute = [
     {
@@ -21,7 +23,7 @@ export const userRoute = [
     {
         name: 'Home',
         icons: House,
-        route: '/'
+        route: '/users'
     },
     {
         name: 'Inbox',
@@ -31,27 +33,27 @@ export const userRoute = [
     {
         name: 'Tasks',
         icons: FileCheck2,
-        route: '/tasks'
+        route: '/users/tasks'
     },
     {
-        name: 'projects',
+        name: 'Projects',
         icons: Target,
-        route: '/project'
+        route: '/users/project'
     },
     {
         name: 'History',
         icons: History,
-        route: '/history'
+        route: '/users/history'
     },
     {
         name: 'Trash',
         icons: Trash2,
-        route: '/trash'
+        route: '/users/trash'
     },
     {
         name: "Settings",
         icons: Cog,
-        route: '/setting'
+        route: '/users/setting'
     },
 ]
 
@@ -96,38 +98,42 @@ export const companiesRoute = [
 export const teamsRoutes = [
     {
         name: 'Home',
-        icons: LuLayoutDashboard,
-        route: '/'
-    },
-    {
-        name: 'Tasks',
-        icons: LuLayoutDashboard,
-        route: '/tasks'
-    },
-    {
-        name: 'projects',
-        icons: LuLayoutDashboard,
-        route: '/project'
+        icons: House,
+        route: '/teams'
     },
     {
         name: 'Menbers',
-        icons: '',
+        icons: Users,
         route: '/menbers'
     },
     {
+        name: 'Meetings',
+        icons: Projector,
+        route: '/meetings'
+    },
+    {
+        name: 'Tasks',
+        icons: FileCheck2,
+        route: '/teams/tasks'
+    },
+    {
+        name: 'Projects',
+        icons: Target,
+        route: '/teams/project'
+    },
+    {
         name: 'History',
-        icons: LuLayoutDashboard,
-        route: '/history'
+        icons: History,
+        route: '/teams/history'
     },
     {
         name: 'Trash',
-        icons: LuLayoutDashboard,
-        route: '/trash'
+        icons: Trash2,
+        route: '/teamstrash'
     },
     {
         name: "Settings",
-        icons: LuLayoutDashboard,
-        route: '/setting'
-    }
+        icons: Cog,
+        route: '/teams/setting'
+    },
 ]
-
