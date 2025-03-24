@@ -14,16 +14,22 @@ const Login = () => {
 
     useEffect(() => {
         if (provider === 'google') {
+            setLoading(true)
             getGoogleAuthUrl().then((response) => {
                 sessionStorage.setItem('provider', provider)
                 sessionStorage.setItem('state', response.state)
                 window.location.href = response.authUrl
+            }).finally(() => {
+                setLoading(false)
             })
         } else if (provider === 'github') {
+            setLoading(true)
             getGithubAuthUrl().then((response) => {
                 sessionStorage.setItem('provider', provider)
                 sessionStorage.setItem('state', response.state)
                 window.location.href = response.authUrl
+            }).finally(() => {
+                setLoading(false)
             })
         }
     }, [provider])

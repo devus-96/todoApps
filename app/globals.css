@@ -5,13 +5,19 @@
 .header {
   @apply absolute top-0 left-0 right-0 z-10 px-12 py-4 max-lg:opacity-0
 }
-
+.sidebar {
+  @apply fixed overflow-auto z-50 bg-[#333] w-[220px] scrollbar-hide py-4 h-screen flex flex-col font-[family-name:var(--font-jetBrains-mono)]
+}
 .bold {
   @apply font-[family-name:var(--font-jetBrainsExtraBold-mono)]
 }
 
 .btn {
   @apply px-14 py-[11px] rounded-full text-sm text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
+}
+
+.btnEffect {
+  @apply text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 }
 
 .smallbtn {

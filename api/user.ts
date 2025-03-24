@@ -41,14 +41,15 @@ export async function get (code: string, url: string) {
         }).then ((res) => {
             let datasString = JSON.stringify(res.data);
             let datas  = JSON.parse(datasString);
-            console.log(datas.token, datas)
-            setCookie('user_session', datas.token, {
-                maxAge: datas.expired || 24*60*60,
+            console.log(datas.id_token, datas)
+            setCookie('user_session', datas.id_token, {
+                maxAge: datas.expires_in || 24*60*60,
             });
             setCookie('uerData', JSON.stringify(datas.userData))
             //window.location.assign('/')
         }) .catch ((err) => {
             console.log(err)
+            //window.location.assign('/auth/login')
         })
     }
 }

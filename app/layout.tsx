@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import SideBar from "@/components/sidebar";
 import { Popup } from "@/components/task/popup";
 import TaskContextProvider from "@/hooks/useTask";
 import React from "react";
@@ -40,7 +39,6 @@ export default function RootLayout({
         className={`${jetBrainsMono.variable} ${jetBrainsMonoBold.variable} ${jetBrainsMonoExtraBold.variable} antialiased`}
       >
         <TaskContextProvider>
-          <SideBar />
           <Popup />
           {children}
         </TaskContextProvider>
