@@ -1,7 +1,7 @@
 "use client"
 import { Dispatch, SetStateAction, useState } from "react";
 import Popup from "./popup"
-import { Spinner } from "../spinner";
+import { Spinner } from "../ui/spinner";
 
 export const CompanyPopUp = ({
     active, 

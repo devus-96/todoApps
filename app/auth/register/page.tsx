@@ -4,7 +4,7 @@ import Link from "next/link";
 import { post } from '@/api/user';
 import { Message } from '@/components/message';
 import { InputPasswrld } from '@/components/auth/input';
-import { Spinner } from '@/components/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { AxiosError } from 'axios';
 
 const Register = () => {

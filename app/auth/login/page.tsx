@@ -4,7 +4,7 @@ import { getGithubAuthUrl, getGoogleAuthUrl, post } from '@/api/user';
 import { InputPasswrld } from '@/components/auth/input';
 import Link from 'next/link';
 import { Message } from '@/components/message';
-import { Spinner } from '@/components/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 
 const Login = () => {

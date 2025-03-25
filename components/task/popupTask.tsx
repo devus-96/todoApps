@@ -4,9 +4,9 @@ import { taskContext } from "@/hooks/useTask"
 import clsx from "clsx"
 import { format } from "date-fns"
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
-import { Select } from "../select"
+import { Select } from "../ui/select"
 import { optionsRepetition } from "@/constants/task"
-import { Spinner } from "../spinner"
+import { Spinner } from "../ui/spinner"
 import { useForm } from "@/hooks/useForm"
 
 interface PopUpTaskProps {

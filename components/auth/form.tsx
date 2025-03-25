@@ -1,7 +1,7 @@
 "use client"
 import { InputPasswrld } from "./input"
 import { Message } from "../message"
-import { Spinner } from "../spinner"
+import { Spinner } from "../ui/spinner"
 import Link from "next/link"
 import React, { ChangeEvent, useState } from "react"
 import { post } from "@/api/user"

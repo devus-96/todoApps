@@ -26,7 +26,7 @@ export default function Popup({
           onClick={(e) => {
             e.stopPropagation();
           }}
-          className={`w-[${width}] h-[${height}] hover:cursor-default absolute shadow-sm bg-white rounded`} 
+          className={`w-[${width}] h-[${height}] hover:cursor-default absolute shadow-sm bg-primary rounded-lg`} 
         >
             <MdClose 
                 className="absolute top-2 right-2 hover:scale-125 cursor-pointer" 

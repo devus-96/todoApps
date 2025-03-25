@@ -24,9 +24,9 @@ const SideBar = () => {
                 </div>
                 <div className="h-2/3 mt-8">
                     <div className="mb-4 border-t border-sidebarText px-4">
-                        {userRoute.map((item) => {
+                        {userRoute.map((item, index) => {
                             if (item.name !== 'Company' && item.name !== 'Teams') {
-                                return  <div>
+                                return  <div key={index}>
                                     <Link href={item.route} key={item.name}>
                                         <div className={clsx("mt-4 py-2 px-4 rounded transition duration-300 cursor-pointer hover:bg-sidebarText hover:text-gray-800",{
                                             "bg-btnColor text-gray-800": pathname === item.route,

@@ -6,7 +6,7 @@ import { useState } from "react"
 import { IconType } from "react-icons"
 import { FaChevronRight, FaPlus } from "react-icons/fa"
 import { FaChevronDown } from "react-icons/fa"
-import { Spinner } from "../spinner"
+import { Spinner } from "../ui/spinner"
 import { CompanyPopUp } from "../popup/companyPopup"
 
 type companyItemsType = {

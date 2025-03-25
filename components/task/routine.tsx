@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-import { Select } from "../select";
+import { Select } from "../ui/select";
 import { weeks } from "@/constants/task";
 import clsx from "clsx";
 import PopUpTags from "../PopUpTags";

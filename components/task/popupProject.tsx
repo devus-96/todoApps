@@ -15,10 +15,6 @@ const roles = [
         role: 'Menbers',
         description: 'Can view stats,submit tasks and create new task'
     },
-    {
-        role: 'viewers',
-        description: 'Can only view stats'
-    }
 ]
 
 const Step = ({setStep, step}: {setStep: Dispatch<SetStateAction<'step 1' | 'step 2' | 'step 3'>>, step: string}) => {

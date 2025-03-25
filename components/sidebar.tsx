@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { Select } from "./select";
+import { Select } from "./ui/select";
 import { FaFileCirclePlus } from "react-icons/fa6";
 import { taskContext } from "@/hooks/useTask";
 import { useContext, useEffect, useState } from "react";
