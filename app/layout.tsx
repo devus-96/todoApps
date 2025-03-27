@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Popup } from "@/components/task/popup";
-import TaskContextProvider from "@/hooks/useTask";
+import {PopupContextProvider} from "@/hooks/usePopup";
 import React from "react";
+import { InvitationPopUp } from "@/components/popup/invitationPopup";
+import { TaskPopUp } from "@/components/popup/taskPopup";
+import { CalendarPopUp } from "@/components/popup/calendarPopup";
+import ConnectContextProvider from "@/hooks/useConnect";
+import { Clock } from "@/components/ui/clock";
+import { ClockPopUp } from "@/components/popup/clockPopup";
 
 const jetBrainsMono = localFont({
   src: "./fonts/woff/JetBrainsMono-Regular.woff",
@@ -33,16 +38,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body
         className={`${jetBrainsMono.variable} ${jetBrainsMonoBold.variable} ${jetBrainsMonoExtraBold.variable} antialiased`}
       >
-        <TaskContextProvider>
-          <Popup />
+        <ConnectContextProvider>
+        <PopupContextProvider>
+          <TaskPopUp />
+          <CalendarPopUp />
+          <ClockPopUp />
+          <InvitationPopUp />
           {children}
-        </TaskContextProvider>
-
+        </PopupContextProvider>
+        </ConnectContextProvider>
       </body>
     </html>
   );

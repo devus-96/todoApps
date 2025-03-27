@@ -11,7 +11,9 @@
 .bold {
   @apply font-[family-name:var(--font-jetBrainsExtraBold-mono)]
 }
-
+.selectTaskValue {
+  @apply w-1/2 px-4 py-[4px]  text-start rounded text-sidebarText cursor-pointer  duration-300 hover:bg-sidebarText hover:text-gray-800
+}
 .btn {
   @apply px-14 py-[11px] rounded-full text-sm text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 }
@@ -41,6 +43,10 @@
   @apply px-4 py-[11px] w-full border border-black rounded-full outline-none text-black placeholder:text-gray-500
 } 
 
+.popupinput {
+  @apply px-4 py-2 w-full outline-none placeholder:text-gray-300
+}
+
 .flex-justify {
   @apply flex items-center justify-between
 }
@@ -56,7 +62,7 @@
   @apply w-full border-b-2 border-b-gray-100 bg-gray-100 outline-none placeholder:text-xl
 }
 .btnClock {
-  @apply text-gray-800 rounded px-4 py-2 cursor-pointer
+  @apply text-gray-800 rounded px-4 py-2 cursor-pointer bg-sidebarText w-full
 }
 .btnWeekly {
   @apply w-8 h-8 flex rounded-full 

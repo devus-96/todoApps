@@ -9,14 +9,14 @@ import { FaChevronDown } from "react-icons/fa"
 import { Spinner } from "../ui/spinner"
 import { CompanyPopUp } from "../popup/companyPopup"
 
-type companyItemsType = {
+type linkItemsType = {
     name: string;
     icons: IconType;
     route: string;
 }
 
-interface companyProps {
-    item: companyItemsType
+export interface linkProps {
+    item: linkItemsType
 }
 
 const companies = [
@@ -26,7 +26,7 @@ const companies = [
     {name: "Music Groupcasascakjbkjbjkb"}
 ]
 
-export const SideBarSectionExtends:React.FC<companyProps> = ({
+export const SideBarSectionExtends:React.FC<linkProps> = ({
     item
 }) => {
     const pathname = usePathname();
@@ -81,8 +81,8 @@ export const SideBarSectionExtends:React.FC<companyProps> = ({
                                 href={item.route} 
                                 className="block  py-2 rounded "
                                 onClick={() => sessionStorage.setItem('workspace', company.name)}>
-                                    <ul className="w-full list-disc pl-8 overflow-hidden text-ellipsis whitespace-nowrap">
-                                        <li className=""><p>{company.name}</p></li>
+                                    <ul className="w-full list-disc pl-12 overflow-hidden text-ellipsis whitespace-nowrap">
+                                        <li><p className="text-xs">{company.name}</p></li>
                                     </ul>
                                 </Link>
                             </div>

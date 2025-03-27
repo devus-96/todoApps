@@ -3,7 +3,7 @@ import React from "react"
 import { AxiosError } from "axios"
 
 interface messageProps {
-    type: string
+    type?: string
     message: unknown
 }
 
@@ -32,7 +32,7 @@ export const Message:FC<messageProps> = ({
             setMood({state: 'failed', message: message.message})
         }
         else {
-            return
+            setMood({state: 'failed', message: message})
         }
     }, [message])
 

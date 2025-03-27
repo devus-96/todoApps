@@ -1,5 +1,5 @@
 "use client"
-import { Calendar } from "@/components/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 import { FaProjectDiagram, FaSearch } from "react-icons/fa";
 import { LuFolder } from "react-icons/lu";

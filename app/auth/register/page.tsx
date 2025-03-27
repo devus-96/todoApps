@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import Link from "next/link";
 import { post } from '@/api/user';
-import { Message } from '@/components/message';
+import { Message } from '@/components/ui/message';
 import { InputPasswrld } from '@/components/auth/input';
 import { Spinner } from '@/components/ui/spinner';
 import { AxiosError } from 'axios';

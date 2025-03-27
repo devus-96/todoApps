@@ -87,7 +87,6 @@ const PopUpTask:React.FC<PopUpTaskProps> = ({
                                 className="btnClock bg-gray-100 text-sm"
                             />
                         </div>
-                        
                     </div>
                     <div className="w-full flex items-center space-x-4">
                         <input ref={startRef} type="button" value={state.clockStart} onClick={() => {
@@ -119,7 +118,7 @@ const PopUpTask:React.FC<PopUpTaskProps> = ({
                         name='description'
                         className="textarea"
                     ></textarea>
-                    <button type="submit" className="btn1 flex-center gap-4">{<Spinner className="w-[30px] p-0"/>}Save</button>
+                    <button type="submit" className="btn1 flex-center gap-4">{<Spinner className="w-[30px] p-0" bg={""} fill={""}/>}Save</button>
                 </div>
     
     </>

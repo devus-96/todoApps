@@ -4,19 +4,12 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { FaRegKeyboard } from "react-icons/fa"
 import { SelectTime } from "./selectTime"
 import clsx from "clsx"
-import { taskContext } from "@/hooks/useTask"
+import { connectContext } from "@/hooks/useConnect";
+import { popupContext } from "@/hooks/usePopup";
 
-
-interface clockProps {
-    type: string
-    clockName?: string
-}
-
-export const Clock:React.FC<clockProps> = ({
-    type,
-    clockName = "w-[300px] h-[420px] absolute bg-gray-800 py-8 rounded flex justify-center font-[family-name:var(--font-jetBrains-mono)]"
-}) => {
-     const {setDispatch} = useContext(taskContext)
+export const Clock = () => {
+     const {typeTime, setFormTask, formTask} = useContext(connectContext)
+     const {setDispatch} = useContext(popupContext)
     //appel useState
     const [time, setTime] = useState<string>("hours")
     const [insertHours, setInsertHours] = useState<string>('00')
@@ -53,7 +46,7 @@ export const Clock:React.FC<clockProps> = ({
         }
     })
 
-    return <section className={clockName}>
+    return <section className='w-[300px] h-[420px] bg-primary py-8 rounded flex justify-center font-[family-name:var(--font-jetBrains-mono)]'>
             <p className="absolute text-white top-4">select time</p> 
             {time === "hours" || insertionMode ? <SelectTime time={hours} setInsert = {setInsertHours}/> :
              <SelectTime time={minutes} setInsert = {setInsertMinutes}/>}
@@ -65,7 +58,7 @@ export const Clock:React.FC<clockProps> = ({
                         onChange={() => {setTime("hours")}} 
                         onClick={() => {setTime("hours")}} 
                         className={clsx("px-4 py-1 w-20 rounded cursor-pointer", {
-                            'bg-terciary' : time === 'hours',
+                            'bg-btnColor' : time === 'hours',
                             'bg-gray-400' : time !== 'hours'
                         })} 
                         value={insertionMode === false ? insertHours : undefined}/>
@@ -76,13 +69,13 @@ export const Clock:React.FC<clockProps> = ({
                         onChange={() => {setTime("minutes")}} 
                         onClick={() => {setTime("minutes")}} 
                         className={clsx("px-4 py-1 w-20 rounded cursor-pointer", {
-                            'bg-terciary' : time === 'minutes',
+                            'bg-btnColor' : time === 'minutes',
                             'bg-gray-400' : time !== 'minutes'
                         })} 
                         value={insertionMode === false ? insertMinutes : undefined}/>
-                    <div className="text-sm flex flex-col border rounded">
-                        <p onClick={()=> {setMoment('AM')}} className={clsx("p-2 cursor-pointer border-b", {'bg-terciary' : moment === 'AM'})}>AM</p>
-                        <p onClick={()=> {setMoment('PM')}} className={clsx("p-2 cursor-pointer", {'bg-terciary' : moment === 'PM'})}>PM</p>
+                    <div className="text-sm flex flex-col rounded">
+                        <p onClick={()=> {setMoment('AM')}} className={clsx("p-2 cursor-pointer", {'bg-btnColor' : moment === 'AM'})}>AM</p>
+                        <p onClick={()=> {setMoment('PM')}} className={clsx("p-2 cursor-pointer", {'bg-btnColor' : moment === 'PM'})}>PM</p>
                     </div>
                 </span>
             </div>
@@ -93,23 +86,24 @@ export const Clock:React.FC<clockProps> = ({
                     className="cursor-pointer"
                     size={24}
                     onClick={() => {
-                        
                         insertionMode === false ? setInsertionMode(true) : setInsertionMode(false)
                     }}
                 />
                 <div className="space-x-4">
                     <button  
-                        className="text-terciary"
+                        className="text-btnColor"
                         onClick={() => {
-                            if (type === 'start') {
-                                setDispatch({clockStart: `${insertHours}:${insertMinutes} ${moment}`})
+                            if (typeTime === 'start') {
+                                let value = {starttime: `${insertHours}:${insertMinutes} ${moment}`}
+                                setFormTask({...formTask, ...value})
                             } else {
-                                setDispatch({clockEnd: `${insertHours}:${insertMinutes} ${moment}`})
+                                let value = {endtime: `${insertHours}:${insertMinutes} ${moment}`}
+                                setFormTask({...formTask, ...value})
                             }
-                            setDispatch({clock: ''})
+                            setDispatch({clock: false})
                         }}
                     >ok</button>
-                    <button className="text-terciary" onClick={() => setDispatch({clock: ''})}>cancel</button>
+                    <button className="text-btnColor" onClick={() => setDispatch({clock: false})}>cancel</button>
                 </div>
             </div>
     </section>

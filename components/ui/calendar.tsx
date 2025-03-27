@@ -28,10 +28,10 @@ import { ProjectType } from "@/types/project";
   };
   
   export const Calendar: React.FC<Props> = ({ 
-    className = 'w-[400px] absolute rounded font-[family-name:var(--font-jetBrains-mono)]',
+    className = 'w-[400px] rounded font-[family-name:var(--font-jetBrains-mono)]',
     divClass = 'grid grid-cols-7 items-center justify-center text-center',
-    labelClass = 'w-full grid grid-cols-7 pb-2 text-whitetext-xs text-center',
-    textColor = 'text-white',
+    labelClass = 'w-full grid grid-cols-7 pb-2 text-whitetext-xs text-center mb-4',
+    textColor = 'text-white text-xs',
     cellsClass,
     divClassCells,
     data,
@@ -58,7 +58,7 @@ import { ProjectType } from "@/types/project";
     return (
       <div className={className}>
         <div className={clsx("w-full flex justify-around text-white items-center py-8",{
-            'hidden': !showHeader
+            'hidden': false
         })}>
           <div onClick={prevMonth} className="w-8 h-8 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center cursor-pointer">
             <div><IoIosArrowBack size={16}/></div>

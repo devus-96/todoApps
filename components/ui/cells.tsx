@@ -7,6 +7,8 @@ import { ProjectType } from "@/types/project";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { Dispatch, SetStateAction, useContext } from "react";
+import { connectContext } from "@/hooks/useConnect";
+import { popupContext } from "@/hooks/usePopup";
 interface Props {
     pastVerify: boolean
     time: number,
@@ -112,7 +114,7 @@ interface Props {
                       background:colorOptions.current[Math.floor(Math.random() * colorOptions.current.length)]
                     }} className="p-2 text-center">
                           <p className="text-xs">{day.name}</p>
-                          <p className="text-xs">{day.start_time}-{day.end_time}</p>
+                          <p className="text-xs text-[#6b6b6b]">{day.start_time}-{day.end_time}</p>
                     </div>
                   }
                 })}
@@ -134,17 +136,18 @@ const Cell:React.FC<Props> =  ({
     project,
     currentDate,
     setCurrentDate,
-    className = 'flex flex-col select-none transition-colors h-[90px] ', 
+    className = 'flex flex-col select-none transition-colors h-[80px] ', 
     cellsClass = clsx(
-      "pt-1 pb-1 text-textcolor text-left px-2 w-full h-full",
+      "pt-1 pb-1 px-5 w-full h-full",
       {
-        "bg-terciary text-white" : isCurrentDate && !pastVerify ,
-        "bg-gray-200 text-gray-300" : pastVerify,
-        "bg-gray-200 text-gray-900 hover:bg-white cursor-pointer" : futureVerify
+        "bg-btnColor" : isCurrentDate,
+        "text-[#6b6b6b]" : pastVerify,
+        "text-gray-200 hover:bg-[#6b6b6b] cursor-pointer" : futureVerify
       }
     )
 }) =>  {
-    const {setDispatch, state} = useContext(taskContext)
+    const {setDispatch} = useContext(popupContext)
+    const {dateValue, setFormTask, formTask} = useContext(connectContext)
     return (
         <div
         className={className}>
@@ -152,22 +155,19 @@ const Cell:React.FC<Props> =  ({
           key={time}
           onClick={() => {
             !pastVerify ? handleClick(time) : alert("vous ne pouvez pas programmer un date dans le passe")
-            setDispatch({ calendar: ''})
-            setDispatch({ date: currentDate})
-            setDispatch({ typeOfCalendar: 'day'})
+            if (dateValue === 'startdate') {
+              let newvalue = {'startdate': currentDate}
+              setFormTask({...formTask, ...newvalue})
+            } else if (dateValue === 'deadline') {
+              let newvalue = {'deadline': currentDate}
+              setFormTask({...formTask, ...newvalue})
+            }
+            setDispatch({calendar: false}) 
             setCurrentDate && setCurrentDate(currentDate)
           }}
           className={cellsClass}
         >
           <p className="text-left text-sm font-medium">{time}</p>
-          {state.dataType === 'task' ? 
-          
-          <MonthlyTask data={data} currentDate={currentDate} /> : 
-          <>
-            <TaskAssigment data={project} currentDate={currentDate} />
-            <MonthlyProject data={project} currentDate={currentDate} />
-          </>
-          }
         </div>
       </div>
     )

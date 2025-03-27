@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { taskContext } from "@/hooks/useTask";
 import { useContext } from "react";
 import PopUpTags from '../PopUpTags';
-import { Clock } from './clock';
+import { Clock } from '../ui/clock';
 import PopupProject from './popupProject';
 import PopUpTask from './popupTask';
 import Routine from './routine';

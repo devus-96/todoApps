@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useState } from "react"
 export function SelectTime ({time, setInsert}: {time: string[], setInsert: Dispatch<SetStateAction<string>>}) {
     const [isActive, setIsActive] = useState('12')
     return <div 
-             className="bg-gray-700 w-[250px] h-[250px] rounded-full bottom-12 absolute"
+             className="bg-primary w-[250px] h-[250px] rounded-full bottom-12 absolute"
             >
             {time.map((item, index) => (
                 <span key={index} style={{
