@@ -9,6 +9,7 @@ import { StepBack } from "lucide-react";
 import { useContext } from "react";
 import { popupContext } from "@/hooks/usePopup";
 import { SidebarLink } from "../global/sidebarLink";
+import { TeamDetails } from "./details";
 
 const SideBar = () => {
     const pathname = usePathname()
@@ -21,16 +22,17 @@ const SideBar = () => {
                            pathname === '/auth/callback'
             })
         }>
+            <TeamDetails />
             <div className="w-full h-full absolute flex flex-col">
                 <div className="text-sidebarText flex justify-between items-center space-x-4 px-4">
                     <div className="flex-justify w-[150px]">
                         <div className=" bg-sidebarText rounded w-[20px] h-[20px] flex-center">
-                            <p className="text-gray-800">A</p>
+                            <p className="text-gray-800">{localStorage.getItem('workspace')?.slice(0, 1)}</p>
                         </div>
                         <div className="w-[80px]">
-                            <p className="text-white text-sm overflow-hidden text-ellipsis whitespace-nowrap">{sessionStorage.getItem('workspace')}</p>
+                            <p className="text-white text-sm overflow-hidden text-ellipsis whitespace-nowrap">{localStorage.getItem('workspace')}</p>
                         </div>
-                        <div className="flex-center w-6 h-6 rounded duration-300 cursor-pointer hover:bg-sidebarText hover:text-gray-800">
+                        <div className="flex-center w-6 h-6 rounded duration-300 cursor-pointer hover:bg-sidebarText hover:text-gray-800" onClick={() => setDispatch({teamDetails: true})}>
                             <ChevronDown size={16}/>
                         </div>
                     </div>

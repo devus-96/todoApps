@@ -80,7 +80,7 @@ export const SideBarSectionExtends:React.FC<linkProps> = ({
                                 <Link 
                                 href={item.route} 
                                 className="block  py-2 rounded "
-                                onClick={() => sessionStorage.setItem('workspace', company.name)}>
+                                onClick={() => localStorage.setItem('workspace', company.name)}>
                                     <ul className="w-full list-disc pl-12 overflow-hidden text-ellipsis whitespace-nowrap">
                                         <li><p className="text-xs">{company.name}</p></li>
                                     </ul>
