@@ -156,7 +156,7 @@ const Cell:React.FC<Props> =  ({
           onClick={() => {
             !pastVerify ? handleClick(time) : alert("vous ne pouvez pas programmer un date dans le passe")
             if (dateValue === 'startdate') {
-              let newvalue = {'startdate': currentDate}
+              let newvalue = {'start_date': currentDate}
               setFormTask({...formTask, ...newvalue})
             } else if (dateValue === 'deadline') {
               let newvalue = {'deadline': currentDate}

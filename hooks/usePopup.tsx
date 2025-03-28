@@ -8,7 +8,7 @@ type choosen = {
 const defaultValue = {
     invitation: false,
     company: false,
-    task: true,
+    task: false,
     project: false,
     calendar: false,
     clock: false

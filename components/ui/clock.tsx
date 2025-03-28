@@ -94,10 +94,10 @@ export const Clock = () => {
                         className="text-btnColor"
                         onClick={() => {
                             if (typeTime === 'start') {
-                                let value = {starttime: `${insertHours}:${insertMinutes} ${moment}`}
+                                let value = {start_time: `${insertHours}:${insertMinutes} ${moment}`}
                                 setFormTask({...formTask, ...value})
                             } else {
-                                let value = {endtime: `${insertHours}:${insertMinutes} ${moment}`}
+                                let value = {end_time: `${insertHours}:${insertMinutes} ${moment}`}
                                 setFormTask({...formTask, ...value})
                             }
                             setDispatch({clock: false})

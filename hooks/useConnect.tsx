@@ -1,18 +1,26 @@
 "use client"
 import { createContext, useState } from "react";
 
-type clock = {
-    stardate: Date,
+export type clock = {
+    project: string,
+    assign: string[],
+    priority: string,
+    status: string,
+    start_date: Date,
     deadline: Date,
-    starttime:string,
-    endtime: string,
+    start_time:string,
+    end_time: string,
 }
 
 const defaultValue = {
-    stardate: new Date(),
+    project: 'Empty',
+    assign: [''],
+    priority: 'Empty',
+    status: 'Empty',
+    start_date: new Date(),
     deadline: new Date(),
-    starttime: '00:00AM',
-    endtime: '00:00AM',
+    start_time: '00:00AM',
+    end_time: '00:00AM',
 }
 
 export const connectContext = createContext({
