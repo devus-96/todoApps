@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.children::placeholder {
+  color: #d1d5db; /* placeholder:text-gray-300 en hexadécimal */
+}
+
 .header {
   @apply absolute top-0 left-0 right-0 z-10 px-12 py-4 max-lg:opacity-0
 }

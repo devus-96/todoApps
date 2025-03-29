@@ -7,7 +7,6 @@ import { InvitationPopUp } from "@/components/popup/invitationPopup";
 import { TaskPopUp } from "@/components/popup/taskPopup";
 import { CalendarPopUp } from "@/components/popup/calendarPopup";
 import ConnectContextProvider from "@/hooks/useConnect";
-import { Clock } from "@/components/ui/clock";
 import { ClockPopUp } from "@/components/popup/clockPopup";
 
 const jetBrainsMono = localFont({

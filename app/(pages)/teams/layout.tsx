@@ -1,5 +1,4 @@
 import SideBar from "@/components/teams/sidebar";
-import { Popup } from "@/components/task/popup";
 import React from "react";
 
 export default function RootLayout({
@@ -10,7 +9,6 @@ export default function RootLayout({
   return (
       <div>
           <SideBar />
-          <Popup />
           {children}
       </div>
   );
