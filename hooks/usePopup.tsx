@@ -7,6 +7,7 @@ type choosen = {
 
 const defaultValue = {
     teamDetails:false,
+    status: false,
     invitation: false,
     company: false,
     task: false,

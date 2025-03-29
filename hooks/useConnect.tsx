@@ -2,6 +2,7 @@
 import { createContext, useState } from "react";
 
 export type clock = {
+    name: string,
     project: string,
     assign: string[],
     priority: string,
@@ -13,6 +14,7 @@ export type clock = {
 }
 
 const defaultValue = {
+    name: '',
     project: 'Empty',
     assign: [''],
     priority: 'Empty',

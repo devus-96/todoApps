@@ -8,54 +8,27 @@ import { IoMdClose } from "react-icons/io";
 import { HTTPClient } from "@/lib/https";
 import { Message } from "../ui/message";
 import { popupContext } from "@/hooks/usePopup";
+import { useForm } from "@/hooks/useForm";
+
+const roles = [
+    'administrator: Can view stats, change site settings, invite people, approve tasks, Can view stats,submit tasks and create new task',
+    'Menbers: Can view stats,submit tasks and create new task'
+];
 
 export const InvitationPopUp = () => {
+    //variable
+    const defaultCalue = {
+        email: null
+    }
+    //useState
     const [role, setRole] = useState<string>('Menber');
     const [isLoading, setLoading] = useState<boolean>(false);
-    const [value, setValue] = useState<Record<string,unknown>>({});
-    const [error, setError] = useState<unknown>()
     const [more, setMore] = useState<boolean>(false)
-    const emails = useRef<string[]>([]);
+    //useContext
     const {state} = useContext(popupContext)
-    const roles = [
-        'administrator: Can view stats, change site settings, invite people, approve tasks, Can view stats,submit tasks and create new task',
-        'Menbers: Can view stats,submit tasks and create new task'
-    ];
+    //hook
+    const {handleClick, handleEmail, error, setError, emails} = useForm(defaultCalue)
 
-    const handleEmail = (e: React.KeyboardEvent) => {
-        setError('')
-        const target = e.target as HTMLInputElement;
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (e.key === "Enter") {
-            emails.current.forEach(email => {
-                if (email === target.value) {
-                    throw new Error("already enter this emails !!! ")
-                }
-            });
-            if (emails.current.length > 4 && more === false) {
-                setMore(true)
-            }
-            if (regex.test(target.value)) {
-                console.log("dfdsfsd")
-                emails.current =  [...emails.current, target.value];
-                const valueChanged: Record<string, string> = {
-                    [target.name]: target.value,
-                };
-                setValue({...value, ...valueChanged});
-            } else {
-                setError("email you're just entered is invalid")
-            }
-            target.value = '';
-        }
-     }
-
-     const handleClick = (item: string) => {
-        emails.current = emails.current.filter((email) => email !== item);
-        const valueChanged: Record<string, string[]> = {
-            email: emails.current,
-        };
-        setValue({...value, ...valueChanged});
-     }
     return (
         <>
             {state.invitation && 
@@ -87,12 +60,12 @@ export const InvitationPopUp = () => {
                             {emails.current.map((item: string, index) => {
                                 if (more === false) {
                                     return (
-                                        <>
-                                        <div key={index} className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
+                                        <div key={index}>
+                                        <div className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
                                             <p className="text-xs">{item}</p>
                                             <IoMdClose size={12} className="cursor-pointer" onClick={() => handleClick(item)}/>
                                         </div>
-                                        </>
+                                        </div>
                                     )
                                 }
                             })}

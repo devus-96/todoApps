@@ -7,9 +7,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <div>
+      <div className="w-full overflow-x-hidden">
           <SideBar />
-          {children}
+          <div className="w-full min-h-screen flex items-center justify-between">
+            <div className="w-[220px] h-screen"></div>
+            {children}
+          </div>
       </div>
   );
 }

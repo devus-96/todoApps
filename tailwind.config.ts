@@ -11,6 +11,7 @@ export default {
   	extend: {
   		colors: {
 			primary: '#333',
+			secondary: '#222',
   			bgLoging: '#E5E9F6',
   			sidebarText: '#A6A6A8',
   			terciary: '#ff2779',

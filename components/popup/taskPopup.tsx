@@ -34,7 +34,8 @@ const status = [
     'Completed',
     'In Progress',
     'Done',
-    "Plan"
+    "Plan",
+    "Propose"
 ]
 
 const emails = [

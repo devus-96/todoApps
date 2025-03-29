@@ -1,3 +1,5 @@
+import { AlarmClockOff, AlarmClockPlus, CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users } from "lucide-react";
+
 export const weeks = [
     "sunday",
     "monday",
@@ -51,3 +53,38 @@ export const Month = [
         'every weekend', 
         'custom' 
     ]
+  
+export const projectRow = [
+  {
+      name: 'Name',
+      icon: CheckCheck
+  },
+  {
+      name: 'Assign',
+      icon: Users
+  },
+  {
+      name: 'status',
+      icon: CircleDashed
+  },
+  {
+      name: 'priority',
+      icon: Flag
+  },
+  {
+      name: 'start date',
+      icon: CalendarX
+  },
+  {
+      name: 'deadline',
+      icon: CalendarClock
+  },
+  {
+      name: 'start time',
+      icon: AlarmClockPlus
+  },
+  {
+      name: 'end time',
+      icon: AlarmClockOff
+  },
+]
