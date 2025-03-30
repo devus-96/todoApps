@@ -24,7 +24,7 @@ export const TeamDetails = () => {
         return () => {
             document.removeEventListener("mousedown", handlerClick)
         }
-    })
+    }, [state.teamDetails])
 
     return (
         <>

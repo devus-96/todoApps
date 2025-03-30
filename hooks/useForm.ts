@@ -1,10 +1,12 @@
 "use client"
 import { useRef, useState } from "react"
+import { object, z } from "zod";
 
-export const useForm = (initialValues: any = {}) => {
+export const useForm = (initialValues: any = {}, schema: any = object({})) => {
     const [value, setValue] = useState<Record<string,any>>(initialValues);
     const emails = useRef<string[]>([]);
-    const [error, setError] = useState<unknown>()
+    const valueRef = useRef<string>('')
+    const [error, setError] = useState<unknown>(undefined)
     
     const handleEmail = (e: React.KeyboardEvent) => {
             setError('')
@@ -28,6 +30,26 @@ export const useForm = (initialValues: any = {}) => {
                 target.value = '';
             }
     }
+
+    const handleChange = (e: React.FormEvent): void => {
+            const target = e.target as HTMLInputElement;
+            const valueChanged: Record<string, string> = {
+              [target.name]: target.value,
+            };
+            valueRef.current = target.value
+            setValue((values: any) => ({ ...values, ...valueChanged }));
+            if (schema) {
+                try {
+                    schema.parse(target.value);
+                    setError(undefined); // Réinitialise le message d'erreur si la validation réussit
+                  } catch (error) {
+                    if (error instanceof z.ZodError) {
+                        setError(error.errors[0].message);
+                    }
+                  }
+            }
+    };
+
     const handleClick = (item: string) => {
         emails.current = emails.current.filter((email) => email !== item);
         const valueChanged: Record<string, string[]> = {
@@ -37,11 +59,14 @@ export const useForm = (initialValues: any = {}) => {
     }
         
     return {
+        valueRef,
         handleClick,
         handleEmail,
         value,
         error,
         setError,
-        emails
+        emails,
+        handleChange,
+        setValue
     }
 }

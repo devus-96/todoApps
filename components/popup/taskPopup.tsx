@@ -1,10 +1,8 @@
 "use client"
 
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useState } from "react"
 import { popupContext } from "@/hooks/usePopup"
 import Popup from "./popup"
-import { optionsRepetition } from "@/constants/task"
-import { Select } from "../ui/select"
 import { Target } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { CalendarX } from 'lucide-react';
@@ -29,7 +27,7 @@ const priority = [
     'low',
     'medim'
 ]
-const status = [
+const states = [
     'Cancel',
     'Completed',
     'In Progress',
@@ -52,7 +50,7 @@ const emails = [
 export const TaskPopUp = () => {
     const [error, setError] = useState<unknown>()
     const {state, setDispatch} = useContext(popupContext)
-    const {setDateValue, setTypeTime, formTask, setFormTask} = useContext(connectContext)
+    const {setDateValue, setTypeTime, formTask, setFormTask, setAction} = useContext(connectContext)
 
     return (
        <>
@@ -73,6 +71,7 @@ export const TaskPopUp = () => {
                             <div className="selectTaskValue" onClick={() => {
                                 setDispatch({calendar: true})
                                 setDateValue('startdate')
+                                setAction('task')
                             }}>
                                 <p>{format(formTask.start_date, "dd/MM/yyyy")}</p>
                             </div>
@@ -84,6 +83,7 @@ export const TaskPopUp = () => {
                             <div className="selectTaskValue" onClick={() => {
                                 setDispatch({calendar: true})
                                 setDateValue('deadline')
+                                setAction('task')
                             }}>
                                 <p>{format(formTask.deadline, "dd/MM/yyyy")}</p>
                             </div>
@@ -110,7 +110,7 @@ export const TaskPopUp = () => {
                                 <p>{formTask.end_time}</p>
                             </div>
                         </div>
-                        <InputList name="status" Icons={CircleDashed} placeholder="can't create new status" items={status}/>
+                        <InputList name="state" Icons={CircleDashed} placeholder="can't create new status" items={states}/>
                         <InputList name="priority" Icons={Flag} placeholder="can't create new priority" items={priority}/>
                         <InputList name="assign" Icons={Users} placeholder="assign to your menbers" items={emails}/>
                         <InputList name="tags" Icons={Tags} placeholder="comming soom !!!" items={project}/>

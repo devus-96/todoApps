@@ -81,9 +81,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                                     let newvalue = {"assign" : assign.current}
                                     console.log(newvalue)
                                     setFormTask({...formTask, ...newvalue})
-                                    console.log(formTask)
                                 }}/>
-                                
                             </div>
                         ))}
                         </div>
@@ -132,7 +130,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                 </div>
                 : name === 'project' ? <Project newValue={newValue}/> :
                 (name === 'priority')  ? <><p className="text-xs px-4">sorry you can only use the propose</p></> : 
-                name === 'status' ? <><p className="text-xs px-4">sorry you can only use the propose</p></> :
+                name === 'state' ? <><p className="text-xs px-4">sorry you can only use the propose</p></> :
                  name === 'assign' ? <Assign /> : <></>
                 }
             </div>

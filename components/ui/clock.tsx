@@ -8,7 +8,7 @@ import { connectContext } from "@/hooks/useConnect";
 import { popupContext } from "@/hooks/usePopup";
 
 export const Clock = () => {
-     const {typeTime, setFormTask, formTask} = useContext(connectContext)
+     const {typeTime, setFormTask, formTask, action} = useContext(connectContext)
      const {setDispatch} = useContext(popupContext)
     //appel useState
     const [time, setTime] = useState<string>("hours")

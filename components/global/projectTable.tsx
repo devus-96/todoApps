@@ -1,122 +1,124 @@
 "use client"
 
 import { connectContext } from "@/hooks/useConnect"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { EmailList } from "./emailList"
 import { popupContext } from "@/hooks/usePopup"
-import { format } from "date-fns"
-import { Status } from "./status"
+import { useForm } from "@/hooks/useForm"
+import { tabTask } from "@/types/task"
 
-/*DOMRect {x: 906.296875, y: 530, width: 109.578125, height: 32, top: 530
-*/
+interface ProjectProps {
+    index: number
+    priority: string,
+    states: string,
+    start_date: string,
+    deadline: string,
+    setPosition: React.Dispatch<React.SetStateAction<{
+        x: number;
+        top: number;
+    }>>
+}
 
-
-export const ProjectTable = ({setPosition}:{setPosition: React.Dispatch<React.SetStateAction<{
-    x: number;
-    top: number;
-}>>}) => {
+export const ProjectTable:React.FC<ProjectProps> = ({
+    index,
+    priority,
+    states,
+    start_date,
+    deadline,
+    setPosition
+}) => {
     //useState
     let [numberEmal, setNumberEmail] = useState(1)
-    let [priority, setPriority]  = useState<string>('')
-    let [status, setStatus]  = useState<string>('')
     //useRef
     let numberEmailRef = useRef<number>(1)
     let emailsRef = useRef<string[]>([''])
-    let statusRef = useRef<HTMLDivElement>(null)
-    let priorityRef = useRef<HTMLDivElement>(null)
     //useContext
-    const {formTask, setFormTask, setDateValue, setTypeTime} = useContext(connectContext)
+    const {setDateValue, setIndexes,setAction, setGroupFormTask} = useContext(connectContext)
     const {setDispatch} = useContext(popupContext)
-    //useEffect
-    useEffect(() => {
-        let newValue = {priority: priority}
-        setFormTask({...formTask, ...newValue})
-    }, [priority])
-    useEffect(() => {
-        let newValue = {status: status}
-        setFormTask({...formTask, ...newValue})
-    }, [status])
-    useEffect(() => {
-        function handlerBoundingClientRect (event: MouseEvent) {
-            let target = event.target as HTMLDivElement
-            // Récupérer les coordonnées du clic
-            const y = event.clientY;
-            let upordown = y  + 300 > window.innerHeight
-            const boutonRect = target.getBoundingClientRect();
-            let height = boutonRect.bottom - boutonRect.top
-            if (upordown) {
-                setPosition({x: boutonRect.left,top: (boutonRect.top - 300) + height})
-            } else {
-                setPosition({x: boutonRect.left,top: boutonRect.top})
-            }
+    //hook
+    const {handleChange, value, valueRef} = useForm({name: ''})
+    //function
+    function handlerBoundingClientRect (event: React.MouseEvent) {
+        let target = event.target as HTMLDivElement
+        // Récupérer les coordonnées du clic
+        const y = event.clientY;
+        let upordown = y  + 300 > window.innerHeight
+        const boutonRect = target.getBoundingClientRect();
+        let height = boutonRect.bottom - boutonRect.top
+        if (upordown) {
+            setPosition({x: boutonRect.left,top: (boutonRect.top - 300) + height})
+        } else {
+            setPosition({x: boutonRect.left,top: boutonRect.top})
+        }
 
-        }
-        statusRef.current?.addEventListener('click', (e) => handlerBoundingClientRect(e))
-        return () => {
-            statusRef.current?.removeEventListener('click', (e) => handlerBoundingClientRect(e))
-        }
-    })
+    }
     //Dom
     return (
     <>
         <tr>
             <td className="border-l border-r border-t border-primary">
-                <input 
-                onChange={(e) => {}}
-                value={undefined}
-                type="text" 
-                name='name'
-                className="px-4 py-2 w-full outline-none bg-secondary placeholder:text-gray-500" 
-                placeholder="Write project's objectif"
-                />
+                <textarea
+                 onChange={(e) => {
+                    handleChange(e)
+                    setGroupFormTask((prevElements: tabTask[]) => {
+                        // Créer une copie du tableau pour éviter de modifier l'état directement
+                        const nouveauTableau = [...prevElements];
+                        // Modifier la valeur de x du premier élément
+                        nouveauTableau[index].name = valueRef.current;
+                        return nouveauTableau;
+                    });
+                 }}
+                 value={value.name}
+                 name='name'
+                 placeholder="Write task's name"
+                 className="px-4 py-2 w-full outline-none resize-none scrollbar-hide bg-secondary placeholder:text-gray-500" 
+                 ></textarea>
             </td>
             <td className="border-l border-r border-t border-primary">
                 <div className="full py-1 px-1">
-                {Array.from({ length: numberEmal }).map((_,index) => (
-                    <EmailList key={index} numberEmailRef={numberEmailRef} emailsRef={emailsRef} setNumberEmail={setNumberEmail} />
+                {Array.from({ length: numberEmal }).map((_, i) => (
+                    <EmailList key={i} index={index} numberEmailRef={numberEmailRef} emailsRef={emailsRef} setNumberEmail={setNumberEmail} />
                 ))}
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
-                <div ref={statusRef} className="w-full px-4 py-[4px]  text-start rounded text-gray-500 cursor-pointer duration-300 hover:bg-gray-800" onClick={() => setDispatch({status: true})}>
-                    <p>Status</p>
+                <div className="w-full px-4 py-[4px]  text-start rounded text-gray-500 cursor-pointer duration-300 hover:bg-gray-800" onClick={(e) => {
+                    setDispatch({states: true})
+                    setDispatch({priority: false})
+                    handlerBoundingClientRect(e)
+                    setIndexes(index)
+                }}>
+                    <p>{states}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
-                <div className="w-full px-4 py-[4px]  text-start rounded text-gray-500 cursor-pointer duration-300 hover:bg-gray-800">
-                    <p>Priority</p>
+                <div className="w-full px-4 py-[4px]  text-start rounded text-gray-500 cursor-pointer duration-300 hover:bg-gray-800" onClick={(e) => {
+                    setDispatch({states: false})
+                    setDispatch({priority: true})
+                    handlerBoundingClientRect(e)
+                    setIndexes(index)
+                }}>
+                    <p>{priority}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary ">
                 <div className="w-full px-4 py-[4px] text-start text-gray-500 cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
                 setDispatch({calendar: true})
                 setDateValue('startdate')
+                setIndexes(index)
+                setAction('project')
                 }}>
-                    <p>{format(formTask.start_date, "dd/MM/yyyy")}</p>
+                    <p>{start_date}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
                 <div className="w-full px-4 py-[4px] text-start text-gray-500 cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
                 setDispatch({calendar: true})
                 setDateValue('deadline')
+                setIndexes(index)
+                setAction('project')
                 }}>
-                    <p>{format(formTask.deadline, "dd/MM/yyyy")}</p>
-                </div>
-            </td>
-            <td className="border-l border-r border-t border-primary pl-4">
-                <div className="w-full px-4 py-[4px]  text-start rounded text-gray-500 cursor-pointer duration-300 hover:bg-gray-800" onClick={() => {
-                setTypeTime('start')
-                setDispatch({clock: true})
-                }}>
-                    <p>{formTask.start_time}</p>
-                </div>
-            </td>
-            <td className="border-l border-r border-t border-primary pl-4">
-                <div className="w-full px-4 py-[4px]  text-start rounded text-gray-500 cursor-pointer duration-300 hover:bg-gray-800" onClick={()=> {
-                setTypeTime('end')
-                setDispatch({clock: true})
-                }}>
-                <p>{formTask.end_time}</p>
+                    <p>{deadline}</p>
                 </div>
             </td>
         </tr>
