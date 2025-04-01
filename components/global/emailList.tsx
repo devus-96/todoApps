@@ -29,7 +29,7 @@ export function EmailList ({
     //useContext
     const {setGroupFormTask} = useContext(connectContext)
     //hook
-    const {handleChange, error, value, valueRef} = useForm(defaultCalue, emailSchema)
+    const {handleChange, error, value, valueRef, cleanTable} = useForm(defaultCalue, emailSchema)
     //useEffect
     useEffect(() => {
         function handleClose () {
@@ -44,15 +44,6 @@ export function EmailList ({
             closeRef.current?.removeEventListener('click', handleClose)
         }
     })
-    function cleanTable(tableau: string[]) {
-        // 1. Filtrer les valeurs vides
-        const valeursNonVides = tableau.filter(valeur => valeur !== "");
-      
-        // 2. Supprimer les doublons en utilisant un Set
-        const valeursUniques = [...new Set(valeursNonVides)];
-      
-        return valeursUniques;
-      }
     //DOM
     return (
         <div ref={menuRef} className="flex flex-col items-center justify-start">
@@ -62,7 +53,7 @@ export function EmailList ({
                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                     name="email" 
                     className="px-4 py-2 bg-secondary text-sidebarText w-full outline-none placeholder:text-gray-500 text-sm" 
-                    placeholder="Enter Email Adress"
+                    placeholder="Enter Email Adress then click Enter for record"
                     value={value.email} 
                     onChange={(e) => {
                         handleChange(e)

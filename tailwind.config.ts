@@ -16,6 +16,7 @@ export default {
   			sidebarText: '#A6A6A8',
   			terciary: '#ff2779',
 			btnColor: '#9eabe4',
+			borderCard: '#494949'
   		},
   		backgroundColor: {
   			btnColor: '#9eabe4',

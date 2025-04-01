@@ -57,6 +57,17 @@ export const useForm = (initialValues: any = {}, schema: any = object({})) => {
         };
         setValue({...value, ...valueChanged});
     }
+
+
+    function cleanTable(tableau: string[]) {
+        // 1. Filtrer les valeurs vides
+        const valeursNonVides = tableau.filter(valeur => valeur !== "");
+      
+        // 2. Supprimer les doublons en utilisant un Set
+        const valeursUniques = [...new Set(valeursNonVides)];
+      
+        return valeursUniques;
+      }
         
     return {
         valueRef,
@@ -67,6 +78,7 @@ export const useForm = (initialValues: any = {}, schema: any = object({})) => {
         setError,
         emails,
         handleChange,
-        setValue
+        setValue,
+        cleanTable
     }
 }

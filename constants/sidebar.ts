@@ -104,12 +104,12 @@ export const teamsRoutes = [
     {
         name: 'Menbers',
         icons: Users,
-        route: '/menbers'
+        route: '/teams/menber'
     },
     {
         name: 'Meetings',
         icons: Projector,
-        route: '/meetings'
+        route: '/teams/meetings'
     },
     {
         name: 'Tasks',

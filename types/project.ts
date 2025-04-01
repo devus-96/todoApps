@@ -22,12 +22,10 @@ type menbers = {
 }
 
 export type ProjectType = {
-      id: number,
       name: string,
-      creation: string,
-      start_date: string,
-      deadline: string,
-      status: string,
-      tasks: taskProject[],
-      menbers: menbers[]
+      objectifs: string[],
+      start_date: Date,
+      deadline: Date,
+      repeat: string,
+      image: string,
 }

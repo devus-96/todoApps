@@ -11,9 +11,9 @@ const priorityState = [
     {name: 'high', color: '#f87171'},
 ]
 
-export const Priority = ({left, top}:{left: number, top: number}) => {
+export const Priority = () => {
     //useRef
-    const priorityRef = useRef<HTMLDivElement>(null)
+    const priorityRef = useRef<HTMLTableCellElement>(null)
     //useContext
     const {state, setDispatch} = useContext(popupContext)
     const {indexes, setGroupFormTask} = useContext(connectContext)
@@ -34,13 +34,7 @@ export const Priority = ({left, top}:{left: number, top: number}) => {
     //DOM
     return (
         <>
-            {state.priority &&
-                <div ref={priorityRef} className={`w-[250px] h-[300px] flex flex-col text-sidebarText bg-primary fixed z-50 rounded`} 
-                    style={{
-                        left: left + 'px',
-                        top: top + 'px'
-                    }}
-                >
+                <td ref={priorityRef} className={`flex flex-col text-sidebarText bg-primary rounded`}>
                     <p className="text-xs mb-4 ml-4 mt-4">select one option below</p>
                     <div className="space-y-4">
                         {priorityState.map((item, index) => (
@@ -53,7 +47,7 @@ export const Priority = ({left, top}:{left: number, top: number}) => {
                                     return nouveauTableau;
                                 });
                                 setDispatch({priority: false})
-                            }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer py-1">
+                            }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer">
                                 <div className="px-2 py-1 text-gray-800 rounded-full" style={{
                                     background: `${item.color}`
                                 }}>
@@ -62,8 +56,7 @@ export const Priority = ({left, top}:{left: number, top: number}) => {
                             </div>
                         ))}
                     </div>
-                </div>
-            }
+                </td>
         </>
         
     )

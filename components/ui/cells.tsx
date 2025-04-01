@@ -1,11 +1,8 @@
 "use client"
-import React, { useEffect, useRef } from "react";
-import { useManageCalendar } from "@/hooks/useManageCalendar";
-import { taskContext } from "@/hooks/useTask";
+import React  from "react";
 import { tabTask, task } from "@/types/task";
 import { ProjectType } from "@/types/project";
 import clsx from "clsx";
-import { format } from "date-fns";
 import { Dispatch, SetStateAction, useContext } from "react";
 import { connectContext } from "@/hooks/useConnect";
 import { popupContext } from "@/hooks/usePopup";
@@ -45,7 +42,7 @@ const Cell:React.FC<Props> =  ({
 }) =>  {
     const {setDispatch} = useContext(popupContext)
     const {dateValue, setFormTask, formTask} = useContext(connectContext)
-    const {indexes, setGroupFormTask, action} = useContext(connectContext)
+    const {indexes, setGroupFormTask, action, setFormProject, formProject} = useContext(connectContext)
     function handleAction (action: string) {
         switch (action) {
           case "task": 
@@ -78,6 +75,16 @@ const Cell:React.FC<Props> =  ({
               }
               setDispatch({calendar: false}) 
               break;
+          case "fill project value":
+            if (dateValue === 'startdate') {
+              let newvalue = {'start_date': currentDate}
+              setFormProject({...formProject, ...newvalue})
+            } else if (dateValue === 'deadline') {
+              let newvalue = {'deadline': currentDate}
+              setFormProject({...formProject, ...newvalue})
+            }
+            setDispatch({calendar: false}) 
+            break;
         }
     }
     return (
