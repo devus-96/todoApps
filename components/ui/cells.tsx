@@ -93,8 +93,12 @@ const Cell:React.FC<Props> =  ({
         <div
           key={time}
           onClick={() => {
-            !pastVerify ? handleClick(time) : alert("vous ne pouvez pas programmer un date dans le passe")
-            handleAction(action)
+            if (!pastVerify) {
+              handleClick(time)
+              handleAction(action)
+            } else {
+              alert("vous ne pouvez pas programmer un date dans le passe")
+            }
             setCurrentDate && setCurrentDate(currentDate)
           }}
           className={cellsClass}

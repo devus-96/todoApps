@@ -1,35 +1,24 @@
 "use client"
-import { tabTask } from "@/types/task";
+import { Tasks } from "@/types/global";
 import { createContext, useEffect, useState } from "react";
 
-export type clock = {
-    name: string,
-    project: string,
-    assign: string[],
-    priority: string,
-    state: string,
-    start_date: Date,
-    deadline: Date,
-    start_time:string,
-    end_time: string,
-}
-
-
-export type ProjectType = {
-    name: string;
-    objectifs: string[];
-    start_date: DateConstructor;
-    deadline: DateConstructor;
-    repeat: string;
-    image: string;
-}
-
-export const defaultValue = {
+const defaultTask = {
     name: '',
     project: 'Empty',
     assign: [''],
     priority: 'Empty',
-    state: 'Empty',
+    state: 'Plan',
+    start_date: new Date(),
+    deadline: new Date(),
+    start_time: '00:00AM',
+    end_time: '00:00AM',
+}
+
+const defaultValue = {
+    name: '',
+    assign: {},
+    priority: 'Empty',
+    state: 'Plan',
     start_date: new Date(),
     deadline: new Date(),
     start_time: '00:00AM',
@@ -38,14 +27,14 @@ export const defaultValue = {
 
 export const projectDefaultValue = {
     name: '',
-    objectifs: [''],
+    objectifs: {'0': ''},
     start_date: new Date(),
     deadline: new Date(),
     repeat: '',
     image: '',
 }
 
-type group = ((prevElements: tabTask[]) => tabTask[]) | tabTask[]
+type group = ((prevElements: Tasks[]) => Tasks[]) | Tasks[]
 
 /**
  * groupFormTask: sert a conserver sous forme d'object tout les taches de la partit projet
@@ -58,33 +47,34 @@ type group = ((prevElements: tabTask[]) => tabTask[]) | tabTask[]
  */
 
 export const connectContext = createContext({
+    groups: {},
+    setGroups: (action:any) => {},
     formProject: projectDefaultValue,
-    setFormProject: (action: typeof projectDefaultValue) => {},
+    setFormProject: (action:any) => {},
     action: '',
     setAction: (action: string) => {},
-    groupFormTask: [defaultValue],
+    groupFormTask: [defaultValue] as Tasks[],
     setGroupFormTask: (value: group) => {},
     indexes: 0,
     setIndexes: (index: number) => {},
-    objectif:[''],
-    setObjectif: (email: string[]) => {},
     dateValue: '',
     setDateValue: (date: string) => {},
     typeTime: '',
     setTypeTime: (time: string) => {},
-    formTask: defaultValue,
-    setFormTask: (value: clock) => {},
+    formTask: defaultTask,
+    setFormTask: (value: typeof defaultTask) => {},
 })
 
 export function ConnectContextProvider ({children}: {children: React.ReactNode}) {
     const [formProject, setFormProject] = useState(projectDefaultValue)
     const [dateValue, setDateValue] = useState<string>('')
     const [typeTime,setTypeTime] = useState<string>('')
-    const [formTask, setFormTask] = useState(defaultValue)
+    const [formTask, setFormTask] = useState(defaultTask)
     const [indexes, setIndexes] = useState<number>(0)
-    const [groupFormTask, setGroupFormTask] = useState([defaultValue])
-    const [objectif, setObjectif] = useState<string[]>([''])
+    const [groupFormTask, setGroupFormTask] = useState<Tasks[]>([defaultValue])
     const [action, setAction] = useState<string>('')
+
+    const [groups, setGroups] = useState<Record<string, any>>({})
 
     useEffect(() => {
         console.log(groupFormTask)
@@ -94,12 +84,9 @@ export function ConnectContextProvider ({children}: {children: React.ReactNode})
         console.log(formProject)
     }, [formProject])
 
-    useEffect(() => {
-        const newValue = {objectifs: objectif}
-        setFormProject({...formProject, ...newValue})
-    }, [objectif])
-
     return <connectContext.Provider value={{
+        groups,
+        setGroups,
         formProject,
         setFormProject,
         action,
@@ -108,8 +95,6 @@ export function ConnectContextProvider ({children}: {children: React.ReactNode})
         setGroupFormTask,
         indexes,
         setIndexes,
-        objectif,
-        setObjectif,
         typeTime,
         setTypeTime,
         dateValue,

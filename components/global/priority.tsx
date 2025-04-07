@@ -2,8 +2,9 @@
 
 import { connectContext } from "@/hooks/useConnect"
 import { popupContext } from "@/hooks/usePopup"
-import { tabTask } from "@/types/task"
 import { useContext, useEffect, useRef } from "react"
+import { Menu } from "./Menu"
+import { Tasks } from "@/types/global"
 
 const priorityState = [
     {name: 'low', color: '#a1a1aa'},
@@ -12,52 +13,37 @@ const priorityState = [
 ]
 
 export const Priority = () => {
-    //useRef
-    const priorityRef = useRef<HTMLTableCellElement>(null)
     //useContext
     const {state, setDispatch} = useContext(popupContext)
-    const {indexes, setGroupFormTask} = useContext(connectContext)
-    //useEffect
-    useEffect(() => {
-        const handlerClic = (e: MouseEvent) => {
-            const target = e.target as Document
-            if (!priorityRef?.current?.contains(target)) {
-                setDispatch({priority: false})
-            }
-
-        }
-        document.addEventListener("mousedown", handlerClic)
-            return () => {
-                document.removeEventListener("mousedown", handlerClic)
-            }
-        }, [state.priority])
+    const {indexes, setGroupFormTask, setGroups} = useContext(connectContext)
     //DOM
     return (
-        <>
-                <td ref={priorityRef} className={`flex flex-col text-sidebarText bg-primary rounded`}>
-                    <p className="text-xs mb-4 ml-4 mt-4">select one option below</p>
-                    <div className="space-y-4">
-                        {priorityState.map((item, index) => (
-                            <div key={index} onClick={() => {
-                                setGroupFormTask((prevElements: tabTask[]) => {
-                                    // Créer une copie du tableau pour éviter de modifier l'état directement
-                                    const nouveauTableau = [...prevElements];
-                                    // Modifier la valeur de x du premier élément
-                                    nouveauTableau[indexes].priority = item.name;
-                                    return nouveauTableau;
-                                });
-                                setDispatch({priority: false})
-                            }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer">
-                                <div className="px-2 py-1 text-gray-800 rounded-full" style={{
-                                    background: `${item.color}`
-                                }}>
-                                    <p>{item.name}</p>
-                                </div>
+        <Menu active={state.priority} dispatch='priority'>
+            <div className={`flex flex-col text-sidebarText bg-primary rounded`}>
+                <p className="text-xs mb-4 ml-4 mt-4">select one option below</p>
+                <div className="space-y-4">
+                    {priorityState.map((item, index) => (
+                        <div key={index} onClick={() => {
+                            setGroups({priority: item.name})
+                            setGroupFormTask((prevElements: Tasks[]) => {
+                                // Créer une copie du tableau pour éviter de modifier l'état directement
+                                const nouveauTableau = [...prevElements];
+                                // Modifier la valeur de x du premier élément
+                                nouveauTableau[indexes].priority = item.name;
+                                return nouveauTableau;
+                            });
+                            setDispatch({priority: false})
+                        }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer">
+                            <div className="px-2 py-1 text-gray-800 rounded-full" style={{
+                                background: `${item.color}`
+                            }}>
+                                <p>{item.name}</p>
                             </div>
-                        ))}
-                    </div>
-                </td>
-        </>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </Menu>
         
     )
 }

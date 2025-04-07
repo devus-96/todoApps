@@ -44,7 +44,7 @@ export const Select: FC<SelectProps> = ({
             return () => {
               document.removeEventListener("mousedown", handlerClick)
             }
-          })
+          }, [show])
         return <div className={className}>
                 {label !== "" && <label className={labelClass}> {label}</label>}
                 <div ref={menuRef} className={`${!show ? "hidden" : seclectClass}`}>

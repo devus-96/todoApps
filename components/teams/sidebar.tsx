@@ -47,8 +47,8 @@ const SideBar = () => {
                         })}
                     </div>
                 </div>
-                <div className="absolute bottom-8 w-full">
-                    <div className="absolute bottom-8 w-full px-4">
+                <div className="relative bottom-0 mb-8 mt-4 w-full">
+                    <div className="w-full px-4">
                         <div 
                         className="flex items-center space-x-4 mt-4 p-2 rounded transition duration-300 cursor-pointer text-sidebarText hover:bg-sidebarText hover:text-gray-800"
                         onClick={() => setDispatch({invitation: true})}

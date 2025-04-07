@@ -46,11 +46,7 @@ export const InvitationPopUp = () => {
                             className="px-4 py-2 bg-sidebarText text-gray-800 w-full rounded-full outline-none placeholder:text-gray-500 text-sm" 
                             placeholder="Enter Email Adress" 
                             onKeyUp={(e) => {
-                                try {
-                                    handleEmail(e)
-                                } catch (err) {
-                                    setError(err)
-                                }
+                                handleEmail(e)
                             }}
                             required
                         />

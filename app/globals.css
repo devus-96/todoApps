@@ -11,7 +11,7 @@
   @apply absolute top-0 left-0 right-0 z-10 px-12 py-4 max-lg:opacity-0
 }
 .sidebar {
-  @apply fixed overflow-auto z-50 bg-[#333] w-[220px] scrollbar-hide py-4 h-screen flex flex-col font-[family-name:var(--font-jetBrains-mono)]
+  @apply fixed overflow-auto z-30 bg-[#333] w-[220px] scrollbar-hide py-4 h-screen flex flex-col font-[family-name:var(--font-jetBrains-mono)]
 }
 .bold {
   @apply font-[family-name:var(--font-jetBrainsExtraBold-mono)]

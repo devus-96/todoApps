@@ -15,7 +15,9 @@ const defaultValue = {
     project: false,
     calendar: false,
     clock: false,
-    menberAction: false
+    menberAction: false,
+    projectList: false,
+    sortTask: false
 }
 
 export const popupContext = createContext({

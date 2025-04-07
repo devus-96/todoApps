@@ -3,7 +3,6 @@
 import { useContext, useState } from "react"
 import { popupContext } from "@/hooks/usePopup"
 import Popup from "./popup"
-import { Target } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { CalendarX } from 'lucide-react';
 import { CalendarClock } from 'lucide-react';
@@ -16,35 +15,12 @@ import { InputList } from "../global/inputList"
 import { connectContext } from "@/hooks/useConnect"
 import { format } from "date-fns"
 import { Spinner } from "../ui/spinner"
+import { emails, priority, states } from "@/constants/task";
 
 const project = [
     "project du mois d'octobre",
     "application de devellopement personnel",
     "formation video"
-]
-const priority = [
-    'high',
-    'low',
-    'medim'
-]
-const states = [
-    'Cancel',
-    'Completed',
-    'In Progress',
-    'Done',
-    "Plan",
-    "Propose"
-]
-
-const emails = [
-    'marcdeus@gmail.com',
-    "austinndjom@gmail.com",
-    "fsadfdsafdf@gmail.com",
-    "dsfdsfsdfsd@gmail.com",
-    "irorororor@gmail",
-    "sdsaooorje@gmail.com",
-    "qwjjejejrrr@gmail.com",
-    "eriowerjewoijr@gmail.com"
 ]
 
 export const TaskPopUp = () => {
@@ -63,7 +39,6 @@ export const TaskPopUp = () => {
                             className="popupinput text-3xl bg-primary text-gray-300" 
                             placeholder='Give a name to your task'
                         />
-                        <InputList name="project" Icons={Target} placeholder="search or create a project" items={project}/>
                         <div className="flex-justify">
                             <div className="flex items-center space-x-4">
                                 <CalendarX /><p>startdate</p>
@@ -94,6 +69,7 @@ export const TaskPopUp = () => {
                             </div>
                             <div className="selectTaskValue" onClick={() => {
                                 setTypeTime('start')
+                                setAction('task')
                                 setDispatch({clock: true})
                             }}>
                                 <p>{formTask.start_time}</p>
@@ -104,6 +80,7 @@ export const TaskPopUp = () => {
                                 <AlarmClockOff /><p>end time</p>
                             </div>
                             <div className="selectTaskValue" onClick={()=> {
+                                setAction('task')
                                 setTypeTime('end')
                                 setDispatch({clock: true})
                             }}>

@@ -2,8 +2,6 @@
 import { Pen, MessageCircleOff, AlarmClockCheck, SendHorizontal, Delete, Check } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
-
-
 export const MenberCard = () => {
     const [showRole, setShowRole] = useState(false)
     const assignRef = useRef<HTMLDivElement>(null)

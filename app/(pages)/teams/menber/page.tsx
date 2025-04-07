@@ -92,7 +92,7 @@ const MenberPage = () => {
             <HeaderProject />
             {state.menberAction &&
             <>
-                <div className="absolute top-0 left-0 right-0 bottom-0" onClick={() => setDispatch({menberAction: false})}></div>
+                <div className="absolute top-0 left-0 right-0 h-screen" onClick={() => setDispatch({menberAction: false})}></div>
                 <div className="fixed w-[180px] h-[245px]" style={{
                     left: position.x + 'px',
                     top: position.top + 'px',
@@ -152,7 +152,6 @@ const MenberPage = () => {
                                 </td>
                                 <td className="p-4">
                                     <div onClick={(e) => {
-                                        console.log('dsadsa')
                                         setDispatch({menberAction: true})
                                         handlerBoundingClientRect(e, 245)
                                     }} className="w-6 h-6 rounded flex flex-center text-xs space-x-2 cursor-pointer">

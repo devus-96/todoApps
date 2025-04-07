@@ -6,9 +6,10 @@ import { SelectTime } from "./selectTime"
 import clsx from "clsx"
 import { connectContext } from "@/hooks/useConnect";
 import { popupContext } from "@/hooks/usePopup";
+import { tabTask } from "@/types/task";
 
 export const Clock = () => {
-     const {typeTime, setFormTask, formTask, action} = useContext(connectContext)
+     const {typeTime, setFormTask, formTask, action, setGroupFormTask, indexes} = useContext(connectContext)
      const {setDispatch} = useContext(popupContext)
     //appel useState
     const [time, setTime] = useState<string>("hours")
@@ -93,13 +94,31 @@ export const Clock = () => {
                     <button  
                         className="text-btnColor"
                         onClick={() => {
-                            if (typeTime === 'start') {
-                                let value = {start_time: `${insertHours}:${insertMinutes} ${moment}`}
-                                setFormTask({...formTask, ...value})
-                            } else {
-                                let value = {end_time: `${insertHours}:${insertMinutes} ${moment}`}
-                                setFormTask({...formTask, ...value})
+                            switch (action) {
+                                case 'task':
+                                    if (typeTime === 'start') {
+                                        let value = {start_time: `${insertHours}:${insertMinutes} ${moment}`}
+                                        setFormTask({...formTask, ...value})
+                                    } else {
+                                        let value = {end_time: `${insertHours}:${insertMinutes} ${moment}`}
+                                        setFormTask({...formTask, ...value})
+                                    }
+                                case 'project':
+                                    if (typeTime === 'start') {
+                                        setGroupFormTask((prevElements: tabTask[]) => {
+                                            const nouveauTableau = [...prevElements];
+                                            nouveauTableau[indexes].start_time = `${insertHours}:${insertMinutes} ${moment}` ;
+                                            return nouveauTableau;
+                                        })
+                                    } else {
+                                        setGroupFormTask((prevElements: tabTask[]) => {
+                                            const nouveauTableau = [...prevElements];
+                                            nouveauTableau[indexes].end_time = `${insertHours}:${insertMinutes} ${moment}` ;
+                                            return nouveauTableau;
+                                        })
+                                    }
                             }
+                            
                             setDispatch({clock: false})
                         }}
                     >ok</button>

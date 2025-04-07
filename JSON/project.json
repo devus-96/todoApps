@@ -1,155 +1,18 @@
 {
   "project" : [
     {
-      "id": 87,
-      "name": "project 66",
-      "creation": "02/01/2025",
-      "start_date": "02/01/2025",
-      "deadline": "19/02/2025",
-      "status": "plan",
-      "tasks": [
-        {
-            "id": "70",
-            "name": "faire le design system",
-            "creation":  "02/01/2025",
-            "start_date": "03/01/2025",
-            "deadline": "07/02/2025",
-            "schedule": [
-              {
-                "date": "04/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              },
-              {
-                "date": "05/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              },
-              {
-                "date": "06/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              }
-            ],
-            "status": "plan",
-            "assignment": ["membre21@example.com"]
-          },
-          {
-            "id": "345",
-            "name": "faire le design de l'application sur figma",
-            "creation":  "20/01/2025",
-            "start_date": "03/01/2025",
-            "deadline": "14/02/2025",
-            "schedule": [
-              {
-                "date": "04/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              },
-              {
-                "date": "06/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              },
-              {
-                "date": "08/01/2025",
-                "start_time": "07:00",
-                "end_time": "12:30"
-              },
-              {
-                "date": "10/01/2025",
-                "start_time": "08:00",
-                "end_time": "10:30"
-              }
-            ],
-            "status": "completed",
-            "assignment": ["membre60@example.com"]
-          },
-          {
-            "id": "345",
-            "name": "realiser l'authentification frontend avec nextjs et backend avec php",
-            "creation":  "20/01/2025",
-            "start_date": "06/01/2025",
-            "deadline": "15/02/2025",
-            "schedule": [],
-            "status": "completed",
-            "assignment": ["membre60@example.com", "membre21@example.com", "membre80@example.com"]
-          },
-          {
-            "id": "345",
-            "name": "realiser l'authentification frontend avec nextjs et backend avec php",
-            "creation":  "02/01/2025",
-            "start_date": "10/01/2025",
-            "deadline": "14/02/2025",
-            "schedule": [
-              {
-                "date": "04/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              },
-              {
-                "date": "06/01/2025",
-                "start_time": "08:00",
-                "end_time": "16:30"
-              },
-              {
-                "date": "08/01/2025",
-                "start_time": "07:00",
-                "end_time": "12:30"
-              },
-              {
-                "date": "10/01/2025",
-                "start_time": "08:00",
-                "end_time": "10:30"
-              }
-            ],
-            "status": "completed",
-            "assignment": ["membre60@example.com", "membre21@example.com", "membre80@example.com"]
-          },
-          {
-            "id": "345",
-            "name": "middleware",
-            "creation":  "20/01/2025",
-            "start_date": "02/01/2025",
-            "deadline": "10/02/2025",
-            "schedule": [],
-            "status": "completed",
-            "assignment": ["membre60@example.com"]
-          },
-          {
-            "id": "345",
-            "name": "conceptualiser le backend",
-            "creation":  "20/01/2025",
-            "start_date": "02/01/2025",
-            "deadline": "19/02/2025",
-            "schedule": [
-              {
-                "date": "04/01/2025",
-                "start_time": "08:00",
-                "end_time": "10:30"
-              }
-            ],
-            "status": "completed",
-            "assignment": ["membre60@example.com"]
-          }
-      ],
-      "menbers": [
-        {
-          "name": "M7embre 77",
-          "role": "administrator",
-          "email": "membre21@example.com"
-        },
-        {
-          "name": "M1embre 15",
-          "role": "menber",
-          "email": "membre60@example.com"
-        },
-        {
-          "name": "M4embre 74",
-          "role": "menber",
-          "email": "membre80@example.com"
-        }
-      ]
+      "name": "create that react components",
+      "assign": {
+        "0": "marcdeus@gmail.com",
+        "1": "austinndjom@gmail.com",
+        "3": "dsfdsfsdfsd@gmail.com"
+      },
+      "priority": "high",
+      "state": "in progress",
+      "start_date": "20/11/2022",
+      "deadline": "07/01/2023",
+      "start_time": "",
+      "end_time": ""
     }
   ]
 }

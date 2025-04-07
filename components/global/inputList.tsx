@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons";
 import { UserRoundPlus } from 'lucide-react';
 import { popupContext } from "@/hooks/usePopup";
-import { clock, connectContext } from "@/hooks/useConnect";
+import { connectContext } from "@/hooks/useConnect";
 import { IoMdClose } from "react-icons/io";
 
 interface InputLinkProps {
@@ -42,7 +42,7 @@ export const InputList:React.FC<InputLinkProps> = ({
           return () => {
             document.removeEventListener("mousedown", handlerClick)
           }
-    })
+    }, [active])
     /**
      * this function is a search's function
      * @param e React.ChangeEvent
@@ -75,7 +75,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                         <div>
                             {formTask.assign.map((item, index) => (
                             <div key={index} className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p className="text-xs">{item}</p>
+                                <p className="text-xss">{item}</p>
                                 <IoMdClose size={12} className="cursor-pointer" onClick={() => {
                                     assign.current = formTask.assign.filter((substract) => substract !== item)
                                     let newvalue = {"assign" : assign.current}
@@ -91,7 +91,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                 </div>
             </div>
             {active &&
-            <div ref={menuRef} className="bg-primary border border-[#494949] min-h-[100px] overflow-auto rounded absolute right-0 top-0 z-10 ">
+                <div ref={menuRef} className="bg-primary border border-[#494949] min-h-[100px] overflow-auto rounded absolute right-0 top-0 z-10 ">
                 <input 
                 type="text" 
                 name='name'

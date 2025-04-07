@@ -1,5 +1,5 @@
 "use client"
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import React from "react"
 import { Plus, SquareCheck, MessageSquareText, Calendar } from 'lucide-react';
 import { projectRow } from "@/constants/task";
@@ -9,21 +9,29 @@ import { connectContext, projectDefaultValue } from "@/hooks/useConnect";
 import { format } from "date-fns";
 import { HeaderProject } from "@/components/global/header";
 import { popupContext } from "@/hooks/usePopup";
+import { Status } from "@/components/global/state";
+import { Priority } from "@/components/global/priority";
+import { ProjectType, Tasks } from "@/types/global";
 
-function List () {
-    const {handleChange, value, valueRef} = useForm({name: ''})
-    const {setObjectif, objectif}= useContext(connectContext)
+function List ({index}:{index: number}) {
+    let defaultValue = {[index] : ''}
+    const {handleChange, value, valueRef} = useForm(defaultValue)
+    let {setFormProject}= useContext(connectContext)
     return (
         <div className="flex items-center text-btnColor">
             <SquareCheck size={24}/>
             <input 
                 onChange={(e) => {
-                    handleChange(e)
-                    setObjectif([...objectif, valueRef.current])
+                    handleChange(e);
+                    let objectifValue = {[`${index}`]: valueRef.current};
+                    setFormProject((formProject: ProjectType) => {
+                        const nouveauTableau = {...formProject};
+                        nouveauTableau['objectifs'] = {...nouveauTableau['objectifs'], ...objectifValue};
+                        return nouveauTableau;
+                    })
                 }}
-                value={value.name}
                 type="text" 
-                name='name'
+                name={`${index}`}
                 className="popupinput text-base bg-inherit text-gray-300" 
                 placeholder="Write project's objectif then click Enter for record"
             />
@@ -35,44 +43,96 @@ export default function NewProject () {
     // useState
     let [number, setNumber] = useState(1)
     let [showDescription, setShowDescriptio] = useState<boolean>(false)
+    const [position, setPosition] = useState({x:0, top:0})
     //useRef
     let numberRef = useRef<number>(1)
     //useContext
-    const {setGroupFormTask, groupFormTask, setDateValue, setAction, formProject, setFormProject}= useContext(connectContext)
-    const {state, setDispatch} = useContext(popupContext)
+    const {setGroupFormTask, groupFormTask, setDateValue, setAction, formProject, setFormProject, groups, indexes}= useContext(connectContext)
+    const {setDispatch, state} = useContext(popupContext)
+    //useEffect
+    //useEffect
+    useEffect(() => {
+        tasks.setValue((value: Tasks[]) => {
+            const newTab = [...value];
+            newTab[indexes] = {...newTab[indexes], ...groups};
+            return newTab
+        })
+        console.log(tasks.value)
+    }, [groups])
     //hook
-    const {handleChange, value, valueRef} = useForm(projectDefaultValue)
+    const defaultValue = {
+        name: '',
+        assign: {},
+        priority: 'Empty',
+        state: 'Plan',
+        start_date: new Date(),
+        deadline: new Date(),
+        start_time: '00:00AM',
+        end_time: '00:00AM',
+    }
+    const projectDefaultValue = {
+        name: '',
+        objectifs: {'0': ''},
+        start_date: new Date(),
+        deadline: new Date(),
+        repeat: '',
+        image: '',
+        description: ''
+    }
+    const tasks = useForm<Tasks[]>([defaultValue])
+    const project = useForm<ProjectType>(projectDefaultValue)
     //Dom
     return (
         <div className="w-[calc(100%-200px)] bg-secondary min-h-screen pb-12">
-            <div className="w-full h-[200px] bg-gradient-to-t from-secondary to-btnColor">
-                <HeaderProject />
+            <HeaderProject />
+            {state.states &&
+            <div className="fixed w-[234px] h-[250px] z-50 text-sidebarText bg-primary rounded border-borderCard"
+                 style={{
+                     left: position.x + 'px',
+                     top: position.top + 'px',
+                 }}
+             >
+                 <Status  />
+            </div>
+            }
+            {state.priority &&
+            <div className="fixed w-[244px] h-[250px] z-50 text-sidebarText bg-primary rounded"
+                 style={{
+                     left: position.x + 'px',
+                     top: position.top + 'px',
+                 }}
+                 >
+                 <Priority />
+            </div>
+            }
+            <div className="w-full h-[180px] bg-gradient-to-t from-pink-400 to-btnColor">
+                
             </div>
             <div>
             <input 
                 type="text" 
                 name='name'
-                value={value.name}
+                value={project.value.name}
                 className="popupinput text-3xl bg-inherit text-gray-300 mt-12 ml-12" 
                 placeholder='Give a name to your project'
                 onChange={(e) => {
-                    handleChange(e)
-                    let newValue = {name: valueRef.current}
+                    project.handleChange(e)
+                    let newValue = {name: project.valueRef.current}
                     setFormProject({...formProject, ...newValue})
                 }}
             />
             <div className="ml-14 pr-12 mt-8 cursor-pointer" onClick={() => {setShowDescriptio(true)}}>
-                <div className="flex items-center space-x-2 text-[#444] p-1 duration-300 hover:bg-primary hover:text-gray-300">
+                <div className="flex items-center space-x-2 text-holder p-1 duration-300 hover:bg-primary hover:text-gray-300">
                     <MessageSquareText size={24} />
                     <p className="">add comment</p>
                 </div>
                 {showDescription && <textarea 
                 placeholder='add description'
                 name='description'
-                value={value.description}
+                value={project.value.description}
                 onChange={(e) => {
-                    handleChange(e)
-                    let newValue = {description: valueRef.current}
+                    project.handleChange(e)
+                    let newValue = {description: project.valueRef.current}
                     setFormProject({...formProject, ...newValue})
                 }}
                 className="w-full bg-primary text-sidebarText border-b scrollbar-hide border-sidebarText outline-none p-3 text-sm max-lg:mb-5"
@@ -81,7 +141,7 @@ export default function NewProject () {
             <div className="ml-14 pr-12 mt-8">
                 <div className="flex items-center w-full space-x-4">
                     <div className="w-1/2">
-                        <div className="flex items-center space-x-2 text-[#444] mb-4">
+                        <div className="flex items-center space-x-2 text-holder mb-4">
                             <Calendar size={24} />
                             <p className="">startdate</p>
                         </div>
@@ -94,7 +154,7 @@ export default function NewProject () {
                         </div>
                     </div>
                     <div className="w-1/2">
-                        <div className="flex items-center space-x-2 text-[#444] mb-4">
+                        <div className="flex items-center space-x-2 text-holder mb-4">
                             <Calendar size={24} />
                             <p className="">deadline</p>
                         </div>
@@ -120,20 +180,20 @@ export default function NewProject () {
                 <div>
                     <div className="ml-24 mt-4">
                         {Array.from({ length: number }).map((_,index) => (
-                            <List key={index} />
+                            <List key={index} index={index} />
                         ))}
                     </div>
                 </div>
             </div>
-            <div className="ml-12 mt-12">
+            <div className="mt-12">
             <div className="w-full scrollbar-hide">
                 <table className="border-primary text-sidebarText w-full overflow-y-visible text-start">
                     <thead>
                         <tr>
                             {projectRow.map((item, index) => (
                             <td key={index} className="border-l border-r border-b border-primary pl-4">
-                                <div className="flex gap-2">
-                                    <item.icon className="block"/>{item.name}
+                                <div className="flex items-center gap-2 text-sm">
+                                    <item.icon size={16} className="block"/><p>{item.name}</p>
                                 </div>
                             </td>
                             ))}
@@ -144,10 +204,13 @@ export default function NewProject () {
                             <ProjectTable 
                             key={index} 
                             index={index} 
+                            setPosition={setPosition}
                             priority={item.priority}
                             states={item.state}
                             start_date={format(item.start_date, 'dd/MM/yyy')}
                             deadline={format(item.deadline, 'dd/MM/yyy')}
+                            start_time={item.start_time}
+                            end_time={item.end_time}
                             />
                         ))}
                     </tbody>
