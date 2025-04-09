@@ -1,13 +1,13 @@
 "use client"
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { object, z } from "zod";
+import { connectContext } from "./useConnect";
 
-export function useForm<T>(initialValues: T , schema: any = object({})) {
-    const [value, setValue] = useState<T>(initialValues);
+export function useForm(initialValues: any , schema: any = object({})) {
+    const [value, setValue] = useState(initialValues);
     const emails = useRef<string[]>([]);
-    const valueRef = useRef<string>('')
-    const tabRef = useRef<string[]>([''])
     const [error, setError] = useState<string>('')
+    const {indexes} = useContext(connectContext)
     
     const handleEmail = (e: React.KeyboardEvent) => {
             setError('')
@@ -43,17 +43,14 @@ export function useForm<T>(initialValues: T , schema: any = object({})) {
             const valueChanged: Record<string, string> = {
               [target.name]: target.value,
             };
-            valueRef.current = target.value
-            setValue((values: any) => ({ ...values, ...valueChanged }));
-            if (schema) {
-                try {
-                    schema.parse(target.value);
-                    setError(''); // Réinitialise le message d'erreur si la validation réussit
-                  } catch (error) {
-                    if (error instanceof z.ZodError) {
-                        setError(error.errors[0].message);
-                    }
-                  }
+            if (Array.isArray(value)) {
+                setValue((value: any) => {
+                    const nouveauTableau = [...value];
+                    nouveauTableau[indexes] = {...nouveauTableau[indexes], ...valueChanged}
+                    return nouveauTableau;
+                });
+            } else {
+                setValue((values: any) => ({ ...values, ...valueChanged }));
             }
     };
 
@@ -65,20 +62,7 @@ export function useForm<T>(initialValues: T , schema: any = object({})) {
         setValue({...value, ...valueChanged});
     }
 
-
-    function cleanTable(tableau: string[]) {
-        // 1. Filtrer les valeurs vides
-        const valeursNonVides = tableau.filter(valeur => valeur !== "");
-      
-        // 2. Supprimer les doublons en utilisant un Set
-        const valeursUniques = [...new Set(valeursNonVides)];
-      
-        return valeursUniques;
-      }
-        
     return {
-        tabRef,
-        valueRef,
         handleClick,
         handleEmail,
         value,
@@ -86,7 +70,6 @@ export function useForm<T>(initialValues: T , schema: any = object({})) {
         setError,
         emails,
         handleChange,
-        setValue,
-        cleanTable
+        setValue
     }
 }

@@ -1,5 +1,5 @@
 "use client"
-import { useContext, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
 import React from "react"
 import { Plus, SquareCheck, MessageSquareText, Calendar } from 'lucide-react';
 import { projectRow } from "@/constants/task";
@@ -13,23 +13,31 @@ import { Status } from "@/components/global/state";
 import { Priority } from "@/components/global/priority";
 import { ProjectType, Tasks } from "@/types/global";
 
-function List ({index}:{index: number}) {
-    let defaultValue = {[index] : ''}
-    const {handleChange, value, valueRef} = useForm(defaultValue)
-    let {setFormProject}= useContext(connectContext)
+function List ({
+    index,
+    value,
+    setValue,
+    handler
+}:{
+    index: number
+    value: ProjectType
+    setValue: Dispatch<SetStateAction<ProjectType>>
+    handler: (e: React.FormEvent) => void
+}) {
     return (
         <div className="flex items-center text-btnColor">
             <SquareCheck size={24}/>
             <input 
                 onChange={(e) => {
-                    handleChange(e);
-                    let objectifValue = {[`${index}`]: valueRef.current};
-                    setFormProject((formProject: ProjectType) => {
+                    const target = e.target as HTMLInputElement;
+                    let objectifValue = {[`${index}`]: target.value};
+                    setValue((formProject: ProjectType) => {
                         const nouveauTableau = {...formProject};
                         nouveauTableau['objectifs'] = {...nouveauTableau['objectifs'], ...objectifValue};
                         return nouveauTableau;
                     })
                 }}
+                value={undefined}
                 type="text" 
                 name={`${index}`}
                 className="popupinput text-base bg-inherit text-gray-300" 
@@ -47,9 +55,8 @@ export default function NewProject () {
     //useRef
     let numberRef = useRef<number>(1)
     //useContext
-    const {setGroupFormTask, groupFormTask, setDateValue, setAction, formProject, setFormProject, groups, indexes}= useContext(connectContext)
+    const {setDateValue, setAction, formProject, setFormProject, groups, indexes}= useContext(connectContext)
     const {setDispatch, state} = useContext(popupContext)
-    //useEffect
     //useEffect
     useEffect(() => {
         tasks.setValue((value: Tasks[]) => {
@@ -57,10 +64,9 @@ export default function NewProject () {
             newTab[indexes] = {...newTab[indexes], ...groups};
             return newTab
         })
-        console.log(tasks.value)
     }, [groups])
     //hook
-    const defaultValue = {
+    const defaultValue = [{
         name: '',
         assign: {},
         priority: 'Empty',
@@ -69,7 +75,7 @@ export default function NewProject () {
         deadline: new Date(),
         start_time: '00:00AM',
         end_time: '00:00AM',
-    }
+    }]
     const projectDefaultValue = {
         name: '',
         objectifs: {'0': ''},
@@ -79,8 +85,11 @@ export default function NewProject () {
         image: '',
         description: ''
     }
-    const tasks = useForm<Tasks[]>([defaultValue])
-    const project = useForm<ProjectType>(projectDefaultValue)
+    const tasks = useForm(defaultValue)
+    const project = useForm(projectDefaultValue)
+
+    useEffect(() => {console.log(tasks.value)}, [tasks.value])
+    useEffect(() => {console.log(project.value)}, [project.value])
     //Dom
     return (
         <div className="w-[calc(100%-200px)] bg-secondary min-h-screen pb-12">
@@ -115,11 +124,7 @@ export default function NewProject () {
                 value={project.value.name}
                 className="popupinput text-3xl bg-inherit text-gray-300 mt-12 ml-12" 
                 placeholder='Give a name to your project'
-                onChange={(e) => {
-                    project.handleChange(e)
-                    let newValue = {name: project.valueRef.current}
-                    setFormProject({...formProject, ...newValue})
-                }}
+                onChange={(e) => project.handleChange(e)}
             />
             <div className="ml-14 pr-12 mt-8 cursor-pointer" onClick={() => {setShowDescriptio(true)}}>
                 <div className="flex items-center space-x-2 text-holder p-1 duration-300 hover:bg-primary hover:text-gray-300">
@@ -132,8 +137,6 @@ export default function NewProject () {
                 value={project.value.description}
                 onChange={(e) => {
                     project.handleChange(e)
-                    let newValue = {description: project.valueRef.current}
-                    setFormProject({...formProject, ...newValue})
                 }}
                 className="w-full bg-primary text-sidebarText border-b scrollbar-hide border-sidebarText outline-none p-3 text-sm max-lg:mb-5"
                 ></textarea>}
@@ -180,7 +183,7 @@ export default function NewProject () {
                 <div>
                     <div className="ml-24 mt-4">
                         {Array.from({ length: number }).map((_,index) => (
-                            <List key={index} index={index} />
+                            <List key={index} index={index} value={project.value} setValue={project.setValue} handler={project.handleChange}  />
                         ))}
                     </div>
                 </div>
@@ -200,7 +203,7 @@ export default function NewProject () {
                         </tr>
                     </thead>
                     <tbody>
-                        {groupFormTask.map((item, index) => (
+                        {tasks.value.map((item: Tasks , index: number) => (
                             <ProjectTable 
                             key={index} 
                             index={index} 
@@ -211,13 +214,18 @@ export default function NewProject () {
                             deadline={format(item.deadline, 'dd/MM/yyy')}
                             start_time={item.start_time}
                             end_time={item.end_time}
+                            handler={tasks.handleChange}
+                            setEmails={tasks.setValue}
+                            value={tasks.value}
+                            error={tasks.error}
+                            handlerEmail={tasks.handleEmail}
                             />
                         ))}
                     </tbody>
                 </table>
             </div>
             <div className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 flex pl-2 py-1 gap-2" onClick={() => {
-                setGroupFormTask([...groupFormTask, {
+                tasks.setValue([...tasks.value, {
                     name: '',
                     project: 'Empty',
                     assign: [''],

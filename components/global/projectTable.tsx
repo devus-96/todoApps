@@ -1,7 +1,7 @@
 "use client"
 
 import { connectContext } from "@/hooks/useConnect"
-import { useContext, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
 import { EmailList } from "./emailList"
 import { popupContext } from "@/hooks/usePopup"
 import { useForm } from "@/hooks/useForm"
@@ -19,7 +19,12 @@ interface ProjectProps {
     setPosition: React.Dispatch<React.SetStateAction<{
         x: number;
         top: number;
-    }>>
+    }>>,
+    error: string,
+    handler: (e: React.FormEvent) => void,
+    handlerEmail: (e: React.KeyboardEvent) => void,
+    setEmails: Dispatch<SetStateAction<Tasks[]>>,
+    value: Tasks[]
 }
 
 export const ProjectTable:React.FC<ProjectProps> = ({
@@ -30,17 +35,21 @@ export const ProjectTable:React.FC<ProjectProps> = ({
     deadline,
     start_time,
     end_time,
-    setPosition
+    setPosition,
+    error,
+    handler,
+    handlerEmail,
+    setEmails,
+    value
 }) => {
     //useState
     let [numberEmail, setNumberEmail] = useState(1)
     //useRef
     let numberEmailRef = useRef<number>(1)
     //useContext
-    const {setDateValue, setIndexes,setAction, setGroupFormTask, setTypeTime, groups} = useContext(connectContext)
+    const {setDateValue, setIndexes,setAction, setTypeTime} = useContext(connectContext)
     const {setDispatch} = useContext(popupContext)
     //hook
-    const {handleChange, value, valueRef} = useForm({name: ''})
     const positonState = usePosition()
     const priorityPosition = usePosition()
     //useEffect
@@ -52,9 +61,9 @@ export const ProjectTable:React.FC<ProjectProps> = ({
     }, [priorityPosition.position])
     
     function handleKeyUp (occurence: number, value: string, index: number) {
-        console.log(occurence)
         let objectifValue = {[`${occurence- 1}`]: value};
-        setGroupFormTask((prevElements: Tasks[]) => {
+        setEmails((prevElements: Tasks[]) => {
+            console.log(prevElements)
             const nouveauTableau = [...prevElements];
             nouveauTableau[index].assign = {...nouveauTableau[index].assign, ...objectifValue};
             return nouveauTableau;
@@ -66,17 +75,9 @@ export const ProjectTable:React.FC<ProjectProps> = ({
         <tr>
             <td className="border-l border-r border-t border-primary">
                 <textarea
-                 onChange={(e) => {
-                    handleChange(e)
-                    setGroupFormTask((prevElements: Tasks[]) => {
-                        // Créer une copie du tableau pour éviter de modifier l'état directement
-                        const nouveauTableau = [...prevElements];
-                        // Modifier la valeur de x du premier élément
-                        nouveauTableau[index].name = valueRef.current;
-                        return nouveauTableau;
-                    });
-                 }}
-                 value={value.name}
+                 onChange={(e) => handler(e)}
+                 onClick={() => setIndexes(index)}
+                 value={value[index].name}
                  name='name'
                  placeholder="Write task's name"
                  className="px-4 py-2 w-full outline-none resize-none scrollbar-hide bg-secondary placeholder:text-holder" 
@@ -85,7 +86,18 @@ export const ProjectTable:React.FC<ProjectProps> = ({
             <td className="border-l border-r border-t border-primary">
                 <div className="full py-1 px-1">
                 {Array.from({ length: numberEmail }).map((_, i) => (
-                    <EmailList key={i} index={index} handle={handleKeyUp} numberEmailRef={numberEmailRef} setNumberEmail={setNumberEmail} />
+                    <EmailList 
+                    key={i} 
+                    error={error} 
+                    handlerEmail={handlerEmail}  
+                    handleChange={handler} 
+                    value={value[index].assign} 
+                    index={index} 
+                    handle={handleKeyUp} 
+                    numberEmailRef={numberEmailRef} 
+                    setNumberEmail={setNumberEmail} 
+                    setEmails={setEmails}
+                    />
                 ))}
                 </div>
             </td>
@@ -110,7 +122,7 @@ export const ProjectTable:React.FC<ProjectProps> = ({
             <td className="border-l border-r border-t border-primary ">
                 <div className="w-full px-4 py-[4px] text-start text-sidebarText cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
                 setDispatch({calendar: true})
-                setDateValue('startdate')
+                setDateValue('start_date')
                 setIndexes(index)
                 setAction('project')
                 }}>
