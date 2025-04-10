@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
 import React from "react"
 import { Plus, SquareCheck, MessageSquareText, Calendar } from 'lucide-react';
-import { projectRow } from "@/constants/task";
+import { tasksRow } from "@/constants/task";
 import { ProjectTable } from "@/components/global/projectTable";
 import { useForm } from "@/hooks/useForm";
 import { connectContext, projectDefaultValue } from "@/hooks/useConnect";
@@ -193,7 +193,7 @@ export default function NewProject () {
                 <table className="border-primary text-sidebarText w-full overflow-y-visible text-start">
                     <thead>
                         <tr>
-                            {projectRow.map((item, index) => (
+                            {tasksRow.map((item, index) => (
                             <td key={index} className="border-l border-r border-b border-primary pl-4">
                                 <div className="flex items-center gap-2 text-sm">
                                     <item.icon size={16} className="block"/><p>{item.name}</p>

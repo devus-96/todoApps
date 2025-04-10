@@ -1,5 +1,6 @@
 "use client"
 
+import { connectContext } from "@/hooks/useConnect"
 import { popupContext } from "@/hooks/usePopup"
 import { usePosition } from "@/hooks/usePosition"
 import { Tasks } from "@/types/global"
@@ -10,9 +11,11 @@ import { useContext, useEffect, useState } from "react"
 
 export const CardTasks = ({
     item,
+    occ,
     setPosition
 }:{
     item: Tasks, 
+    occ: number,
     setPosition: React.Dispatch<React.SetStateAction<{
         x: number;
         top: number;
@@ -20,13 +23,22 @@ export const CardTasks = ({
 }) => {
     const [more, setMore] = useState(false)
     //hooks
+    const positonState = usePosition()
+    const priorityPosition = usePosition()
     const actionPosition = usePosition()
     //useContext
     const {setDispatch} = useContext(popupContext)
+    const {setIndexes}= useContext(connectContext)
     //useEFfect
     useEffect(() => {
         setPosition(actionPosition.position)
     }, [actionPosition.position])
+    useEffect(() => {
+        setPosition(positonState.position)
+    }, [positonState.position])
+    useEffect(() => {
+        setPosition(priorityPosition.position)
+    }, [priorityPosition.position])
     return (
         <div className="w-full flex flex-col bg-primary rounded text-sidebarText my-1">
             <div className="flex flex-col w-full p-4 bg-gray-800">
@@ -44,16 +56,34 @@ export const CardTasks = ({
                 <p className="text-xs text-ellipsis text-gray-500">{item.description}</p>
             </div>
             }
-            
-            <div onClick={(e) => {
-            }} className={clsx("w-fit flex-center px-4 text-sm my-2 text-gray-800 rounded-full", {
-                "bg-[#a1a1aa]" : item.priority.toLowerCase() === 'low',
-                "bg-[#a78bfa]" : item.priority.toLowerCase() === 'medium',
-                "bg-[#f87171]" : item.priority.toLowerCase() === 'high',
-            })}>
-                <p>{item.priority}</p>
+            <div className="flex items-center space-x-2">
+                <div onClick={(e) => {
+                    setDispatch({states: false})
+                    setDispatch({priority: true})
+                    setIndexes(occ)
+                    priorityPosition.handlerBoundingClientRight(e, 250)
+                }} className={clsx("w-fit flex-center px-4 text-sm my-2 text-gray-800 rounded-full", {
+                    "bg-[#a1a1aa]" : item.priority.toLowerCase() === 'low',
+                    "bg-[#a78bfa]" : item.priority.toLowerCase() === 'medium',
+                    "bg-[#f87171]" : item.priority.toLowerCase() === 'high',
+                })}>
+                    <p>{item.priority}</p>
+                </div>
+                <div onClick={(e) => {
+                    priorityPosition.handlerBoundingClientRight(e, 250)
+                    setDispatch({states: true})
+                    setDispatch({priority: false})
+                    setIndexes(occ)
+                }} className={clsx("flex-center px-2 text-sm text-gray-800 rounded-full", {
+                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'cancel',
+                    "bg-[#34d399]" : item.state.toLowerCase() === 'done',
+                    "bg-[#fbbf24]" : item.state.toLowerCase() === 'in progress',
+                    "bg-[#60a5fa]" : item.state.toLowerCase() === 'plan'
+                })}>
+                    <p>{item.state}</p>
+                </div>
             </div>
-            <div >
+            <div>
                 <div className="flex items-center text-xs"><p>{format(item.deadline, 'dd/MM/yyy')}</p>-<p>{format(item.deadline, 'dd/MM/yyy')}</p></div>
             </div>
             {item.start_time &&

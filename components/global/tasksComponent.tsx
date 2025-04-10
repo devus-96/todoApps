@@ -1,5 +1,5 @@
 "use client"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { Menu } from "./Menu"
 import { IoMdClose } from "react-icons/io"
 import clsx from "clsx"
@@ -22,7 +22,7 @@ export const TaskTableComponent = ({
 }:{
         item: Tasks, 
         occ: number,
-        value: any,
+        value: Tasks[],
         handler: (e: React.FormEvent) => void,
         setPosition: React.Dispatch<React.SetStateAction<{
             x: number;
@@ -31,9 +31,10 @@ export const TaskTableComponent = ({
         setProjects: React.Dispatch<React.SetStateAction<Tasks[]>>
     }) => {
     //useRef
-    const [updateName, setUpdateName] = useState(false)
+    const indentique = useRef(false)
     //useState
     const [index, setIndex] = useState(0)
+    const [updateName, setUpdateName] = useState(false)
     //hooks
     const positonState = usePosition()
     const priorityPosition = usePosition()
@@ -44,8 +45,8 @@ export const TaskTableComponent = ({
     const {setIndexes, setDateValue}= useContext(connectContext)
     //useEffect
     useEffect(() => {
-            setPosition(positonState.position)
-        }, [positonState.position])
+        setPosition(positonState.position)
+    }, [positonState.position])
     useEffect(() => {
         setPosition(priorityPosition.position)
     }, [priorityPosition.position])
@@ -72,7 +73,7 @@ export const TaskTableComponent = ({
                             <p onClick={() => {
                             setUpdateName(true)
                             setIndex(occ)
-                            }} className="ml-4">{item.name}</p>
+                            }} className="ml-4 text-sm">{item.name}</p>
                         </div>
                     </div>
                     {(updateName && index === occ) &&
@@ -107,14 +108,14 @@ export const TaskTableComponent = ({
             </td>
             <td className="border-l border-r border-t border-primary py-2">
                 <div>
-                {Object.entries(item.assign).map((value, i) => {
+                {Object.entries(item.assign).map((menber, i) => {
                     return (
                         <div key={i}>
                             <div className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p>{value[1]}</p>
+                                <p>{menber[1]}</p>
                                 <IoMdClose onClick={() => {
                                     setIndex(occ)
-                                    delete value[index].assign[value[0]]
+                                    delete value[index].assign[menber[0]]
                                 }} size={12} className="cursor-pointer"/>
                             </div>
                         </div>
@@ -129,19 +130,20 @@ export const TaskTableComponent = ({
                             className="px-4 bg-secondary text-sidebarText w-full rounded-full outline-none placeholder:text-gray-500 text-sm" 
                             placeholder="Enter Email Adress" 
                             onChange={(e) => {
+                                emails.setError('')
                                 setIndex(occ)
                                 emails.handleChange(e)
                             }}
                             onKeyUp={(e) => {
-                                /*if (e.key === 'Enter') {
+                                if (e.key === 'Enter') {
                                     if (!emails.error) {
-                                        for (const [_, value] of Object.entries(projects[index].assign)) {
-                                            if (value === emails.valueRef.current) {
+                                       for (const [_, email] of Object.entries(value[index].assign)) {
+                                            if (email === emails.value.email) {
                                                 indentique.current = true
                                             }
                                         }
-                                        const numbElement = Object.keys(projects[index].assign).length 
-                                        let objectifValue = {[`${numbElement + 1}`]: emails.valueRef.current}
+                                        const numbElement = Object.keys(value[index].assign).length 
+                                        let objectifValue = {[`${numbElement + 1}`]: emails.value.email}
                                         if (!indentique.current) {
                                             setProjects((prevElements: Tasks[]) => {
                                                 const nouveauTableau = [...prevElements];
@@ -154,10 +156,10 @@ export const TaskTableComponent = ({
                                             emails.setValue({email: ''})
                                         }
                                     }
-                                }*/
+                                }
                             }}
                         />
-                    {emails.error !== undefined && <p className="text-center text-xs text-red-400">{emails.error}</p>}
+                    {emails.error !== '' && <p className="text-center text-xs text-red-400">{emails.error}</p>}
                     </div>
                 </div>
             </td>
@@ -190,7 +192,7 @@ export const TaskTableComponent = ({
                     <p>{item.priority}</p>
                 </div>
             </td>
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
                 <div onClick={(e) => {
                     setDateValue('start_date')
                     setIndexes(occ)
@@ -199,7 +201,7 @@ export const TaskTableComponent = ({
                     <p>{format(item.start_date, 'dd/MM/yyy')}</p>
                 </div>
             </td>
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
                 <div onClick={(e) => {
                     setDispatch({calendar: true})
                     setDateValue('deadline')
@@ -208,12 +210,12 @@ export const TaskTableComponent = ({
                     <p>{format(item.deadline, 'dd/MM/yyy')}</p>
                 </div>
             </td>
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
                 <div onClick={(e) => {setDispatch({clock: true})}}>
                     <p>{item.start_time}</p>
                 </div>
             </td>
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
                 <div onClick={(e) => {setDispatch({clock: true})}}>
                     <p>{item.end_time}</p>
                 </div>

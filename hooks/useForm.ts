@@ -51,6 +51,16 @@ export function useForm(initialValues: any , schema: any = object({})) {
                 });
             } else {
                 setValue((values: any) => ({ ...values, ...valueChanged }));
+                if (schema) {
+                    try {
+                        schema.parse(target.value);
+                        setError(''); // Réinitialise le message d'erreur si la validation réussit
+                      } catch (error) {
+                        if (error instanceof z.ZodError) {
+                            setError(error.errors[0].message);
+                        }
+                      }
+                }
             }
     };
 

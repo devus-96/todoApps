@@ -7,7 +7,7 @@ import { SortTask } from "@/components/global/sortTasks"
 import { Status } from "@/components/global/state"
 import { TaskTableComponent } from "@/components/global/tasksComponent"
 import { Select } from "@/components/ui/select"
-import { project, projectRow, states } from "@/constants/task"
+import { project, states, tasksRow } from "@/constants/task"
 import { connectContext } from "@/hooks/useConnect"
 import { useForm } from "@/hooks/useForm"
 import { popupContext } from "@/hooks/usePopup"
@@ -212,7 +212,7 @@ const TaskPage = () => {
             <table className="border-primary text-sidebarText w-full overflow-y-visible text-start">
                     <thead>
                         <tr>
-                        {projectRow.map((item, index) => (
+                        {tasksRow.map((item, index) => (
                                 <td key={index} className="border-l border-r border-b border-primary pl-4">
                                     <div className="flex items-center gap-2 text-sm">
                                         <item.icon size={16} className="block"/><p>{item.name}</p>
@@ -256,12 +256,12 @@ const TaskPage = () => {
                         return (
                             <div key={index}>
                                 {item.state === state &&
-                                    <CardTasks item={item} setPosition={setPosition} />
+                                    <CardTasks occ={index} item={item} setPosition={setPosition} />
                                 }
                             </div>
                         )
                     })}
-                    {(!tabStates.current.includes(state) && !tasks.value.includes(state)) &&
+                    {!tabStates.current.includes(state) &&
                         <div className="w-full">
                             <p>No task here !!!</p>
                         </div>

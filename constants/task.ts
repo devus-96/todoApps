@@ -1,4 +1,4 @@
-import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff } from "lucide-react";
+import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff, Target } from "lucide-react";
 
 export const weeks = [
     "sunday",
@@ -133,6 +133,12 @@ export const project = [
       }
   ]
 
+const projects = [
+  {
+    
+  }
+]
+
 
 export const statusState = [
     {name: 'Cancel', color: '#a1a1aa'},
@@ -171,7 +177,7 @@ export const emails = [
         'custom' 
     ]
   
-export const projectRow = [
+export const tasksRow = [
   {
       name: 'Name',
       icon: CheckCheck
@@ -204,4 +210,23 @@ export const projectRow = [
     name: 'end time',
     icon: AlarmClockOff
 },
+]
+
+export const projectsRow = [
+  {
+    name: 'Name',
+    icon: Target
+  },
+  {
+    name: 'start date',
+    icon: CalendarX
+  },
+  {
+    name: 'priority',
+    icon: Flag
+  },
+  {
+    name: 'deadline',
+    icon: CalendarClock
+  },
 ]
