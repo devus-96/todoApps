@@ -1,4 +1,4 @@
-import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff } from "lucide-react";
+import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff, Target } from "lucide-react";
 
 export const weeks = [
     "sunday",
@@ -41,12 +41,10 @@ export const priority = [
     'medim'
 ]
 export const states = [
-    'Cancel',
-    'Completed',
+    "Plan",
     'In Progress',
     'Done',
-    "Plan",
-    "Propose"
+    'Cancel',
 ]
 
 export const project = [
@@ -60,8 +58,8 @@ export const project = [
       },
       "priority": "High",
       "state": "In Progress",
-      "start_date": "20/11/2022",
-      "deadline": "07/01/2023",
+      "start_date": new Date(),
+      "deadline": new Date(),
       "start_time": "",
       "end_time": ""
     },
@@ -73,12 +71,73 @@ export const project = [
         },
         "priority": "Low",
         "state": "Plan",
-        "start_date": "20/11/2022",
-        "deadline": "20/11/2022",
+        "start_date": new Date(),
+        "deadline": new Date(),
         "start_time": "01:00PM",
-        "end_time": "06:00PM"
+        "end_time": "06:00PM",
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '1',
+        "name": "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
+        "assign": {
+          "0": "marcdeus@gmail.com",
+          "1": "marcdeus@gmail.com",
+          "2": "marcdeus@gmail.com",
+          "3": "marcdeus@gmail.com"
+        },
+        "priority": "High",
+        "state": "Plan",
+        "start_date": new Date(),
+        "deadline": new Date(),
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '1',
+        "name": "Lorem, ipsum dolor",
+        "assign": {
+          "0": "jessicaYik@gmail.com",
+          "1": "marcdeus@gmail.com",
+          "2": "danielsKalvin@gmail.com",
+          "3": "samiraMarchal@gmail.com"
+        },
+        "priority": "Medium",
+        "state": "Done",
+        "start_date": new Date(),
+        "deadline": new Date(),
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '1',
+        "name": "Lorem, ipsum",
+        "assign": {
+          "0": "jessicaYik@gmail.com"
+        },
+        "priority": "Low",
+        "state": "Done",
+        "start_date": new Date(),
+        "deadline": new Date(),
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '1',
+        "name": "sit amet consectetur adipisicing elit",
+        "assign": {
+          "0": "samiraMarchal@gmail.com"
+        },
+        "priority": "High",
+        "state": "Cancel",
+        "start_date": new Date(),
+        "deadline": new Date(),
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
       }
   ]
+
+const projects = [
+  {
+    
+  }
+]
 
 
 export const statusState = [
@@ -118,7 +177,7 @@ export const emails = [
         'custom' 
     ]
   
-export const projectRow = [
+export const tasksRow = [
   {
       name: 'Name',
       icon: CheckCheck
@@ -151,4 +210,23 @@ export const projectRow = [
     name: 'end time',
     icon: AlarmClockOff
 },
+]
+
+export const projectsRow = [
+  {
+    name: 'Name',
+    icon: Target
+  },
+  {
+    name: 'start date',
+    icon: CalendarX
+  },
+  {
+    name: 'priority',
+    icon: Flag
+  },
+  {
+    name: 'deadline',
+    icon: CalendarClock
+  },
 ]

@@ -9,6 +9,7 @@ start_date: Date | any;
 deadline: Date | any; 
 start_time?: string; 
 end_time?: string; 
+description?: string;
 }
 
 export type ProjectType = {

@@ -46,31 +46,31 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                 'group' : item.name === 'Tasks' || item.name === 'Menbers' || item.name === 'Projects' || item.name === 'Meetings'
             })}>
                 <div className="flex items-center space-x-4 h-full  pl-4" style={{
-                    paddingLeft: item.name !== 'Projects' ? 16 + 'px' : "0"
+                    paddingLeft: item.name !== 'Tasks' ? 16 + 'px' : "0"
                 }}>
-                    {item.name !== 'Projects' ? <item.icons size={16} /> :
+                    {item.name !== 'Tasks' ? <item.icons size={16} /> :
                         <>
-                            {projectIcon ?
-                                    <div
-                                    className="flex-center h-full px-4"
-                                    ><item.icons size={16} /></div>: 
-                                    <div className="flex-center h-full duration-150 cursor-pointer hover:bg-gray-800 hover:text-sidebarText">
-                                        {active ? 
-                                        <div onClick={(e) => {
-                                            e.stopPropagation();
-                                            setActive(false)
-                                        }} className="w-full h-full flex-center px-4">
-                                            <FaChevronDown size={12} title={`${item.name}`}/>
-                                        </div>
-                                         : 
-                                         <div onClick={(e) => {
-                                            e.stopPropagation();
-                                            setActive(true)
-                                        }} className="w-full h-full flex-center px-4 ">
-                                           <FaChevronRight size={12} title={`${item.name}`}/>
-                                        </div>}
-                                    </div>
-                            }
+                        {projectIcon ?
+                        <div
+                        className="flex-center h-full px-4"
+                        ><item.icons size={16} /></div>: 
+                        <div className="flex-center h-full duration-150 cursor-pointer hover:bg-gray-800 hover:text-sidebarText">
+                            {active ? 
+                            <div onClick={(e) => {
+                                e.stopPropagation();
+                                setActive(false)
+                            }} className="w-full h-full flex-center px-4">
+                                <FaChevronDown size={12} title={`${item.name}`}/>
+                            </div>
+                                : 
+                                <div onClick={(e) => {
+                                e.stopPropagation();
+                                setActive(true)
+                            }} className="w-full h-full flex-center px-4 ">
+                                <FaChevronRight size={12} title={`${item.name}`}/>
+                            </div>}
+                        </div>
+                        }
                         </>
                     }
                     <p className="text-sm flex-1">{item.name}</p>
@@ -92,7 +92,7 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                 </div>
             </div>
             </div>
-            {item.name === 'Projects' &&
+            {item.name === 'Tasks' &&
                 <div className={clsx('', {
                         "hidden": !active
                     })}>

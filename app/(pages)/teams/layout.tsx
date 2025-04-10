@@ -1,5 +1,6 @@
 import SidebarProject from "@/components/global/sidebarProject";
 import SideBar from "@/components/teams/sidebar";
+import Routine from "@/components/ui/routine";
 import React from "react";
 
 export default function RootLayout({

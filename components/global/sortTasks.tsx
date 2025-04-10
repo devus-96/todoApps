@@ -3,19 +3,10 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { emails, priority, states } from "@/constants/task";
 
-const taskOptions = [
-    'Menbers',
-    'States',
-    'Priority',
-    'Daily tasks',
-    'weeklyTasks',
-    'Monthly tasks'
-]
-
 export type sortListProps = {
-    menbers: string,
+    assign: string,
     priority: string,
-    states: string
+    state: string
 }
 
 const OptionsComponent = (
@@ -83,13 +74,13 @@ const OptionsComponent = (
                             {table.map((item, index) => (
                                 <div onClick={() => {
                                     if (child === 'Menbers') {
-                                        const newValue = {menbers: item}
+                                        const newValue = {assign: item}
                                         setSortList({...sortList, ...newValue})
                                     } else if (child === 'Priority') {
                                         const newValue = {priority: item}
                                         setSortList({...sortList, ...newValue})
                                     } else if (child === 'States') {
-                                        const newValue = {states: item}
+                                        const newValue = {state: item}
                                         setSortList({...sortList, ...newValue})
                                     }
                                     setChild('')
@@ -106,10 +97,14 @@ const OptionsComponent = (
 
 export const SortTask = ({
     setSortList,
-    sortList
+    sortList,
+    taskOptions,
+    type
 }: {
     setSortList: Dispatch<SetStateAction<sortListProps>>,
     sortList: sortListProps
+    taskOptions: any[]
+    type: string
 }) => {
     const [child, setChild] = useState('')
     return (
@@ -122,18 +117,34 @@ export const SortTask = ({
             <div onMouseOver={(e) => {
                 const target = e.target as HTMLParagraphElement
                 setChild(target.innerText)
+            }} style={{
+                height: type === 'sort' ? 250 + 'px' : 150 + 'px'
             }} className="w-[244px] h-[250px] text-sidebarText bg-secondary border border-borderCard rounded">
                 <div className="my-4 ml-4">
                     <p>option</p>
                 </div>
                 <div className="space-y-2">
-                    {taskOptions.map((item, index) => (
-                        <div key={index} className="w-full px-4">
-                            <div className="w-full rounded p-1 text-sidebarText hover:bg-primary cursor-pointer text-xs">
-                                <p>{item}</p>
-                            </div>
+                    {type === 'sort' ? 
+                        <>
+                            {taskOptions.map((item, index) => (
+                                <div key={index} className="w-full px-4">
+                                    <div className="w-full rounded p-1 text-sidebarText hover:bg-primary cursor-pointer text-xs">
+                                        <p>{item}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </> :
+                        <div>
+                            {taskOptions.map((item, index) => (
+                                <div key={index} className="w-full px-4">
+                                    <div className="w-full flex items-center space-x-2 rounded p-1 text-sidebarText hover:bg-primary cursor-pointer text-xs">
+                                        <item.icon size={16} />
+                                        <p>{item.name}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    }
                 </div>
             </div>
         </div>

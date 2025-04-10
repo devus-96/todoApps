@@ -15,7 +15,7 @@ const priorityState = [
 export const Priority = () => {
     //useContext
     const {state, setDispatch} = useContext(popupContext)
-    const {indexes, setGroupFormTask, setGroups} = useContext(connectContext)
+    const {setGroups} = useContext(connectContext)
     //DOM
     return (
         <Menu active={state.priority} dispatch='priority'>
@@ -25,13 +25,6 @@ export const Priority = () => {
                     {priorityState.map((item, index) => (
                         <div key={index} onClick={() => {
                             setGroups({priority: item.name})
-                            setGroupFormTask((prevElements: Tasks[]) => {
-                                // Créer une copie du tableau pour éviter de modifier l'état directement
-                                const nouveauTableau = [...prevElements];
-                                // Modifier la valeur de x du premier élément
-                                nouveauTableau[indexes].priority = item.name;
-                                return nouveauTableau;
-                            });
                             setDispatch({priority: false})
                         }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer">
                             <div className="px-2 py-1 text-gray-800 rounded-full" style={{

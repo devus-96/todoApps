@@ -23,7 +23,7 @@ export default function Popup({
     const {setDispatch} = useContext(popupContext)
     return (
       <div
-        className={`fixed  z-50 top-0 min-h-screen flex justify-center  items-center right-0 left-0 ${
+        className={`fixed  z-50 top-0 min-h-screen flex justify-center duration-300  items-center right-0 left-0 ${
           modeNight ? "bg-[#50505089]" : "bg-[rgba(0,0,0,0.1)]"
         } transition-all  duration-1000`}
       >

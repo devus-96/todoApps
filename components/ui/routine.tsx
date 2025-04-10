@@ -10,42 +10,22 @@ import { taskContext } from "@/hooks/useTask";
 import { format } from "date-fns";
 import { useForm } from "@/hooks/useForm";
 
-export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateAction<unknown>>}) {
+export default function Routine () {
     const [ select, setSelect ] = useState('day')
     const [monthly, setMonthly] = useState('')
     const [active, setActive] = useState<number[]>([])
     const {state, setDispatch} = useContext(taskContext)
     const [date, setDate] = useState(new Date())
 
-
-    const { 
-            handleOption, 
-            handleChange, 
-            value, 
-            setValue,
-            checked
-            } = useForm(state.deadline, state.date, state.clockStart, state.clockEnd)
-
-    useEffect (() => {
-        const tab = active.map((item) => weeks[item])
-        setValue({
-            ...value, 
-            end: format(date, "ccc dd LLLL yyyy"), 
-            occMonth: monthly,
-            occWeek: tab,
-            each: select
-        })
-    }, [select, active, monthly, date])
-
     return <>
         <PopUpTags state={state.calendar}>
             <Calendar value={date} onChange={setDate}/>
         </PopUpTags>
-        <div className="w-[300px] h-[420px] bg-white px-4 py-4 space-y-4 rounded capitalize flex flex-col font-[family-name:var(--font-jetBrains-mono)]">
+        <div className="w-[300px] h-[420px] fixed top-0 left-[300px] bg-white px-4 py-4 space-y-4 rounded capitalize flex flex-col font-[family-name:var(--font-jetBrains-mono)]">
             <div className="space-y-4">
                 <h1>repeat every</h1>
                 <div className="flex items-center space-x-4">
-                    <input type="number" onChange={handleChange} name="every" className="px-4 py-2.5 bg-gray-200 w-20 rounded cursor-pointer border"/>
+                    <input type="number" name="every" className="px-4 py-2.5 bg-gray-200 w-20 rounded cursor-pointer border"/>
                     <Select 
                         name="day" 
                         handler={setSelect} 
@@ -83,7 +63,7 @@ export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateActio
                 <h1>ends</h1>
                 <div className="space-y-4">
                     <div className="flex items-center space-x-4">
-                        <input type="radio" name="end" onChange={handleOption} checked={checked}/>
+                        <input type="radio" name="end" />
                         <label htmlFor="">Never</label>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -94,15 +74,14 @@ export default function Routine ({setOutput}: {setOutput: Dispatch<SetStateActio
                     </div>
                     <div className="flex items-center space-x-4">
                         <input type="radio" name=""/>
-                        <div className="flex items-center">after <input type="number" onChange={handleChange} name="end" className="px-4 py-1 w-20 bg-gray-200 rounded cursor-pointer border"/> ocurrences</div>
+                        <div className="flex items-center">after <input type="number" name="end" className="px-4 py-1 w-20 bg-gray-200 rounded cursor-pointer border"/> ocurrences</div>
                     </div>
                 </div>
                 
             </div>
             <div className="w-full">
                 <button className=" float-right cursor-pointer text-terciary" onClick={() => {
-                    setOutput(value)
-                    setDispatch({routine: ''})
+
                 }}>done</button>
             </div>
     </div>

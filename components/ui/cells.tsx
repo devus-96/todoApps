@@ -1,18 +1,17 @@
 "use client"
 import React  from "react";
-import { tabTask, task } from "@/types/task";
-import { ProjectType } from "@/types/project";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useContext } from "react";
 import { connectContext } from "@/hooks/useConnect";
 import { popupContext } from "@/hooks/usePopup";
+import { ProjectType, Tasks } from "@/types/global";
 interface Props {
     pastVerify: boolean
     time: number,
     handleClick: (time: number) => void
     isCurrentDate?:boolean
     futureVerify: boolean
-    data?: task
+    data?: Tasks
     project?: ProjectType[]
     currentDate: Date,
     setCurrentDate?: Dispatch<SetStateAction<Date>>
@@ -41,52 +40,18 @@ const Cell:React.FC<Props> =  ({
     )
 }) =>  {
     const {setDispatch} = useContext(popupContext)
-    const {dateValue, setFormTask, formTask} = useContext(connectContext)
-    const {indexes, setGroupFormTask, action, setFormProject, formProject} = useContext(connectContext)
-    function handleAction (action: string) {
-        switch (action) {
-          case "task": 
-              if (dateValue === 'startdate') {
-                let newvalue = {'start_date': currentDate}
-                setFormTask({...formTask, ...newvalue})
-              } else if (dateValue === 'deadline') {
-                let newvalue = {'deadline': currentDate}
-                setFormTask({...formTask, ...newvalue})
-              }
-              setDispatch({calendar: false}) 
-              break;
-          case "project":
-              if (dateValue === 'startdate') {
-                setGroupFormTask((prevElements: tabTask[]) => {
-                  // Créer une copie du tableau pour éviter de modifier l'état directement
-                  const nouveauTableau = [...prevElements];
-                  // Modifier la valeur de x du premier élément
-                  nouveauTableau[indexes].start_date = currentDate;
-                  return nouveauTableau;
-                });
-              } else if (dateValue === 'deadline') {
-                setGroupFormTask((prevElements: tabTask[]) => {
-                  // Créer une copie du tableau pour éviter de modifier l'état directement
-                  const nouveauTableau = [...prevElements];
-                  // Modifier la valeur de x du premier élément
-                  nouveauTableau[indexes].deadline = currentDate;
-                  return nouveauTableau;
-                });
-              }
-              setDispatch({calendar: false}) 
-              break;
-          case "fill project value":
-            if (dateValue === 'startdate') {
-              let newvalue = {'start_date': currentDate}
-              setFormProject({...formProject, ...newvalue})
-            } else if (dateValue === 'deadline') {
-              let newvalue = {'deadline': currentDate}
-              setFormProject({...formProject, ...newvalue})
-            }
-            setDispatch({calendar: false}) 
+    const {dateValue} = useContext(connectContext)
+    const {setGroups} = useContext(connectContext)
+    function handleAction () {
+        switch (dateValue) {
+          case "start_date": 
+            setGroups({start_date: currentDate})
             break;
-        }
+          case "deadline":
+            setGroups({deadline: currentDate})
+            break;
     }
+}
     return (
         <div
         className={className}>
@@ -95,7 +60,8 @@ const Cell:React.FC<Props> =  ({
           onClick={() => {
             if (!pastVerify) {
               handleClick(time)
-              handleAction(action)
+              handleAction()
+              setDispatch({calendar: false})
             } else {
               alert("vous ne pouvez pas programmer un date dans le passe")
             }
