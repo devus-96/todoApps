@@ -1,4 +1,4 @@
-import { MessageCircleDashed, Trash2 } from "lucide-react"
+import { DoorOpen, MessageCircleDashed, Trash2 } from "lucide-react"
 import { GoDuplicate } from "react-icons/go"
 
 export const taskOptions = [
@@ -11,7 +11,8 @@ export const taskOptions = [
 ]
 
 export const taskAction = [
-    {name: 'duplicate', icon: GoDuplicate},
-    {name: 'add comment', icon: MessageCircleDashed},
-    {name: 'delete task', icon: Trash2}
+    {name: 'Duplicate', icon: GoDuplicate},
+    {name: 'Add comment', icon: MessageCircleDashed},
+    {name: 'Open', icon: DoorOpen},
+    {name: 'Delete task', icon: Trash2}
 ]

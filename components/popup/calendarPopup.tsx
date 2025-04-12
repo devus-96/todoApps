@@ -3,7 +3,7 @@
 import { popupContext } from "@/hooks/usePopup"
 import { useContext, useState } from "react"
 import Popup from "./popup"
-import { Calendar } from "../ui/calendar"
+import { Calendar } from "../calendar/calendar"
 
 export const CalendarPopUp = () => {
     const {state} = useContext(popupContext)

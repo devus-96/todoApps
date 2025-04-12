@@ -49,6 +49,8 @@ export default function Popup({
                       break;
                     case 'clock':
                       setDispatch({clock: false})
+                    case 'comment':
+                      setDispatch({comment: false})
                       break;
                   }
                 }}

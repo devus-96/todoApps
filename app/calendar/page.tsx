@@ -1,7 +1,7 @@
 'use client'
 import React from "react"
 import { useContext, useEffect, useState } from "react"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@/components/calendar/calendar"
 import { Header } from "@/components/calendar/header"
 import Week from "@/components/calendar/weeks"
 import Day from "@/components/calendar/day"

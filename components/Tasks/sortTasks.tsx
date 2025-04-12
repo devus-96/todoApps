@@ -1,7 +1,11 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
 import { emails, priority, states } from "@/constants/task";
+import clsx from "clsx";
+import { Tasks } from "@/types/global";
+import { connectContext } from "@/hooks/useConnect";
+import { popupContext } from "@/hooks/usePopup";
 
 export type sortListProps = {
     assign: string,
@@ -99,14 +103,20 @@ export const SortTask = ({
     setSortList,
     sortList,
     taskOptions,
-    type
+    type,
+    value,
+    setValue
 }: {
     setSortList: Dispatch<SetStateAction<sortListProps>>,
     sortList: sortListProps
     taskOptions: any[]
-    type: string
+    type: string,
+    value?: any,
+    setValue? : React.Dispatch<React.SetStateAction<Tasks[]>>
 }) => {
     const [child, setChild] = useState('')
+    const {setFormTask} = useContext(connectContext)
+    const {setDispatch} = useContext(popupContext)
     return (
         <div className="fixed flex items-center">
             <div className="absolute left-[-280px]">
@@ -118,7 +128,7 @@ export const SortTask = ({
                 const target = e.target as HTMLParagraphElement
                 setChild(target.innerText)
             }} style={{
-                height: type === 'sort' ? 250 + 'px' : 150 + 'px'
+                height: type === 'sort' ? 250 + 'px' : 200 + 'px'
             }} className="w-[244px] h-[250px] text-sidebarText bg-secondary border border-borderCard rounded">
                 <div className="my-4 ml-4">
                     <p>option</p>
@@ -137,8 +147,36 @@ export const SortTask = ({
                         <div>
                             {taskOptions.map((item, index) => (
                                 <div key={index} className="w-full px-4">
-                                    <div className="w-full flex items-center space-x-2 rounded p-1 text-sidebarText hover:bg-primary cursor-pointer text-xs">
-                                        <item.icon size={16} />
+                                    <div onClick={() => {
+                                            document.body.style.overflow = 'auto'
+                                            switch (item.name) {
+                                                case 'Duplicate':
+                                                    value && setFormTask(value)
+                                                    setDispatch({task: true})
+                                                    setDispatch({taskAction: false})
+                                                    break;
+                                                case 'Add comment':
+                                                    value && setFormTask(value)
+                                                    setDispatch({comment: true})
+                                                    setDispatch({taskAction: false})
+                                                    break;
+                                                case 'Open':
+                                                    value && setFormTask(value)
+                                                    setDispatch({task: true})
+                                                    setDispatch({taskAction: false})
+                                                    break;
+                                                case 'Delete task':
+                                                    setValue && setValue((prevElements: Tasks[]) => {
+                                                        let newTab = [...prevElements]
+                                                        newTab = newTab.filter((item) => item !== value)
+                                                        return newTab
+                                                    })
+                                                    break;
+                                            }
+                                    }} className={clsx("w-full flex items-center space-x-2 rounded p-1 text-sidebarText hover:bg-primary cursor-pointer text-sm", {
+                                        'hover:text-red-400' : item.name === 'Delete task'
+                                    })}>
+                                        <item.icon size={18} />
                                         <p>{item.name}</p>
                                     </div>
                                 </div>

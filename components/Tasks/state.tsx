@@ -3,8 +3,8 @@
 import { statusState } from "@/constants/task"
 import { connectContext } from "@/hooks/useConnect"
 import { popupContext } from "@/hooks/usePopup"
-import { useContext, useEffect, useRef } from "react"
-import { Menu } from "./Menu"
+import { useContext } from "react"
+import { Menu } from "../global/Menu"
 import { Tasks } from "@/types/global"
 
 export const Status = () => {
@@ -21,8 +21,9 @@ export const Status = () => {
                     <div key={index} onClick={() => {
                         setGroups({state: item.name})
                         setDispatch({states: false})
+                        document.body.style.overflow = 'auto'
                     }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer py-1">
-                        <div className="px-2 text-sm text-gray-800 rounded-full" style={{
+                        <div className="px-4 w-fit text-sm text-gray-800 rounded-full" style={{
                             background: `${item.color}`
                         }}>
                             <p>{item.name}</p>

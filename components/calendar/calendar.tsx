@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { format,set,getYear,getMonth,
 } from "date-fns";
 import Cell from "./cells";
@@ -9,17 +9,18 @@ import clsx from "clsx";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import { Dispatch, SetStateAction } from "react";
-import { task } from "@/types/task"
-import { ProjectType } from "@/types/project";
+import { ProjectType, Tasks } from "@/types/global";
   
   type Props = {
     className?: string
     divClass?: string
     labelClass?: string
     divClassCells?: string
+    btnClass?: string
+    headerClass?: string
     textColor?: string
     cellsClass?: string
-    data?: task
+    data?: Tasks[]
     project?: ProjectType[]
     showHeader?:boolean
     value?: Date;
@@ -30,8 +31,9 @@ import { ProjectType } from "@/types/project";
   export const Calendar: React.FC<Props> = ({ 
     className = 'w-[400px] rounded font-[family-name:var(--font-jetBrains-mono)]',
     divClass = 'grid grid-cols-7 items-center justify-center text-center',
-    labelClass = 'w-full grid grid-cols-7 pb-2 text-whitetext-xs text-center mb-4',
-    textColor = 'text-white text-xs',
+    labelClass = 'w-full grid grid-cols-7 pb-2 text-white text-xs text-center mb-4',
+    btnClass = 'w-8 h-8 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center cursor-pointer',
+    headerClass = 'w-full flex justify-around text-white text-xs items-center py-8',
     cellsClass,
     divClassCells,
     data,
@@ -57,20 +59,20 @@ import { ProjectType } from "@/types/project";
 
     return (
       <div className={className}>
-        <div className={clsx("w-full flex justify-around text-white items-center py-8",{
+        <div className={clsx(headerClass,{
             'hidden': false
         })}>
-          <div onClick={prevMonth} className="w-8 h-8 rounded-full bg-gray-200 text-gray-800 flex items-center justify-center cursor-pointer">
+          <div onClick={prevMonth} className={btnClass}>
             <div><IoIosArrowBack size={16}/></div>
           </div>
-          <div className={textColor}>{format(value, "ccc dd LLLL yyyy")}</div>
-          <div onClick={nextMonth} className="w-8 h-8 rounded-full text-gray-800 bg-gray-200 flex items-center justify-center cursor-pointer">
+          <div>{format(value, "ccc dd LLLL yyyy")}</div>
+          <div onClick={nextMonth} className={btnClass}>
           <div className=""><IoIosArrowForward size={16}/></div>
           </div>  
         </div>
         <div className={labelClass}>
                 {weeksMin.map((day, index) => (
-                    <p key={index} className={textColor}>{day}</p>
+                    <p key={index}>{day}</p>
                 ))}
           </div>
 

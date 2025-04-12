@@ -1,13 +1,12 @@
 "use client"
-import { useContext, useEffect, useRef, useState } from "react"
-import { Menu } from "./Menu"
+import { useContext, useEffect, useState } from "react"
+import { Menu } from "../global/Menu"
 import { IoMdClose } from "react-icons/io"
 import clsx from "clsx"
 import { connectContext } from "@/hooks/useConnect"
 import { usePosition } from "@/hooks/usePosition"
 import { popupContext } from "@/hooks/usePopup"
 import { useForm } from "@/hooks/useForm"
-import { emailSchema } from "@/types/schema"
 import { Tasks } from "@/types/global"
 import { format } from "date-fns"
 import { MoreVertical } from "lucide-react"
@@ -16,22 +15,20 @@ export const TaskTableComponent = ({
     item, 
     occ,
     value,
-    handler,
     setPosition,
-    setProjects
+    setProjects,
+    completion = false,
 }:{
         item: Tasks, 
         occ: number,
         value: Tasks[],
-        handler: (e: React.FormEvent) => void,
         setPosition: React.Dispatch<React.SetStateAction<{
             x: number;
             top: number;
         }>>;
-        setProjects: React.Dispatch<React.SetStateAction<Tasks[]>>
+        setProjects: React.Dispatch<React.SetStateAction<Tasks[]>>,
+        completion?: boolean
     }) => {
-    //useRef
-    const indentique = useRef(false)
     //useState
     const [index, setIndex] = useState(0)
     const [updateName, setUpdateName] = useState(false)
@@ -39,9 +36,9 @@ export const TaskTableComponent = ({
     const positonState = usePosition()
     const priorityPosition = usePosition()
     const actionPosition = usePosition()
+    const menberPosition = usePosition()
     const {setDispatch} = useContext(popupContext)
     const nameTasks = useForm({name: ''})
-    const emails = useForm({email: ''}, emailSchema)
     const {setIndexes, setDateValue}= useContext(connectContext)
     //useEffect
     useEffect(() => {
@@ -53,10 +50,9 @@ export const TaskTableComponent = ({
     useEffect(() => {
         setPosition(actionPosition.position)
     }, [actionPosition.position])
-    //function
-    function handleKeyUp (occurence: number, value: string, index: number) {
-           
-    }
+    useEffect(() => {
+        setPosition(menberPosition.position)
+    }, [menberPosition.position])
     return (
         <>
         <tr key={index} className="py-2">
@@ -65,6 +61,7 @@ export const TaskTableComponent = ({
                     <div className="w-full flex items-center px-4 group">
                         <div className=" text-sidebarText rounded flex-center cursor-pointer">
                             <MoreVertical size={16} onClick={(e) => {
+                                setIndexes(occ)
                                 setDispatch({taskAction: true})
                                 actionPosition.handlerBoundingClientRight(e, 150)
                             }} />
@@ -106,6 +103,7 @@ export const TaskTableComponent = ({
                     }
                 </div>
             </td>
+            {item.assign &&
             <td className="border-l border-r border-t border-primary py-2">
                 <div>
                 {Object.entries(item.assign).map((menber, i) => {
@@ -123,65 +121,50 @@ export const TaskTableComponent = ({
                 })}
                     <div className="full py-1 px-1">
                     <input 
-                            type="email" 
-                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                            name="email" 
-                            value={emails.value.email}
-                            className="px-4 bg-secondary text-sidebarText w-full rounded-full outline-none placeholder:text-gray-500 text-sm" 
+                            type="button" 
+                            className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 flex pl-2 py-1 gap-2 text-xs" 
                             placeholder="Enter Email Adress" 
-                            onChange={(e) => {
-                                emails.setError('')
-                                setIndex(occ)
-                                emails.handleChange(e)
+                            onClick={(e) => {
+                                menberPosition.handlerBoundingClientRight(e, 250)
+                                setDispatch({
+                                    states: false,
+                                    priority: false,
+                                    menberList: true
+                                })
+                                setIndexes(occ)
                             }}
-                            onKeyUp={(e) => {
-                                if (e.key === 'Enter') {
-                                    if (!emails.error) {
-                                       for (const [_, email] of Object.entries(value[index].assign)) {
-                                            if (email === emails.value.email) {
-                                                indentique.current = true
-                                            }
-                                        }
-                                        const numbElement = Object.keys(value[index].assign).length 
-                                        let objectifValue = {[`${numbElement + 1}`]: emails.value.email}
-                                        if (!indentique.current) {
-                                            setProjects((prevElements: Tasks[]) => {
-                                                const nouveauTableau = [...prevElements];
-                                                nouveauTableau[index].assign = {...nouveauTableau[index].assign, ...objectifValue};
-                                                return nouveauTableau;
-                                            })
-                                            emails.setValue({email: ''})
-                                        } else {
-                                            emails.setError('this email is already call')
-                                            emails.setValue({email: ''})
-                                        }
-                                    }
-                                }
-                            }}
+                            value='Add Participants'
                         />
-                    {emails.error !== '' && <p className="text-center text-xs text-red-400">{emails.error}</p>}
                     </div>
                 </div>
             </td>
+            }
             <td className="border-l border-r border-t border-primary cursor-pointer">
                 <div onClick={(e) => {
-                    priorityPosition.handlerBoundingClientRight(e, 250)
-                    setDispatch({states: true})
-                    setDispatch({priority: false})
+                    priorityPosition.handlerBoundingClientRight(e, 280)
+                    setDispatch({
+                        states: true,
+                        priority: false,
+                        menberList: false
+                    })
                     setIndexes(occ)
                 }} className={clsx("flex-center px-2 text-sm text-gray-800 rounded-full", {
-                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'cancel',
+                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'canceled',
                     "bg-[#34d399]" : item.state.toLowerCase() === 'done',
                     "bg-[#fbbf24]" : item.state.toLowerCase() === 'in progress',
-                    "bg-[#60a5fa]" : item.state.toLowerCase() === 'plan'
+                    "bg-[#60a5fa]" : item.state.toLowerCase() === 'planning',
+                    'bg-[#d782ff]' : item.state.toLowerCase() === 'paused'
                 })}>
                     <p>{item.state}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary cursor-pointer">
                 <div onClick={(e) => {
-                    setDispatch({states: false})
-                    setDispatch({priority: true})
+                    setDispatch({
+                        states: false,
+                        priority: true,
+                        menberList: false
+                    })
                     setIndexes(occ)
                     priorityPosition.handlerBoundingClientRight(e, 250)
                 }} className={clsx("flex-center px-2 text-sm text-gray-800 rounded-full", {
@@ -210,16 +193,27 @@ export const TaskTableComponent = ({
                     <p>{format(item.deadline, 'dd/MM/yyy')}</p>
                 </div>
             </td>
+            {item.start_time &&
             <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
                 <div onClick={(e) => {setDispatch({clock: true})}}>
                     <p>{item.start_time}</p>
                 </div>
             </td>
+            }
+            {item.deadline &&
             <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
                 <div onClick={(e) => {setDispatch({clock: true})}}>
                     <p>{item.end_time}</p>
                 </div>
             </td>
+            }
+            {completion &&
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
+                <div onClick={(e) => {setDispatch({clock: true})}}>
+                    <p>{item.end_time}</p>
+                </div>
+            </td>
+            }
         </tr>
         </>
     )

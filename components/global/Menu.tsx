@@ -19,6 +19,7 @@ export const Menu = ({
     const {setDispatch, state} = useContext(popupContext)
     //useEffect
     useEffect (() => {
+            dispatch && active  ?  document.body.style.overflow = 'hidden' : document.body.style.overflow = 'auto'; 
             const handlerClick = (e: MouseEvent) => {
                 const target = e.target as Document
                 if (!menuRef?.current?.contains(target)) {
@@ -27,6 +28,7 @@ export const Menu = ({
                         const newValue = {} as {[key: string]: boolean}
                         newValue[`${dispatch}`] = false
                         setDispatch({...state, ...newValue})
+                        document.body.style.overflow = 'auto'; 
                     }
                 }
               }

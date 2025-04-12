@@ -6,10 +6,10 @@ import { SelectTime } from "./selectTime"
 import clsx from "clsx"
 import { connectContext } from "@/hooks/useConnect";
 import { popupContext } from "@/hooks/usePopup";
-import { tabTask } from "@/types/task";
+import { Tasks } from "@/types/global";
 
 export const Clock = () => {
-     const {typeTime, setFormTask, formTask, action, setGroupFormTask, indexes} = useContext(connectContext)
+     const {typeTime, setGroups} = useContext(connectContext)
      const {setDispatch} = useContext(popupContext)
     //appel useState
     const [time, setTime] = useState<string>("hours")
@@ -17,16 +17,13 @@ export const Clock = () => {
     const [insertMinutes, setInsertMinutes] = useState<string>('00')
     const [moment, setMoment] = useState<string>('AM')
     const [insertionMode, setInsertionMode] = useState(false)
-
     //appel useRefcustom
     const hoursRef = useRef<HTMLInputElement | null>(null)
     const munitesRef = useRef<HTMLInputElement | null>(null)
-
     //constant call
     const hours = ['12', '01', '02', "03","04", "05", "06", "07", "08", "09", "10", "11"]
     const minutes = ['00', '05', '10', "15","20", "25", "30", "35", "40", "45", "50", "55"]
-
-    //useRef call
+    //useEffect call
     useEffect (() => {
         function handleHours (e: Event) {
             const target = e.target as HTMLInputElement
@@ -46,7 +43,18 @@ export const Clock = () => {
               }
         }
     })
-
+    //useEffect
+    function handleAction (value: string) {
+        switch (typeTime) {
+          case "start": 
+            setGroups({start_time: value})
+            break;
+          case "end":
+            setGroups({end_time: value})
+            break;
+        }
+    }
+    //DOm
     return <section className='w-[300px] h-[420px] bg-primary py-8 rounded flex justify-center font-[family-name:var(--font-jetBrains-mono)]'>
             <p className="absolute text-white top-4">select time</p> 
             {time === "hours" || insertionMode ? <SelectTime time={hours} setInsert = {setInsertHours}/> :
@@ -94,31 +102,8 @@ export const Clock = () => {
                     <button  
                         className="text-btnColor"
                         onClick={() => {
-                            switch (action) {
-                                case 'task':
-                                    if (typeTime === 'start') {
-                                        let value = {start_time: `${insertHours}:${insertMinutes} ${moment}`}
-                                        setFormTask({...formTask, ...value})
-                                    } else {
-                                        let value = {end_time: `${insertHours}:${insertMinutes} ${moment}`}
-                                        setFormTask({...formTask, ...value})
-                                    }
-                                case 'project':
-                                    if (typeTime === 'start') {
-                                        setGroupFormTask((prevElements: tabTask[]) => {
-                                            const nouveauTableau = [...prevElements];
-                                            nouveauTableau[indexes].start_time = `${insertHours}:${insertMinutes} ${moment}` ;
-                                            return nouveauTableau;
-                                        })
-                                    } else {
-                                        setGroupFormTask((prevElements: tabTask[]) => {
-                                            const nouveauTableau = [...prevElements];
-                                            nouveauTableau[indexes].end_time = `${insertHours}:${insertMinutes} ${moment}` ;
-                                            return nouveauTableau;
-                                        })
-                                    }
-                            }
-                            
+                            let value = `${insertHours}:${insertMinutes} ${moment}`
+                            handleAction(value)
                             setDispatch({clock: false})
                         }}
                     >ok</button>

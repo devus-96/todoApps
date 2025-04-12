@@ -3,14 +3,14 @@ import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } fro
 import React from "react"
 import { Plus, SquareCheck, MessageSquareText, Calendar } from 'lucide-react';
 import { tasksRow } from "@/constants/task";
-import { ProjectTable } from "@/components/global/projectTable";
+import { ProjectTable } from "@/components/project/projectTable";
 import { useForm } from "@/hooks/useForm";
 import { connectContext, projectDefaultValue } from "@/hooks/useConnect";
 import { format } from "date-fns";
 import { HeaderProject } from "@/components/global/header";
 import { popupContext } from "@/hooks/usePopup";
-import { Status } from "@/components/global/state";
-import { Priority } from "@/components/global/priority";
+import { Status } from "@/components/Tasks/state";
+import { Priority } from "@/components/Tasks/priority";
 import { ProjectType, Tasks } from "@/types/global";
 
 function List ({
@@ -59,11 +59,13 @@ export default function NewProject () {
     const {setDispatch, state} = useContext(popupContext)
     //useEffect
     useEffect(() => {
-        tasks.setValue((value: Tasks[]) => {
-            const newTab = [...value];
-            newTab[indexes] = {...newTab[indexes], ...groups};
-            return newTab
-        })
+        if (indexes) {
+            tasks.setValue((value: Tasks[]) => {
+                const newTab = [...value];
+                newTab[indexes] = {...newTab[indexes], ...groups};
+                return newTab
+            })
+        }
     }, [groups])
     //hook
     const defaultValue = [{

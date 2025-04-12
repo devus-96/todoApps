@@ -8,6 +8,7 @@ import { TaskPopUp } from "@/components/popup/taskPopup";
 import { CalendarPopUp } from "@/components/popup/calendarPopup";
 import ConnectContextProvider from "@/hooks/useConnect";
 import { ClockPopUp } from "@/components/popup/clockPopup";
+import { CommentPopUp } from "@/components/popup/commentPopup";
 
 const jetBrainsMono = localFont({
   src: "./fonts/woff/JetBrainsMono-Regular.woff",
@@ -45,6 +46,7 @@ export default function RootLayout({
       >
         <ConnectContextProvider>
         <PopupContextProvider>
+          <CommentPopUp />
           <TaskPopUp />
           <CalendarPopUp />
           <ClockPopUp />

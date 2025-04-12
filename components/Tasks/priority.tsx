@@ -3,7 +3,7 @@
 import { connectContext } from "@/hooks/useConnect"
 import { popupContext } from "@/hooks/usePopup"
 import { useContext, useEffect, useRef } from "react"
-import { Menu } from "./Menu"
+import { Menu } from "../global/Menu"
 import { Tasks } from "@/types/global"
 
 const priorityState = [
@@ -26,8 +26,9 @@ export const Priority = () => {
                         <div key={index} onClick={() => {
                             setGroups({priority: item.name})
                             setDispatch({priority: false})
+                            document.body.style.overflow = 'auto'
                         }} className="bg-inherit hover:bg-gray-800 px-4 cursor-pointer">
-                            <div className="px-2 py-1 text-gray-800 rounded-full" style={{
+                            <div className="px-4 w-fit text-sm text-gray-800 rounded-full" style={{
                                 background: `${item.color}`
                             }}>
                                 <p>{item.name}</p>

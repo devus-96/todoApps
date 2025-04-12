@@ -1,4 +1,4 @@
-import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff, Target } from "lucide-react";
+import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff, Target, CalendarArrowUp } from "lucide-react";
 
 export const weeks = [
     "sunday",
@@ -41,10 +41,11 @@ export const priority = [
     'medim'
 ]
 export const states = [
-    "Plan",
+    "Planning",
+    "Paused",
     'In Progress',
     'Done',
-    'Cancel',
+    'Canceled',
 ]
 
 export const project = [
@@ -70,7 +71,7 @@ export const project = [
           "0": "marcdeus@gmail.com"
         },
         "priority": "Low",
-        "state": "Plan",
+        "state": "Planning",
         "start_date": new Date(),
         "deadline": new Date(),
         "start_time": "01:00PM",
@@ -87,7 +88,7 @@ export const project = [
           "3": "marcdeus@gmail.com"
         },
         "priority": "High",
-        "state": "Plan",
+        "state": "Planning",
         "start_date": new Date(),
         "deadline": new Date(),
         "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
@@ -126,25 +127,43 @@ export const project = [
           "0": "samiraMarchal@gmail.com"
         },
         "priority": "High",
-        "state": "Cancel",
+        "state": "Canceled",
+        "start_date": new Date(),
+        "deadline": new Date(),
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '1',
+        "name": "sit amet consectetur adipisicing elit",
+        "assign": {
+          "0": "samiraMarchal@gmail.com"
+        },
+        "priority": "High",
+        "state": "Paused",
         "start_date": new Date(),
         "deadline": new Date(),
         "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
       }
   ]
 
-const projects = [
+export const myprojects = [
   {
-    
-  }
+    "id": '0',
+    "name": "symphony social",
+    "priority": "High",
+    "state": "In Progress",
+    "start_date": new Date(),
+    "deadline": new Date(),
+  },
 ]
 
 
 export const statusState = [
-    {name: 'Cancel', color: '#a1a1aa'},
+    {name: 'Canceled', color: '#a1a1aa'},
     {name: 'Done', color: '#34d399'},
+    {name: 'Paused', color:'#d782ff'},
     {name: 'In Progress', color: '#fbbf24'},
-    {name: 'Plan', color: '#60a5fa '}
+    {name: 'Planning', color: '#60a5fa '}
 ]
 
 export const emails = [
@@ -218,15 +237,29 @@ export const projectsRow = [
     icon: Target
   },
   {
-    name: 'start date',
-    icon: CalendarX
+    name: 'status',
+    icon: CircleDashed
   },
   {
     name: 'priority',
     icon: Flag
   },
   {
+    name: 'start date',
+    icon: CalendarX
+  },
+  
+  {
     name: 'deadline',
     icon: CalendarClock
   },
+  
+{
+    name: 'priority',
+    icon: Flag
+},
+{
+  name: 'completion',
+  icon: CalendarArrowUp
+}
 ]

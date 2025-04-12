@@ -6,6 +6,10 @@ import { UserRoundPlus } from 'lucide-react';
 import { popupContext } from "@/hooks/usePopup";
 import { connectContext } from "@/hooks/useConnect";
 import { IoMdClose } from "react-icons/io";
+import { emailSchema } from "@/types/schema";
+import { Tasks } from "@/types/global";
+import { useForm } from "@/hooks/useForm";
+import clsx from "clsx";
 
 interface InputLinkProps {
     name: string;
@@ -25,11 +29,14 @@ export const InputList:React.FC<InputLinkProps> = ({
     const [tab, setTab] = useState(items)
     const [newValue, setNewValue] = useState('')
     //useRef
+    const indentique = useRef(false)
     const menuRef = useRef<HTMLDivElement>(null)
     const assign = useRef<string[]>([])
     const store = useRef(items)
     //useContext
     const {formTask, setFormTask} = useContext(connectContext)
+    //hooks
+    const emailFrom = useForm({email: ''}, emailSchema)
     //useEffect
     useEffect (() => {
         const handlerClick = (e: MouseEvent) => {
@@ -59,31 +66,66 @@ export const InputList:React.FC<InputLinkProps> = ({
             setTab(newTab)
         }
     }
+    function handleKeyUp (userEmail: string) {
+        setFormTask((prev: Tasks) => {
+            let nouveauTableau = {...prev};
+            nouveauTableau.assign = {...formTask.assign}
+            return nouveauTableau
+        })
+        indentique.current = false
+        if (!emailFrom.error) {
+            for (const [_, email] of Object.entries(formTask.assign)) {
+                    if (email === userEmail) {
+                        indentique.current = true
+                    }
+                }
+            const numbElement = Object.keys(formTask.assign).length 
+            let objectifValue = {[`${numbElement + 1}`]: userEmail}
+            if (!indentique.current) {
+                setFormTask((prevElements: Tasks) => {
+                    let nouveauTableau = {...prevElements};
+                    nouveauTableau.assign = {...nouveauTableau.assign, ...objectifValue};
+                    return nouveauTableau;
+                })
+                emailFrom.setValue({email: ''})
+            } else {
+                emailFrom.setError('this email is already call')
+                emailFrom.setValue({email: ''})
+            }
+        }
+    }
     return (
         <div className="flex-justify relative">
             <div className="flex items-center space-x-4">
                 <Icons /><p>{name}</p>
             </div>
-            <div className="selectTaskValue" onClick={(e) => {
+            <div className={clsx({
+                "selectTaskValue" : name !== 'assign',
+                "w-1/2 py-[4px]  text-start rounded text-sidebarText": name === 'assign'
+            })} onClick={(e) => {
                 e.stopPropagation()
-                setActive(true)
+                name !== 'assign' && setActive(true)
             }}>
-                <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    {name !== 'assign' ? <p>{formTask[name]}</p>:
+                <div className="overflow-hidden text-ellipsis whitespace-nowrap capitalize">
+                    {name !== 'assign' ? <p>{(formTask[name] !== '') ? formTask[name] : 'Empty' }</p>:
                     <div>
-                        {formTask.assign[0] === '' ? <p>Empty</p> :
+                        {!formTask.assign ? <p>Empty</p> :
                         <div>
-                            {formTask.assign.map((item, index) => (
+                            {Object.entries(formTask.assign).map((item, index) => (
                             <div key={index} className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p className="text-xss">{item}</p>
+                                <p className="text-xss">{item[1]}</p>
                                 <IoMdClose size={12} className="cursor-pointer" onClick={() => {
-                                    assign.current = formTask.assign.filter((substract) => substract !== item)
-                                    let newvalue = {"assign" : assign.current}
-                                    console.log(newvalue)
-                                    setFormTask({...formTask, ...newvalue})
+                                   delete formTask.assign[item[0]]
                                 }}/>
                             </div>
                         ))}
+                        <div className="flex text-sm items-center py-1 px-4 space-x-2 cursor-pointer bg-sidebarText rounded text-gray-800"
+                            onClick={() => {
+                                setActive(true)
+                            }}>
+                            <UserRoundPlus size={16} />
+                            <p>Add participants</p>
+                        </div>
                         </div>
                     }
                     </div>
@@ -94,16 +136,25 @@ export const InputList:React.FC<InputLinkProps> = ({
                 <div ref={menuRef} className="bg-primary border border-[#494949] min-h-[100px] overflow-auto rounded absolute right-0 top-0 z-10 ">
                 <input 
                 type="text" 
-                name='name'
+                name='email'
                 className="popupinput bg-primary text-gray-300" 
                 placeholder={placeholder}
-                onChange={(e) => handleChange(e)}
+                value={emailFrom.value.email}
+                onChange={(e) => {
+                    handleChange(e)
+                    emailFrom.setError('')
+                    emailFrom.handleChange(e)
+                }}
                 onKeyUp={(e) => {
                     if (e.key === 'Enter') {
                         let target = e.target as HTMLInputElement;
+                        if ( name === 'assign') {
+                            handleKeyUp(target.value)
+                        } else {
+                            let newvalue = {[name]: target.value}
+                            setFormTask({...formTask, ...newvalue})
+                        }
                         setActive(false);
-                        let newvalue = {[name]: target.value}
-                        setFormTask({...formTask, ...newvalue})
                     }
                 }}
                 />
@@ -115,15 +166,13 @@ export const InputList:React.FC<InputLinkProps> = ({
                             {tab.map((item, index) => (
                                 <div onClick={() => {
                                     if (name == 'assign') {
-                                        assign.current = [...assign.current, item]
-                                        let newvalue = {[name]: assign.current}
-                                        setFormTask({...formTask, ...newvalue})
+                                        handleKeyUp(item)
                                     } else {
                                         let newvalue = {[name]: item}
                                         setFormTask({...formTask, ...newvalue})
                                     }
                                     setActive(false);
-                                }} key={index} className="text-xs p-1 mb-1 cursor-pointer hover:bg-sidebarText hover:text-gray-800 rounded"><p>{item}</p></div>
+                                }} key={index} className="text-xs p-1 mb-1 cursor-pointer hover:text-gray-800 hover:bg-sidebarText rounded"><p>{item}</p></div>
                             ))}
                         </div>
                     </div>
@@ -155,10 +204,9 @@ const Assign = () => {
     return (
         <div className="px-4 space-y-2 pb-2">
             <p className="text-xs">No matches in {sessionStorage.getItem('workspace')} </p>
-            <p className="text-xs">more</p>
-            <div className="flex items-center py-1 px-4 space-x-2 cursor-pointer bg-sidebarText rounded text-gray-800"
-                 onClick={() => setDispatch({invitation: true})}>
-                    <UserRoundPlus />
+            <div className="flex text-xs items-center py-1 px-4 space-x-2 cursor-pointer bg-sidebarText rounded text-gray-800"
+                    onClick={() => setDispatch({invitation: true})}>
+                    <UserRoundPlus size={16} />
                     <p>Invite Menber</p>
             </div>
         </div>

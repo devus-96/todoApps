@@ -4,14 +4,14 @@ import { createContext, useEffect, useState } from "react";
 
 const defaultTask = {
     name: '',
-    project: 'Empty',
-    assign: [''],
-    priority: 'Empty',
-    state: 'Plan',
+    project: '' ,
+    assign: {} as Record<string,any>,
+    priority: '',
+    state: '',
     start_date: new Date(),
     deadline: new Date(),
-    start_time: '00:00AM',
-    end_time: '00:00AM',
+    start_time: '',
+    end_time: '',
 }
 
 const defaultValue = {
@@ -35,6 +35,7 @@ export const projectDefaultValue = {
 }
 
 type group = ((prevElements: Tasks[]) => Tasks[]) | Tasks[]
+type formTask = ((prevElements: Tasks) => Tasks) | Tasks
 
 /**
  * groupFormTask: sert a conserver sous forme d'object tout les taches de la partit projet
@@ -55,22 +56,22 @@ export const connectContext = createContext({
     setAction: (action: string) => {},
     groupFormTask: [defaultValue] as Tasks[],
     setGroupFormTask: (value: group) => {},
-    indexes: 0,
+    indexes: null as number | null,
     setIndexes: (index: number) => {},
     dateValue: '',
     setDateValue: (date: string) => {},
     typeTime: '',
     setTypeTime: (time: string) => {},
-    formTask: defaultTask,
-    setFormTask: (value: typeof defaultTask) => {},
+    formTask: defaultTask as Tasks,
+    setFormTask: (value: formTask) => {},
 })
 
 export function ConnectContextProvider ({children}: {children: React.ReactNode}) {
     const [formProject, setFormProject] = useState(projectDefaultValue)
     const [dateValue, setDateValue] = useState<string>('')
     const [typeTime,setTypeTime] = useState<string>('')
-    const [formTask, setFormTask] = useState(defaultTask)
-    const [indexes, setIndexes] = useState<number>(0)
+    const [formTask, setFormTask] = useState<Tasks>(defaultTask)
+    const [indexes, setIndexes] = useState<number | null>(null)
     const [groupFormTask, setGroupFormTask] = useState<Tasks[]>([defaultValue])
     const [action, setAction] = useState<string>('')
 

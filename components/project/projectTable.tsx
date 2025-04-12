@@ -2,7 +2,7 @@
 
 import { connectContext } from "@/hooks/useConnect"
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
-import { EmailList } from "./emailList"
+import { EmailList } from "../Tasks/emailList"
 import { popupContext } from "@/hooks/usePopup"
 import { useForm } from "@/hooks/useForm"
 import { usePosition } from "@/hooks/usePosition"

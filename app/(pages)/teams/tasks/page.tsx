@@ -2,10 +2,10 @@
 
 import { HeaderProject } from "@/components/global/header"
 import { Menu } from "@/components/global/Menu"
-import { Priority } from "@/components/global/priority"
-import { SortTask } from "@/components/global/sortTasks"
-import { Status } from "@/components/global/state"
-import { TaskTableComponent } from "@/components/global/tasksComponent"
+import { Priority } from "@/components/Tasks/priority"
+import { SortTask } from "@/components/Tasks/sortTasks"
+import { Status } from "@/components/Tasks/state"
+import { TaskTableComponent } from "@/components/project/tasksComponent"
 import { Select } from "@/components/ui/select"
 import { project, states, tasksRow } from "@/constants/task"
 import { connectContext } from "@/hooks/useConnect"
@@ -13,12 +13,14 @@ import { useForm } from "@/hooks/useForm"
 import { popupContext } from "@/hooks/usePopup"
 import { usePosition } from "@/hooks/usePosition"
 import { Tasks } from "@/types/global"
-import { Plus, SquareCheck } from "lucide-react"
+import { Plus, Search, SquareCheck } from "lucide-react"
 import { Filter } from "lucide-react"
 import { useContext, useEffect, useRef, useState } from "react"
 import { MdClose } from "react-icons/md"
-import { CardTasks } from "@/components/global/cardTasks"
+import { CardTasks } from "@/components/Tasks/cardTasks"
 import { taskAction, taskOptions } from "@/constants/popup"
+import { Menbers } from "@/components/Tasks/menbers"
+import { Calendar1 } from "@/components/global/calendar"
 
 const TaskPage = () => {
     //useRef
@@ -33,12 +35,14 @@ const TaskPage = () => {
     const {groups, indexes} = useContext(connectContext)
     //useEffect
     useEffect(() => {
-        tasks.setValue((value: Tasks[]) => {
-            const newTab = [...value];
-            newTab[indexes] = {...newTab[indexes], ...groups};
-            return newTab
-        })
-        storeTasks.current[indexes] = {...storeTasks.current[indexes], ...groups}
+        if (indexes) {
+            tasks.setValue((value: Tasks[]) => {
+                const newTab = [...value];
+                newTab[indexes] = {...newTab[indexes], ...groups};
+                return newTab
+            })
+            storeTasks.current[indexes] = {...storeTasks.current[indexes], ...groups}
+        }
     }, [groups])
     useEffect(() => {
         switch (select) {
@@ -98,21 +102,38 @@ const TaskPage = () => {
         }
         return undefined
     }
+    function handleChange (e: React.ChangeEvent) {
+        let target = e.target as HTMLInputElement;
+        if (target.value === '') {
+            tasks.setValue(storeTasks.current)
+        } else {
+            tasks.setValue(() => {
+                const newtab = [...storeTasks.current]
+                const tab = newtab.filter((item) => {
+                    return target.value.toLowerCase() === item.name.slice(0, target.value.length).toLowerCase()
+                })
+                return tab
+            })
+        }
+    }
     //DOM
     return  (
-        <div className='w-[calc(100%-200px)] pb-8 bg-secondary min-h-screen'>
+        <div className='w-[calc(100%-220px)] pb-8 bg-secondary min-h-screen isolate'>
             <HeaderProject />
             {state.states &&
-            <div className="fixed w-[234px] h-[250px] z-50 text-sidebarText bg-primary rounded border-borderCard"
+            <div aria-hidden='true' className="top-0 left-0 w-svw h-screen absolute">
+            <div className="fixed w-[234px] h-[280px] z-50 text-sidebarText bg-primary rounded border-borderCard"
                 style={{
                     left: position.x + 'px',
                     top: position.top + 'px',
                 }}>
                 <Status  />
             </div>
+            </div>
+
             }
             {state.priority &&
-            <div className="fixed w-[244px] h-[250px] z-50 text-sidebarText bg-primary rounded"
+            <div className="fixed w-[244px] h-[200px] z-50 text-sidebarText bg-primary rounded"
                  style={{
                      left: position.x + 'px',
                      top: position.top + 'px',
@@ -137,7 +158,17 @@ const TaskPage = () => {
                      left: position.x + 'px',
                      top: position.top + 'px',
                 }}>
-                    <SortTask taskOptions={taskAction} type="action" setSortList={setSortList} sortList={sortList} />
+                    {indexes !== null && <SortTask taskOptions={taskAction} setValue={tasks.setValue} value={tasks.value[indexes]} type="action" setSortList={setSortList} sortList={sortList} />}
+                </div>
+            </Menu>
+            }
+            {state.menberList && 
+            <Menu active={state.menberList} dispatch='menberList'>
+                <div className='fixed z-30' style={{
+                     left: position.x + 'px',
+                     top: position.top + 'px',
+                }}>
+                    {indexes !== null && <Menbers value={tasks.value[indexes]} />}
                 </div>
             </Menu>
             }
@@ -153,11 +184,22 @@ const TaskPage = () => {
                         <p className="text-xl text-sidebarText">Music Groupcasascakjbkjbj</p>
                     </div>
                     <div className="flex items-center text-sidebarText space-x-4">
-                        <div onClick={(e) => {
-                            setDispatch({sortTask: true})
-                            sortPositon.handlerBoundingClientLeft(e, 250, 244)
-                        }} className="rounded w-[35px] h-[35px] flex-center bg-primary cursor-pointer">
-                            <Filter size={16} />
+                        <div>
+                            <div onClick={(e) => {
+                                setDispatch({sortTask: true})
+                                sortPositon.handlerBoundingClientLeft(e, 250, 244)
+                            }} className="rounded w-[35px] h-[35px] flex-center bg-primary cursor-pointer">
+                                <Filter size={16} />
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between bg-secondary space-x-2 rounded-full text-sidebarText">
+                            <Search size={16} />
+                            <input 
+                                type="text" 
+                                className="w-[90%] bg-secondary outline-none"
+                                placeholder="search a task"
+                                onChange={(e) => handleChange(e)}
+                            />
                         </div>
                         <Select 
                         name="Daily" 
@@ -228,7 +270,6 @@ const TaskPage = () => {
                             setPosition={setPosition} 
                             item={item} 
                             occ={index} 
-                            handler={tasks.handleChange}
                             value={tasks.value}
                             setProjects={tasks.setValue}
                             />
@@ -236,7 +277,7 @@ const TaskPage = () => {
                 </tbody>
             </table>
             <div className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 flex pl-2 py-1 gap-2" onClick={() => {
-                
+                setDispatch({task: true})
             }}>
                 <Plus size={24} />
                 <p>New Task</p>
@@ -244,15 +285,15 @@ const TaskPage = () => {
             </>
             }
         {state.boardTask &&
-        <div className="w-full grid grid-cols-4 gap-4 px-4 mt-4">
+        <div className="w-full overflow-x-auto px-8 scrollbar-hide">
+            <div className="w-[1500px] grid grid-cols-5 gap-4 mt-4">
             {states.map((state, index) => (
                 <div key={index} className="flex flex-col h-fit bg-primary rounded p-4 mb-4 text-sidebarText">
-                    <div className="w-full text-2xl capitalize mb-4">
+                    <div className="w-full text-2xl capitalize ">
                         <p>{state}</p>
                     </div>
                     {tasks.value.map((item: Tasks , index: number) => {
                         tabStates.current = [...tabStates.current, item.state]
-                        console.log(tabStates.current.includes(state))
                         return (
                             <div key={index}>
                                 {item.state === state &&
@@ -261,15 +302,16 @@ const TaskPage = () => {
                             </div>
                         )
                     })}
-                    {!tabStates.current.includes(state) &&
-                        <div className="w-full">
-                            <p>No task here !!!</p>
-                        </div>
-                    }
+                    <div onClick={() => setDispatch({task: true})} 
+                    className="flex items-center text-sm space-x-4 border rounded py-2 px-2 cursor-pointer border-borderCard">
+                        <Plus size={16} /> <p>New task</p>
+                    </div>
             </div>
             ))}
         </div>
+        </div>  
         }
+        <Calendar1 />
         </div>
     )
 }

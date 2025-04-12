@@ -9,7 +9,7 @@ import { FaFileCirclePlus } from "react-icons/fa6";
 import { taskContext } from "@/hooks/useTask";
 import { useContext, useEffect, useState } from "react";
 import PopUpTags from "./PopUpTags";
-import { Calendar } from "./ui/calendar";
+import { Calendar } from "./calendar/calendar";
 import { TaskDetails } from "./calendar/taskDetails";
 
 const SideBar = () => {

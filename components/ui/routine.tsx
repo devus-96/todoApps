@@ -5,7 +5,7 @@ import { Select } from "../ui/select";
 import { weeks } from "@/constants/task";
 import clsx from "clsx";
 import PopUpTags from "../PopUpTags";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "../calendar/calendar";
 import { taskContext } from "@/hooks/useTask";
 import { format } from "date-fns";
 import { useForm } from "@/hooks/useForm";

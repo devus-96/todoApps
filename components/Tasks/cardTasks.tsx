@@ -41,7 +41,7 @@ export const CardTasks = ({
     }, [priorityPosition.position])
     return (
         <div className="w-full flex flex-col bg-primary rounded text-sidebarText my-1">
-            <div className="flex flex-col w-full p-4 bg-gray-800">
+            <div className="flex flex-col w-full p-4 bg-gray-800 rounded">
             <div className="flex justify-between item-center w-full capitalize">
                 <div className="w-[150px]">
                     <p className="overflow-hidden text-ellipsis whitespace-nowrap">{item.name}</p>
@@ -61,7 +61,7 @@ export const CardTasks = ({
                     setDispatch({states: false})
                     setDispatch({priority: true})
                     setIndexes(occ)
-                    priorityPosition.handlerBoundingClientRight(e, 250)
+                    priorityPosition.handlerBoundingClientRight(e, 200)
                 }} className={clsx("w-fit flex-center px-4 text-sm my-2 text-gray-800 rounded-full", {
                     "bg-[#a1a1aa]" : item.priority.toLowerCase() === 'low',
                     "bg-[#a78bfa]" : item.priority.toLowerCase() === 'medium',
@@ -70,15 +70,16 @@ export const CardTasks = ({
                     <p>{item.priority}</p>
                 </div>
                 <div onClick={(e) => {
-                    priorityPosition.handlerBoundingClientRight(e, 250)
+                    priorityPosition.handlerBoundingClientRight(e, 280)
                     setDispatch({states: true})
                     setDispatch({priority: false})
                     setIndexes(occ)
                 }} className={clsx("flex-center px-2 text-sm text-gray-800 rounded-full", {
-                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'cancel',
+                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'canceled',
                     "bg-[#34d399]" : item.state.toLowerCase() === 'done',
                     "bg-[#fbbf24]" : item.state.toLowerCase() === 'in progress',
-                    "bg-[#60a5fa]" : item.state.toLowerCase() === 'plan'
+                    "bg-[#60a5fa]" : item.state.toLowerCase() === 'planning',
+                    'bg-[#d782ff]' : item.state.toLowerCase() === 'paused'
                 })}>
                     <p>{item.state}</p>
                 </div>

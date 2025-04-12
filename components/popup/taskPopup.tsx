@@ -1,9 +1,9 @@
 "use client"
 
-import { useContext, useState } from "react"
+import { useContext, useEffect } from "react"
 import { popupContext } from "@/hooks/usePopup"
 import Popup from "./popup"
-import { Users } from 'lucide-react';
+import { Target, Users } from 'lucide-react';
 import { CalendarX } from 'lucide-react';
 import { CalendarClock } from 'lucide-react';
 import { AlarmClockPlus } from 'lucide-react';
@@ -11,11 +11,12 @@ import { AlarmClockOff } from 'lucide-react';
 import { Flag } from "lucide-react"
 import { Tags } from "lucide-react"
 import { CircleDashed } from 'lucide-react';
-import { InputList } from "../global/inputList"
+import { InputList } from "../Tasks/inputList"
 import { connectContext } from "@/hooks/useConnect"
 import { format } from "date-fns"
 import { Spinner } from "../ui/spinner"
 import { emails, priority, states } from "@/constants/task";
+import { Tasks } from "@/types/global";
 
 const project = [
     "project du mois d'octobre",
@@ -24,10 +25,18 @@ const project = [
 ]
 
 export const TaskPopUp = () => {
-    const [error, setError] = useState<unknown>()
+    //useContext
     const {state, setDispatch} = useContext(popupContext)
-    const {setDateValue, setTypeTime, formTask, setFormTask, setAction} = useContext(connectContext)
-
+    const {setDateValue, setTypeTime, formTask, setFormTask, setAction, groups} = useContext(connectContext)
+    //useEffect
+    useEffect(() => {
+            setFormTask((value: Tasks) => {
+                let newTab = {...value};
+                newTab = {...newTab, ...groups};
+                return newTab
+            })
+    }, [groups])
+    //DOM
     return (
        <>
             {state.task && 
@@ -36,12 +45,19 @@ export const TaskPopUp = () => {
                         <input 
                             type="text" 
                             name='name'
+                            value={formTask.name}
                             className="popupinput text-3xl bg-primary text-gray-300" 
                             placeholder='Give a name to your task'
+                            onChange={(e) => {
+                                const target = e.target as HTMLInputElement
+                                const newValue = {name: target.value}
+                                setFormTask({...formTask, ...newValue})
+                            }}
                         />
+                        <InputList name="project" Icons={Target} placeholder="can't create new status" items={states}/>
                         <div className="flex-justify">
                             <div className="flex items-center space-x-4">
-                                <CalendarX /><p>startdate</p>
+                                <CalendarX /><p>Startdate</p>
                             </div>
                             <div className="selectTaskValue" onClick={() => {
                                 setDispatch({calendar: true})
@@ -53,7 +69,7 @@ export const TaskPopUp = () => {
                         </div>
                         <div className="flex-justify">
                             <div className="flex items-center space-x-4">
-                                <CalendarClock /><p>deadline</p>
+                                <CalendarClock /><p>Deadline</p>
                             </div>
                             <div className="selectTaskValue" onClick={() => {
                                 setDispatch({calendar: true})
@@ -65,32 +81,32 @@ export const TaskPopUp = () => {
                         </div>
                         <div className="flex-justify">
                             <div className="flex items-center space-x-4">
-                                <AlarmClockPlus /><p>start time</p>
+                                <AlarmClockPlus /><p>Start time</p>
                             </div>
                             <div className="selectTaskValue" onClick={() => {
                                 setTypeTime('start')
                                 setAction('task')
                                 setDispatch({clock: true})
                             }}>
-                                <p>{formTask.start_time}</p>
+                                <p>{formTask.start_time !== '' ? formTask.start_time : 'Empty'}</p>
                             </div>
                         </div>
                         <div className="flex-justify">
                             <div className="flex items-center space-x-4">
-                                <AlarmClockOff /><p>end time</p>
+                                <AlarmClockOff /><p>End time</p>
                             </div>
                             <div className="selectTaskValue" onClick={()=> {
                                 setAction('task')
                                 setTypeTime('end')
                                 setDispatch({clock: true})
                             }}>
-                                <p>{formTask.end_time}</p>
+                                <p>{formTask.end_time !== '' ? formTask.end_time : 'Empty'}</p>
                             </div>
                         </div>
                         <InputList name="state" Icons={CircleDashed} placeholder="can't create new status" items={states}/>
                         <InputList name="priority" Icons={Flag} placeholder="can't create new priority" items={priority}/>
-                        <InputList name="assign" Icons={Users} placeholder="assign to your menbers" items={emails}/>
                         <InputList name="tags" Icons={Tags} placeholder="comming soom !!!" items={project}/>
+                        <InputList name="assign" Icons={Users} placeholder="assign to your menbers" items={emails}/>
                         <textarea 
                             placeholder='add description'
                             name='description'
