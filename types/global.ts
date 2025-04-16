@@ -22,3 +22,5 @@ repeat?: string;
 image?: string;
 description: string;
 }
+
+export type keySortTask = "assign" | "priority" | "state" | "daily" | "weeky" | "monthly"

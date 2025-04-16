@@ -40,7 +40,7 @@ export const TaskPopUp = () => {
     return (
        <>
             {state.task && 
-                <Popup width="800px" height="auto" modeNight={true} popup='task' className="right-0 top-0 bottom-0 overflow-auto scrollbar-hide">
+                <Popup width="800px" height="auto" popup='task' className="right-0 top-0 bottom-0 overflow-auto scrollbar-hide">
                     <div className="text-sidebarText px-16 py-4 space-y-4">
                         <input 
                             type="text" 

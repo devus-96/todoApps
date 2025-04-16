@@ -1,5 +1,5 @@
 "use client"
-
+import React from "react"
 import { HeaderProject } from "@/components/global/header"
 import { MenberCard } from "@/components/global/moreMenberCard"
 import { popupContext } from "@/hooks/usePopup"
@@ -75,12 +75,12 @@ const MenberPage = () => {
     const [position, setPosition] = useState({x:0, top:0})
     const {setDispatch, state} = useContext(popupContext)
     function handlerBoundingClientRect (event: React.MouseEvent, element: number) {
-        let target = event.target as HTMLDivElement
+        const target = event.target as HTMLDivElement
         // Récupérer les coordonnées du clic
         const y = event.clientY;
-        let upordown = y  + element > window.innerHeight
+        const upordown = y  + element > window.innerHeight
         const boutonRect = target.getBoundingClientRect();
-        let height = boutonRect.bottom - boutonRect.top
+        const height = boutonRect.bottom - boutonRect.top
         if (upordown) {
             setPosition({x: (boutonRect.left - 180) + height ,top: (boutonRect.top - element) + height})
         } else {

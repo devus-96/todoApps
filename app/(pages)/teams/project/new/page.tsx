@@ -116,9 +116,6 @@ export default function NewProject () {
                  <Priority />
             </div>
             }
-            <div className="w-full h-[180px] bg-gradient-to-t from-pink-400 to-btnColor">
-                
-            </div>
             <div>
             <input 
                 type="text" 

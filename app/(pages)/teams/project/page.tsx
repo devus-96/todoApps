@@ -14,31 +14,30 @@ import { useForm } from "@/hooks/useForm"
 import { popupContext } from "@/hooks/usePopup"
 import { usePosition } from "@/hooks/usePosition"
 import { Filter, Plus, Search, Target } from "lucide-react"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 
 
 const Project = () => {
+    const storeTasks = useRef(myprojects)
     const [select, setSelect] = useState('')
     const [position, setPosition] = useState({x:0, top:0})
     const sortPositon = usePosition()
     const projects = useForm(myprojects)
     const {state, setDispatch} = useContext(popupContext)
-    const { indexes} = useContext(connectContext)
-    const [sortList, setSortList] = useState({assign: '', priority: '',  state: ''})
-    function handleChange (e: React.ChangeEvent) {
-        /*let target = e.target as HTMLInputElement;
-        if (target.value === '') {
-            tasks.setValue(storeTasks.current)
-        } else {
-            tasks.setValue(() => {
-                const newtab = [...storeTasks.current]
-                const tab = newtab.filter((item) => {
-                    return target.value.toLowerCase() === item.name.slice(0, target.value.length).toLowerCase()
+    const [sortList, setSortList] = useState({priority: '',  state: ''})
+    const {groups, indexes} = useContext(connectContext)
+
+    useEffect(() => {
+            if (indexes !== null) {
+                project.setValue((value: any) => {
+                    const newTab = [...value];
+                    newTab[indexes] = {...newTab[indexes], ...groups};
+                    return newTab
                 })
-                return tab
-            })
-        }*/
-    }
+                storeTasks.current[indexes] = {...storeTasks.current[indexes], ...groups}
+            }
+        }, [groups])
+    const project = useForm(myprojects)
     return  (
         <div className="w-[calc(100%-200px)] pb-8 bg-secondary min-h-screen">
             <HeaderProject />
@@ -105,7 +104,7 @@ const Project = () => {
                                 type="text" 
                                 className="w-[90%] bg-secondary outline-none"
                                 placeholder="search a task"
-                                onChange={(e) => handleChange(e)}
+                                onChange={(e) => projects.handleFilter(e)}
                             />
                         </div>
                         <Select 

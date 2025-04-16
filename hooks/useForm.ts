@@ -1,9 +1,11 @@
 "use client"
+import React from "react"
 import { useContext, useRef, useState } from "react"
 import { object, z } from "zod";
 import { connectContext } from "./useConnect";
 
 export function useForm(initialValues: any , schema: any = object({})) {
+    const storeValue = useRef(initialValues)
     const [value, setValue] = useState(initialValues);
     const emails = useRef<string[]>([]);
     const [error, setError] = useState<string>('')
@@ -44,11 +46,13 @@ export function useForm(initialValues: any , schema: any = object({})) {
               [target.name]: target.value,
             };
             if (Array.isArray(value)) {
-                setValue((value: any) => {
-                    const nouveauTableau = [...value];
-                    nouveauTableau[indexes] = {...nouveauTableau[indexes], ...valueChanged}
-                    return nouveauTableau;
-                });
+                if (indexes) {
+                    setValue((value: any) => {
+                        const nouveauTableau = [...value];
+                        nouveauTableau[indexes] = {...nouveauTableau[indexes], ...valueChanged}
+                        return nouveauTableau;
+                    });
+                }
             } else {
                 setValue((values: any) => ({ ...values, ...valueChanged }));
                 if (schema) {
@@ -72,6 +76,21 @@ export function useForm(initialValues: any , schema: any = object({})) {
         setValue({...value, ...valueChanged});
     }
 
+    function handleFilter (e: React.ChangeEvent) {
+            let target = e.target as HTMLInputElement;
+            if (target.value === '') {
+                setValue(storeValue.current)
+            } else {
+                setValue(() => {
+                    const newtab = [...storeValue.current]
+                    const tab = newtab.filter((item) => {
+                        return target.value.toLowerCase() === item.name.slice(0, target.value.length).toLowerCase()
+                    })
+                    return tab
+                })
+            }
+        }
+
     return {
         handleClick,
         handleEmail,
@@ -80,6 +99,8 @@ export function useForm(initialValues: any , schema: any = object({})) {
         setError,
         emails,
         handleChange,
-        setValue
+        setValue,
+        handleFilter,
+        storeValue
     }
 }

@@ -1,13 +1,13 @@
 "use client"
-
+import React from "react"
 import { HeaderProject } from "@/components/global/header"
 import { Menu } from "@/components/global/Menu"
 import { Priority } from "@/components/Tasks/priority"
-import { SortTask } from "@/components/Tasks/sortTasks"
+import { sortListProps, SortTask } from "@/components/Tasks/sortTasks"
 import { Status } from "@/components/Tasks/state"
 import { TaskTableComponent } from "@/components/project/tasksComponent"
 import { Select } from "@/components/ui/select"
-import { project, states, tasksRow } from "@/constants/task"
+import { project, sortTask, tasksRow } from "@/constants/task"
 import { connectContext } from "@/hooks/useConnect"
 import { useForm } from "@/hooks/useForm"
 import { popupContext } from "@/hooks/usePopup"
@@ -21,21 +21,32 @@ import { CardTasks } from "@/components/Tasks/cardTasks"
 import { taskAction, taskOptions } from "@/constants/popup"
 import { Menbers } from "@/components/Tasks/menbers"
 import { Calendar1 } from "@/components/global/calendar"
+import { TaskDetails } from "@/components/popup/taskDetailsPopup"
+import clsx from "clsx"
+import { useFilter } from "@/hooks/useFilter"
 
 const TaskPage = () => {
     //useRef
     const tabStates = useRef<string[]>([])
     const storeTasks = useRef(project)
+    const statesRef = useRef(["Planning","Paused",'In Progress','Done','Canceled'])
     //useState
     const [select, setSelect] = useState('')
-    const [sortList, setSortList] = useState({assign: '', priority: '',  state: ''})
+    const [sortList, setSortList] = useState<sortListProps>(sortTask)
     const [position, setPosition] = useState({x:0, top:0})
     //useContext
     const {state, setDispatch} = useContext(popupContext)
-    const {groups, indexes} = useContext(connectContext)
+    const {groups, indexes, currTaskDetails, setFormTask} = useContext(connectContext)
     //useEffect
     useEffect(() => {
-        if (indexes) {
+        if (sortList.state === '') {
+            statesRef.current = ["Planning","Paused",'In Progress','Done','Canceled']
+        } else {
+            statesRef.current = statesRef.current.filter((item) => item === sortList.state)
+        }
+    }, [sortList.state])
+    useEffect(() => {
+        if (indexes !== null) {
             tasks.setValue((value: Tasks[]) => {
                 const newTab = [...value];
                 newTab[indexes] = {...newTab[indexes], ...groups};
@@ -43,83 +54,47 @@ const TaskPage = () => {
             })
             storeTasks.current[indexes] = {...storeTasks.current[indexes], ...groups}
         }
-    }, [groups])
+    }, [groups, indexes])
     useEffect(() => {
         switch (select) {
             case 'All Tasks':
                 setDispatch({
                     boardTask: false,
-                    tableTask: true
+                    tableTask: true,
+                    calendartask: false
                 })
                 setSortList((list) => {
-                    const newValue = {assign: '', priority: '',  state: ''}
+                    const newValue = sortTask
                     return {...list, ...newValue}
                 })
                 break;
             case 'Board' :
                 setDispatch({
                     boardTask: true,
-                    tableTask: false
+                    tableTask: false,
+                    calendartask: false
+                })
+                break
+            case 'Calendar' :
+                setDispatch({
+                    boardTask: false,
+                    tableTask: false,
+                    calendartask: true
                 })
                 break
         }
     }, [select])
-    useEffect(() => {
-        if (sortList.priority !== '' || sortList.state !== '' || sortList.assign !== '') {
-            tasks.setValue(() => {
-                const newtab = [...storeTasks.current]
-                const tab = newtab.filter((item: Tasks) => {
-                    let condition = true;
-                    let condition2 = true;
-                    let condition3 = true;
-                    for(const [key, value] of Object.entries(sortList)) {
-                        if (value !== '' && key === 'state') {
-                            condition = item[key].toLowerCase() === value.toLowerCase()
-                        } else if (value !== '' && key === 'priority') {
-                            condition2 = item[key].toLowerCase() === value.toLowerCase()
-                        } else if (value !== '' && key === 'assign') {
-                            const menber = sortByMenbers(item.assign, value)
-                            condition3 = menber === value
-                        }
-                    }
-                    return condition && condition2 && condition3
-                })
-                return tab;
-            })
-        } else {
-            tasks.setValue(storeTasks.current)
-        }
-    }, [sortList])
+    
     //hook
     const sortPositon = usePosition()
     const tasks = useForm(project)
-    //function
-    function sortByMenbers (menbers: {[key: string]: string}, value: string) {
-        for (const [_, menber] of Object.entries(menbers)) {
-            if (menber.toLowerCase() === value.toLowerCase()) {
-                return menber.toLowerCase()
-            }
-        }
-        return undefined
-    }
-    function handleChange (e: React.ChangeEvent) {
-        let target = e.target as HTMLInputElement;
-        if (target.value === '') {
-            tasks.setValue(storeTasks.current)
-        } else {
-            tasks.setValue(() => {
-                const newtab = [...storeTasks.current]
-                const tab = newtab.filter((item) => {
-                    return target.value.toLowerCase() === item.name.slice(0, target.value.length).toLowerCase()
-                })
-                return tab
-            })
-        }
-    }
+    const {values}  = useFilter(sortList, storeTasks.current)
+    useEffect(() => {tasks.setValue(() => values)}, [values])
     //DOM
     return  (
         <div className='w-[calc(100%-220px)] pb-8 bg-secondary min-h-screen isolate'>
             <HeaderProject />
+            {currTaskDetails.data !== undefined && <TaskDetails task={currTaskDetails} />}
             {state.states &&
             <div aria-hidden='true' className="top-0 left-0 w-svw h-screen absolute">
             <div className="fixed w-[234px] h-[280px] z-50 text-sidebarText bg-primary rounded border-borderCard"
@@ -181,7 +156,7 @@ const TaskPage = () => {
                 </div>
                 <div className="w-full flex justify-between border-b border-borderCard px-4 py-2">
                     <div className="flex items-center">
-                        <p className="text-xl text-sidebarText">Music Groupcasascakjbkjbj</p>
+                        <p className="text-xl text-sidebarText">Music Group</p>
                     </div>
                     <div className="flex items-center text-sidebarText space-x-4">
                         <div>
@@ -196,67 +171,46 @@ const TaskPage = () => {
                             <Search size={16} />
                             <input 
                                 type="text" 
-                                className="w-[90%] bg-secondary outline-none"
+                                className="w-[90%] bg-secondary outline-none placeholder:text-gray-500 placeholder:text-xs"
                                 placeholder="search a task"
-                                onChange={(e) => handleChange(e)}
+                                onChange={(e) => tasks.handleFilter(e)}
                             />
                         </div>
                         <Select 
                         name="Daily" 
-                        options={['All Tasks', 'Board', 'Daily tasks', 'Weekly tasks', 'Monthly tasks']} 
+                        options={['All Tasks', 'Board', 'Calendar']} 
                         handler={setSelect}
                         inputClass="flex items-center cursor-pointer justify-between text-gray-300" 
                         className="w-[200px] relative rounded bg-secondary hover:bg-primary p-1 text-sm border border-borderCard"
-                        seclectClass="absolute w-[250px] top-[45px] rounded p-5 mb-2 bg-primary shadow text-sidebarText"
+                        seclectClass="absolute w-[250px] top-[45px] rounded p-5 mb-2 bg-primary shadow text-sidebarText border border-borderCard"
                         />
                     </div>
                 </div>
             </section>
-            {((sortList.priority !== '' || sortList.state !== '' ) || sortList.assign !== '') &&
+            {Object.values(sortList).filter((item) => item !== '').length !== 0 &&
                 <section className="w-full flex items-center border-b border-borderCard px-4 py-2 space-x-4">
-                    {sortList.assign !== '' &&
-                    <div className="flex-justify px-4 py-1 rounded-full border border-btnColor text-btnColor">
-                         <p className="mr-4">{sortList.assign}</p>
-                         <MdClose className="cursor-pointer" onClick={() => {
-                             setSortList((list) => {
-                                 const newValue = {assign: ''}
-                                 return {...list, ...newValue}
-                             })
-                         }} />
-                     </div>
-                    }
-                    {sortList.priority !== '' &&
-                    <div className="flex-justify px-4 py-1 rounded-full border border-btnColor text-btnColor">
-                        <p className="mr-4">{sortList.priority}</p>
-                        <MdClose className="cursor-pointer" onClick={() => {
-                            setSortList((list) => {
-                                const newValue = {priority: ''}
-                                return {...list, ...newValue}
-                            })
-                        }} />
-                    </div>
-                    }
-                    {sortList.state !== '' &&
-                     <div className="flex-justify px-4 py-1 rounded-full border border-btnColor text-btnColor">
-                        <p className="mr-4">{sortList.state}</p>
-                        <MdClose className="cursor-pointer" onClick={() => {
-                            setSortList((list) => {
-                                const newValue = {state: ''}
-                                return {...list, ...newValue}
-                            })
-                        }} />
-                    </div>
-                    }
-                </section>
-            }
+                    {Object.entries(sortList).filter((item) => item[1] !== '').map((item, index) => {
+                        return (
+                            <div key={index} className="flex-justify px-4 py-1 rounded-full border border-btnColor text-btnColor">
+                                <p className="mr-4">{item[1]}</p>
+                                <MdClose className="cursor-pointer" onClick={() => {
+                                    setSortList((list) => {
+                                        const newValue = {[item[0]]: ''}
+                                        return {...list, ...newValue}
+                                    })
+                                }} />
+                            </div>
+                        )
+                    })} 
+                </section>}
             {state.tableTask &&
             <>
             <table className="border-primary text-sidebarText w-full overflow-y-visible text-start">
                     <thead>
-                        <tr>
+                        <tr className="text-gray-500">
                         {tasksRow.map((item, index) => (
                                 <td key={index} className="border-l border-r border-b border-primary pl-4">
-                                    <div className="flex items-center gap-2 text-sm">
+                                    <div className="flex items-center gap-2 text-sm py-2">
                                         <item.icon size={16} className="block"/><p>{item.name}</p>
                                     </div>
                                 </td>
@@ -286,8 +240,11 @@ const TaskPage = () => {
             }
         {state.boardTask &&
         <div className="w-full overflow-x-auto px-8 scrollbar-hide">
-            <div className="w-[1500px] grid grid-cols-5 gap-4 mt-4">
-            {states.map((state, index) => (
+            <div className={clsx("mt-4", {
+                'w-[1500px] grid grid-cols-5 gap-4 ': sortList.state === '',
+                'w-full': sortList.state !== ''
+            })}>
+            {statesRef.current.map((state, index) => (
                 <div key={index} className="flex flex-col h-fit bg-primary rounded p-4 mb-4 text-sidebarText">
                     <div className="w-full text-2xl capitalize ">
                         <p>{state}</p>
@@ -302,7 +259,15 @@ const TaskPage = () => {
                             </div>
                         )
                     })}
-                    <div onClick={() => setDispatch({task: true})} 
+                    <div onClick={() => {
+                        setDispatch({task: true})
+                        setFormTask((prevValue: Tasks) => {
+                            let newTab = {...prevValue}
+                            const newValue = {state: state}
+                            newTab = { ...newTab, ...newValue}
+                            return newTab
+                        })
+                    }} 
                     className="flex items-center text-sm space-x-4 border rounded py-2 px-2 cursor-pointer border-borderCard">
                         <Plus size={16} /> <p>New task</p>
                     </div>
@@ -311,7 +276,7 @@ const TaskPage = () => {
         </div>
         </div>  
         }
-        <Calendar1 />
+        {state.calendartask && <Calendar1 />}
         </div>
     )
 }

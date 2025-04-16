@@ -1,3 +1,4 @@
+import { getMonth, getYear, set, setDate } from "date-fns";
 import {CalendarClock, CalendarX, CheckCheck, CircleDashed, Flag, Users, AlarmClockPlus, AlarmClockOff, Target, CalendarArrowUp } from "lucide-react";
 
 export const weeks = [
@@ -9,6 +10,8 @@ export const weeks = [
     "friday",
     "saturday",
   ];
+
+export const sortTask = {assign: '', priority: '',  state: '', daily: '', weekly: '', monthly: ''}
 
   export const weeksMin = [
     "sun",
@@ -40,7 +43,7 @@ export const priority = [
     'low',
     'medim'
 ]
-export const states = [
+export let states = [
     "Planning",
     "Paused",
     'In Progress',
@@ -49,101 +52,196 @@ export const states = [
 ]
 
 export const project = [
-    {
-      "id": '0',
-      "name": "create that react components",
-      "assign": {
-        "0": "marcdeus@gmail.com",
-        "1": "austinndjom@gmail.com",
-        "2": "dsfdsfsdfsd@gmail.com"
-      },
-      "priority": "High",
-      "state": "In Progress",
-      "start_date": new Date(),
-      "deadline": new Date(),
-      "start_time": "",
-      "end_time": ""
-    },
-    {
-        "id": '1',
-        "name": "write a redaction",
-        "assign": {
-          "0": "marcdeus@gmail.com"
-        },
-        "priority": "Low",
-        "state": "Planning",
-        "start_date": new Date(),
-        "deadline": new Date(),
-        "start_time": "01:00PM",
-        "end_time": "06:00PM",
-        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+    
+      {
+        "id": '0',
+        "name": "symphony social",
+        "priority": "High",
+        "assign": {},
+        "state": "In Progress",
+        "start_date": setDate(new Date(), 2),
+        "deadline": setDate(new Date(), 20),
+        "start_time": "",
+        "end_time": ""
       },
       {
-        "id": '1',
-        "name": "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
-        "assign": {
+          "id": '1',
+          "name": "create that react components",
+          "assign": {
+            "0": "marcdeus@gmail.com",
+            "1": "austinndjom@gmail.com",
+            "2": "dsfdsfsdfsd@gmail.com"
+          },
+          "priority": "High",
+          "state": "In Progress",
+          "start_date": setDate(new Date(), 6),
+          "deadline": setDate(new Date(), 8),
+          "start_time": "",
+          "end_time": ""
+      },
+      {
+          "id": '2',
+          "name": "write a redaction",
+          "assign": {
+            "0": "marcdeus@gmail.com"
+          },
+          "priority": "Low",
+          "state": "Planning",
+          "start_date": setDate(new Date(), 2),
+          "deadline": setDate(new Date(), 9),
+          "start_time": "01:00PM",
+          "end_time": "06:00PM",
+          "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+      "id": '3',
+      "name": "Lorem, ipsum dolor sit amet consectetur adipisicing elit",
+      "assign": {
           "0": "marcdeus@gmail.com",
           "1": "marcdeus@gmail.com",
           "2": "marcdeus@gmail.com",
           "3": "marcdeus@gmail.com"
-        },
-        "priority": "High",
-        "state": "Planning",
-        "start_date": new Date(),
-        "deadline": new Date(),
-        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      "priority": "High",
+      "state": "Planning",
+      "start_date": setDate(new Date(), 22),
+      "start_time": "",
+      "end_time": "",
+      "deadline": set(new Date(), {year: getYear(setDate(new Date(), 9)), month: getMonth(setDate(new Date(), 9)) +1, date: 9}),
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
       },
       {
-        "id": '1',
-        "name": "Lorem, ipsum dolor",
-        "assign": {
+      "id": '4',
+      "name": "Lorem, ipsum dolor",
+      "assign": {
           "0": "jessicaYik@gmail.com",
           "1": "marcdeus@gmail.com",
           "2": "danielsKalvin@gmail.com",
           "3": "samiraMarchal@gmail.com"
-        },
-        "priority": "Medium",
-        "state": "Done",
-        "start_date": new Date(),
-        "deadline": new Date(),
-        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      "priority": "Medium",
+      "state": "Done",
+      "start_date": setDate(new Date(), 5),
+      "deadline": setDate(new Date(), 12),
+      "start_time": "",
+      "end_time": "",
+      "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
       },
       {
-        "id": '1',
-        "name": "Lorem, ipsum",
-        "assign": {
-          "0": "jessicaYik@gmail.com"
-        },
-        "priority": "Low",
-        "state": "Done",
-        "start_date": new Date(),
-        "deadline": new Date(),
-        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+          "id": '5',
+          "name": "Lorem, ipsum",
+          "assign": {
+            "0": "jessicaYik@gmail.com"
+          },
+          "priority": "Low",
+          "state": "Done",
+          "start_date": setDate(new Date(), 1),
+          "deadline":setDate(new Date(), 11),
+          "start_time": "",
+          "end_time": "",
+          "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
       },
       {
-        "id": '1',
+          "id": '6',
+          "name": "sit amet consectetur adipisicing elit",
+          "assign": {
+            "0": "samiraMarchal@gmail.com"
+          },
+          "priority": "High",
+          "state": "Done",
+          "start_date": new Date(),
+          "deadline": new Date(),
+           "start_time": "08:10AM",
+          "end_time": "18:00AM",
+          "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '7',
         "name": "sit amet consectetur adipisicing elit",
+        "assign": {
+          "0": "samiraMarchal@gmail.com"
+        },
+        "priority": "High",
+        "state": "In Progress",
+        "start_date": setDate(new Date(), 4),
+        "deadline": setDate(new Date(), 4),
+          "start_time": "",
+        "end_time": "",
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '8',
+        "name": "Tenetur quos ad laboriosam assumenda hic",
+        "assign": {
+          "0": "samiraMarchal@gmail.com"
+        },
+        "priority": "High",
+        "state": "In Progress",
+        "start_date": setDate(new Date(), 4),
+        "deadline": setDate(new Date(), 4),
+          "start_time": "08:10AM",
+        "end_time": "18:00AM",
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '9',
+        "name": "sit amet consectetur adipisicing elit",
+        "assign": {
+          "0": "samiraMarchal@gmail.com"
+        },
+        "priority": "High",
+        "state": "Done",
+        "start_date": setDate(new Date(), 4),
+        "deadline": setDate(new Date(), 4),
+          "start_time": "08:10AM",
+        "end_time": "18:00AM",
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
+      {
+        "id": '10',
+        "name": "consectetur adipisicing",
         "assign": {
           "0": "samiraMarchal@gmail.com"
         },
         "priority": "High",
         "state": "Canceled",
-        "start_date": new Date(),
-        "deadline": new Date(),
+        "start_date": setDate(new Date(), 4),
+        "deadline": set(new Date(), {year: getYear(setDate(new Date(), 9)), month: getMonth(setDate(new Date(), 9)) +1, date: 4}),
+          "start_time": "",
+        "end_time": "",
         "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
       },
       {
-        "id": '1',
-        "name": "sit amet consectetur adipisicing elit",
+        "id": '11',
+        "name": "consectetur adipisicing",
         "assign": {
-          "0": "samiraMarchal@gmail.com"
+          "0": "samiraMarchal@gmail.com",
+          "1": "marcdevus@gmail.com"
         },
         "priority": "High",
-        "state": "Paused",
-        "start_date": new Date(),
-        "deadline": new Date(),
+        "state": "Canceled",
+        "start_date": setDate(new Date(), 4),
+        "deadline": set(new Date(), {year: getYear(setDate(new Date(), 9)), month: getMonth(setDate(new Date(), 9)) +1, date: 4}),
+          "start_time": "",
+        "end_time": "",
         "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
-      }
+      },
+      {
+        "id": '12',
+        "name": "consectetur adipisicing",
+        "assign": {
+          "0": "samiraMarchal@gmail.com",
+          "1": "marcdevus@gmail.com",
+          "2": "danielsKalvin@gmail.com"
+        },
+        "priority": "High",
+        "state": "Done",
+        "start_date": setDate(new Date(), 4),
+        "deadline": set(new Date(), {year: getYear(setDate(new Date(), 9)), month: getMonth(setDate(new Date(), 9)) +1, date: 4}),
+          "start_time": "08:10AM",
+        "end_time": "18:00AM",
+        "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur quos ad laboriosam assumenda hic, cumque optio veritatis architecto, molestiae, earum blanditiis illum minima. Facere vel perspiciatis debitis suscipit dolore iste."
+      },
   ]
 
 export const myprojects = [
@@ -152,8 +250,23 @@ export const myprojects = [
     "name": "symphony social",
     "priority": "High",
     "state": "In Progress",
+    "start_date": setDate(new Date(), 3),
+    "deadline": setDate(new Date(), 18),
+    "objectifs": {
+      "0": "Lorem ipsum dolor sit, amet consectetur adipisicing elit",
+      "1:": "amet consectetur adipisicing elit. Odio enim dolorem ipsum atque aperiam, minima veniam harum impedit ut ipsam beatae? Beatae, esse! Eaque rem eius fugiat tempore quia porro",
+      "2": "Lorem ipsum dolor sit, amet consectetur adipisicing elit,Odio enim dolorem ipsum atque aperiam. ",
+      "3": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facilis, numquam! Exercitationem explicabo quae necessitatibus distinctio architecto, aspernatur saepe provident consequatur eos sint doloribus minus accusamus, modi error impedit dolor sunt?"
+    }
+  },
+  {
+    "id": '1',
+    "name": "frontend dev",
+    "priority": "High",
+    "state": "In Progress",
     "start_date": new Date(),
-    "deadline": new Date(),
+    "deadline": setDate(new Date(), 20),
+    "objectifs": {}
   },
 ]
 
@@ -253,11 +366,6 @@ export const projectsRow = [
     name: 'deadline',
     icon: CalendarClock
   },
-  
-{
-    name: 'priority',
-    icon: Flag
-},
 {
   name: 'completion',
   icon: CalendarArrowUp

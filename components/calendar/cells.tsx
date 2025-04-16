@@ -1,13 +1,12 @@
 "use client"
-import React, { useState }  from "react";
+import React, { useEffect, useRef, useState }  from "react";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useContext } from "react";
 import { connectContext } from "@/hooks/useConnect";
 import { popupContext } from "@/hooks/usePopup";
 import { ProjectType, Tasks } from "@/types/global";
 import { CalendarNotice } from "./calendarNotice";
-import { MoreCalendarTaskAction } from "./moreCalenadarTask";
-
+import { format } from "date-fns";
 interface Props {
     pastVerify: boolean
     time: number,
@@ -28,47 +27,44 @@ const Cell:React.FC<Props> =  ({
     handleClick,
     isCurrentDate,
     futureVerify,
-    data,
+    data=[],
     project,
     currentDate,
     setCurrentDate,
     className = 'flex flex-col select-none transition-colors h-[80px] ', 
     cellsClass = clsx(
-      "pt-1 pb-1 w-full h-full",
+      "pt-1 pb-1 w-full h-full cursor-pointer",
       {
-        "bg-gray-800" : isCurrentDate,
+        "bg-zinc-600" : isCurrentDate,
         "text-[#6b6b6b]" : pastVerify,
         "text-gray-200 hover:bg-[#6b6b6b] cursor-pointer" : futureVerify
       }
     )
 }) =>  {
     const {setDispatch, state} = useContext(popupContext)
-    const {dateValue, setGroups} = useContext(connectContext)
-    const [position, setPosition] = useState({x:0, top:0})
-    function handleAction () {
-        switch (dateValue) {
-          case "start_date": 
-            setGroups({start_date: currentDate})
-            break;
-          case "deadline":
-            setGroups({deadline: currentDate})
-            break;
+    const {dateValue, setGroups, setFormTask} = useContext(connectContext)
+    const [tab, setTab] = useState<Tasks[]>([])
+      function handleAction () {
+          switch (dateValue) {
+            case "start_date": 
+              setGroups({start_date: currentDate})
+              break;
+            case "deadline":
+              setGroups({deadline: currentDate})
+              break;
+      }
     }
-}
+    useEffect(() => {
+      if (data) {
+        setTab(() => {
+          const newTab = data.filter((item) => (format(item.start_date, 'dd/MM/yyyy')  === format(currentDate, 'dd/MM/yyyy') || format(item.deadline, 'dd/MM/yyyy')  === format(currentDate, 'dd/MM/yyyy')))
+          return newTab
+        })
+      }
+    }, [state.calendartask])
     return (
         <div
         className={className}>
-          {state.calendarNotice &&
-            <div className="fixed w-[244px] h-[150px] z-50 text-sidebarText bg-primary rounded"
-                  style={{
-                      left: position.x + 'px',
-                      top: position.top + 'px',
-                  }}
-                  >
-                  <MoreCalendarTaskAction />
-            </div>
-                      }
-        
         <div
           key={time}
           onClick={() => {
@@ -76,27 +72,41 @@ const Cell:React.FC<Props> =  ({
               handleClick(time)
               handleAction()
               setDispatch({calendar: false})
-            } else {
-              alert("vous ne pouvez pas programmer un date dans le passe")
             }
             setCurrentDate && setCurrentDate(currentDate)
+            /*if (data) {
+              setFormTask((prevValue: Tasks) => {
+                let newTab = {...prevValue}
+                const newValue = {start_date: currentDate}
+                newTab = { ...newTab, ...newValue}
+                return newTab
+              })
+              setDispatch({task: true})
+            }*/
           }}
           className={cellsClass}
         >
           <p className="text-left text-sm font-medium ml-4">{time}</p>
             {data && 
              <div>
-                {data.map((item, index) => {
-                   return (
-                    <CalendarNotice 
-                      key={index}
-                      setCurrentDate={setCurrentDate} 
-                      item={item}
-                      currentDate={currentDate}
-                      setPosition={setPosition}
-                    />
-                   )
+                {tab.map((item, index) => {
+                  if (index <= 3) {
+                    return (
+                      <CalendarNotice 
+                        key={index}
+                        index={index}
+                        item={item}
+                        currentDate={currentDate}
+                        tab={tab}
+                      />
+                     )
+                  }
                 })}
+                {tab.length > 3 && 
+                <div className="text-sidebarText text-xs text-end hover:underline">
+                  <p>See {tab.length - 4} more.</p>
+                </div>
+                }
              </div>
             }
         </div>

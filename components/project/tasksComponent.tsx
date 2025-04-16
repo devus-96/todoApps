@@ -9,7 +9,7 @@ import { popupContext } from "@/hooks/usePopup"
 import { useForm } from "@/hooks/useForm"
 import { Tasks } from "@/types/global"
 import { format } from "date-fns"
-import { MoreVertical } from "lucide-react"
+import { BookOpen, MoreVertical } from "lucide-react"
 
 export const TaskTableComponent = ({
     item, 
@@ -39,7 +39,7 @@ export const TaskTableComponent = ({
     const menberPosition = usePosition()
     const {setDispatch} = useContext(popupContext)
     const nameTasks = useForm({name: ''})
-    const {setIndexes, setDateValue}= useContext(connectContext)
+    const {setIndexes, setDateValue, setTypeTime}= useContext(connectContext)
     //useEffect
     useEffect(() => {
         setPosition(positonState.position)
@@ -53,12 +53,21 @@ export const TaskTableComponent = ({
     useEffect(() => {
         setPosition(menberPosition.position)
     }, [menberPosition.position])
+    //function
+    function time () {
+        const start  = item.start_date as Date
+        const end = item.deadline as Date
+        const now = new Date()
+        const percent = (now.getTime() - start.getTime()) / (end.getTime() - start.getTime())
+        return percent * 100
+    }
+
     return (
         <>
         <tr key={index} className="py-2">
             <td className="border-r border-t border-primary flex-wrap w-[250px]">
                 <div className="relative">
-                    <div className="w-full flex items-center px-4 group">
+                    <div className="w-full flex justify-between items-center px-4 group">
                         <div className=" text-sidebarText rounded flex-center cursor-pointer">
                             <MoreVertical size={16} onClick={(e) => {
                                 setIndexes(occ)
@@ -66,16 +75,21 @@ export const TaskTableComponent = ({
                                 actionPosition.handlerBoundingClientRight(e, 150)
                             }} />
                         </div>
-                        <div className="">
+                        <div className="flex items-center justify-between w-[200px]">
                             <p onClick={() => {
                             setUpdateName(true)
                             setIndex(occ)
-                            }} className="ml-4 text-sm">{item.name}</p>
+                            }} className="ml-4 text-sm overflow-hidden text-ellipsis whitespace-nowrap">{item.name}</p>
+                            <div onClick={() => {
+                            window.location.assign('/teams/project/params=0')
+                            }} className="opacity-0 cursor-pointer group-hover:opacity-100 h-5 w-5 flex-center rounded hover:bg-sidebarText hover:text-gray-800">
+                            <BookOpen size={16} />
+                        </div>
                         </div>
                     </div>
                     {(updateName && index === occ) &&
                     <Menu active={updateName} setActive={setUpdateName}>
-                    <div className="absolute top-0 bg-secondary border border-borderCard">
+                    <div className="absolute top-0 z-30 bg-secondary border border-borderCard">
                         <input 
                         type="text" 
                         name='name'
@@ -103,8 +117,8 @@ export const TaskTableComponent = ({
                     }
                 </div>
             </td>
-            {item.assign &&
-            <td className="border-l border-r border-t border-primary py-2">
+            {Object.keys(item).includes('assign') &&
+            <td className="border-l border-r border-t border-primary">
                 <div>
                 {Object.entries(item.assign).map((menber, i) => {
                     return (
@@ -119,22 +133,18 @@ export const TaskTableComponent = ({
                         </div>
                     )
                 })}
-                    <div className="full py-1 px-1">
-                    <input 
-                            type="button" 
-                            className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 flex pl-2 py-1 gap-2 text-xs" 
-                            placeholder="Enter Email Adress" 
-                            onClick={(e) => {
-                                menberPosition.handlerBoundingClientRight(e, 250)
-                                setDispatch({
-                                    states: false,
-                                    priority: false,
-                                    menberList: true
-                                })
-                                setIndexes(occ)
-                            }}
-                            value='Add Participants'
-                        />
+                    <div className="full">
+                    <button onClick={(e) => {
+                        menberPosition.handlerBoundingClientRight(e, 250)
+                        setDispatch({
+                            states: false,
+                            priority: false,
+                            menberList: true
+                        })
+                        setIndexes(occ)
+                    }} className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 text-center text-xs">
+                        <p>Add Participants</p>
+                    </button>
                     </div>
                 </div>
             </td>
@@ -193,24 +203,60 @@ export const TaskTableComponent = ({
                     <p>{format(item.deadline, 'dd/MM/yyy')}</p>
                 </div>
             </td>
-            {item.start_time &&
+            {Object.keys(item).includes('start_time') &&
             <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
-                <div onClick={(e) => {setDispatch({clock: true})}}>
-                    <p>{item.start_time}</p>
+                <div onClick={(e) => {
+                    setDispatch({clock: true})
+                    setTypeTime('start')
+                    setDispatch({
+                        states: false,
+                        priority: false,
+                        menberList: false,
+                    })
+                    setIndexes(occ)
+                }}>
+                    {item.start_time ? <p>{item.start_time}</p> : 
+                    <div>
+                    <button className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 text-center text-xs">
+                    {   item.end_time ? '00:00AM' : 'Add start_time'}
+                    </button>
+                    </div>}
                 </div>
             </td>
             }
-            {item.deadline &&
+            {Object.keys(item).includes('end_time') &&
             <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
-                <div onClick={(e) => {setDispatch({clock: true})}}>
-                    <p>{item.end_time}</p>
+                <div onClick={(e) => {
+                    setDispatch({clock: true})
+                    setTypeTime('start')
+                    setIndexes(occ)
+                    setDispatch({
+                        states: false,
+                        priority: false,
+                        menberList: false,
+                        clock: true
+                    })
+                }}>
+                    {item.end_time ? <p>{item.end_time}</p> : 
+                    <div>
+                    <button className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 text-center text-xs">
+                        {item.start_time ? '00:00AM' : 'Add end_time'}
+                    </button>
+                    </div>}
                 </div>
             </td>
             }
             {completion &&
             <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
-                <div onClick={(e) => {setDispatch({clock: true})}}>
-                    <p>{item.end_time}</p>
+                <div className="flex items-center" onClick={(e) => {setDispatch({clock: true})}}>
+                    <div className="w-[80%] rounded-full h-1 bg-red-500">
+                        <div className="bg-blue-500 rounded-full h-1" style={{
+                            width: time().toFixed(2) + '%'
+                        }}>
+
+                        </div>
+                    </div>
+                    <p className="text-xs">{time().toFixed(2)}%</p>
                 </div>
             </td>
             }

@@ -18,7 +18,7 @@ export const HeaderProject = () => {
             options={optionsRepetition} 
             handler={setSelect}
             inputClass="flex items-center cursor-pointer justify-between text-gray-300" 
-            className="w-[300px] relative rounded bg-secondary hover:bg-primary p-1 text-sm border border-borderCard"
+            className="w-[300px] relative rounded bg-secondary hover:bg-primary p-1 text-sm border border-borderCard ml-8"
             seclectClass="absolute w-[250px] top-[45px] rounded p-5 mb-2 bg-primary shadow text-sidebarText"
             />
     </div>

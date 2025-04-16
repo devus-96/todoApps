@@ -19,13 +19,13 @@ export const CommentPopUp = () => {
                 </div>
                 <textarea placeholder="Ad comment" className="w-full bg-primary text-sidebarText border border-borderCard outline-none p-3 text-sm max-lg:mb-5"
                 ></textarea>
-                    <div className="">
+                    <div className="w-1/2 float-end my-4 mr-4">
                     <button 
                         type="submit" 
-                        className="btn1 flex-center gap-4 text-gray-800"
+                        className="w-full py-2 text-sm rounded-full bg-btnColor cursor-pointer focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300 flex-center gap-4 text-gray-800"
                         onClick={() => {
                         }}>
-                        <Spinner className="w-[16px] p-0" fill="#9eabe4" bg="#fff"/>create
+                        <Spinner className="w-[16px] p-0" fill="#9eabe4" bg="#fff"/>Add comment
                     </button>
                 </div>
             </div>

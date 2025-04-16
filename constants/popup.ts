@@ -5,9 +5,15 @@ export const taskOptions = [
     'Menbers',
     'States',
     'Priority',
-    'Daily tasks',
-    'weeklyTasks',
-    'Monthly tasks'
+    'Daily',
+    'Weekly',
+    'Monthly'
+]
+
+
+export const taskOptionsProject = [
+    'States',
+    'Priority',
 ]
 
 export const taskAction = [

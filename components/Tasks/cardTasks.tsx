@@ -43,12 +43,12 @@ export const CardTasks = ({
         <div className="w-full flex flex-col bg-primary rounded text-sidebarText my-1">
             <div className="flex flex-col w-full p-4 bg-gray-800 rounded">
             <div className="flex justify-between item-center w-full capitalize">
-                <div className="w-[150px]">
+                <div className="w-[75%]">
                     <p className="overflow-hidden text-ellipsis whitespace-nowrap">{item.name}</p>
                 </div>
                 <MoreVertical onClick={(e) => {
-                     setDispatch({taskAction: true})
-                     actionPosition.handlerBoundingClientLeft(e, 150, 244)
+                        setDispatch({taskAction: true})
+                        actionPosition.handlerBoundingClientLeft(e, 150, 244)
                 }} size={16} />
             </div>
             {item.description &&
