@@ -1,12 +1,11 @@
 "use client"
 
 import { connectContext } from "@/hooks/useConnect"
-import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
-import { EmailList } from "../Tasks/emailList"
+import { useContext, useEffect } from "react"
 import { popupContext } from "@/hooks/usePopup"
-import { useForm } from "@/hooks/useForm"
 import { usePosition } from "@/hooks/usePosition"
 import { Tasks } from "@/types/global"
+import { IoMdClose } from "react-icons/io"
 
 interface ProjectProps {
     index: number
@@ -21,10 +20,7 @@ interface ProjectProps {
         top: number;
     }>>,
     error: string,
-    handler: (e: React.FormEvent) => void,
-    handlerEmail: (e: React.KeyboardEvent) => void,
-    setEmails: Dispatch<SetStateAction<Tasks[]>>,
-    value: Tasks[]
+    value: Tasks[],
 }
 
 export const ProjectTable:React.FC<ProjectProps> = ({
@@ -37,19 +33,13 @@ export const ProjectTable:React.FC<ProjectProps> = ({
     end_time,
     setPosition,
     error,
-    handler,
-    handlerEmail,
-    setEmails,
-    value
+    value,
 }) => {
-    //useState
-    let [numberEmail, setNumberEmail] = useState(1)
-    //useRef
-    let numberEmailRef = useRef<number>(1)
     //useContext
-    const {setDateValue, setIndexes,setAction, setTypeTime} = useContext(connectContext)
+    const {setDateValue, setIndexes,setAction, setTypeTime, setGroups, groups} = useContext(connectContext)
     const {setDispatch} = useContext(popupContext)
     //hook
+    const menberPosition = usePosition()
     const positonState = usePosition()
     const priorityPosition = usePosition()
     //useEffect
@@ -59,58 +49,78 @@ export const ProjectTable:React.FC<ProjectProps> = ({
     useEffect(() => {
         setPosition(priorityPosition.position)
     }, [priorityPosition.position])
-    
-    function handleKeyUp (occurence: number, value: string, index: number) {
-        let objectifValue = {[`${occurence- 1}`]: value};
-        setEmails((prevElements: Tasks[]) => {
-            console.log(prevElements)
-            const nouveauTableau = [...prevElements];
-            nouveauTableau[index].assign = {...nouveauTableau[index].assign, ...objectifValue};
-            return nouveauTableau;
-        })
-    }
+    useEffect(() => {
+        setPosition(menberPosition.position)
+    }, [menberPosition.position])
     //Dom
     return (
     <>
         <tr>
-            <td className="border-l border-r border-t border-primary">
+            <td className="border-l border-r border-t border-primary w-[250px]">
                 <textarea
-                 onChange={(e) => handler(e)}
+                 onChange={(e) => {
+                    const target = e.target as HTMLTextAreaElement
+                    setGroups({name: target.value})
+                }}
                  onClick={() => setIndexes(index)}
-                 value={value[index].name}
+                 value={undefined}
                  name='name'
                  placeholder="Write task's name"
-                 className="px-4 py-2 w-full outline-none resize-none scrollbar-hide bg-secondary placeholder:text-holder" 
+                 className="px-4 py-2 w-full text-sm outline-none resize-none scrollbar-hide bg-secondary placeholder:text-holder" 
                  ></textarea>
             </td>
-            <td className="border-l border-r border-t border-primary">
-                <div className="full py-1 px-1">
-                {Array.from({ length: numberEmail }).map((_, i) => (
-                    <EmailList 
-                    key={i} 
-                    error={error} 
-                    handlerEmail={handlerEmail}  
-                    handleChange={handler} 
-                    value={value[index].assign} 
-                    index={index} 
-                    handle={handleKeyUp} 
-                    numberEmailRef={numberEmailRef} 
-                    setNumberEmail={setNumberEmail} 
-                    setEmails={setEmails}
-                    />
-                ))}
+            <td className="border-l border-r border-t border-primary w-[250px]">
+                <div>
+                <div>
+                {value[index].assign &&
+                    <div>
+                    {Object.entries(value[index].assign).map((menber, i) => {
+                        return (
+                        <div key={i}>
+                            <div className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
+                                <p>{menber[1]}</p>
+                                <IoMdClose onClick={() => {
+                                    setIndexes(index)
+                                    if (typeof value[index].assign !== 'string') {
+                                        let assign = value[index].assign
+                                        if (assign) {
+                                            delete assign[menber[0]]
+                                        }
+                                    }
+                                }} size={12} className="cursor-pointer"/>
+                            </div>
+                        </div>
+                        )
+                    })}
+                    </div>
+                }
+                </div>
+                <div className="full">
+                    <button onClick={(e) => {
+                        menberPosition.handlerBoundingClientRight(e, 250)
+                        setDispatch({
+                            states: false,
+                            priority: false,
+                            menberList: true
+                        })
+                        setIndexes(index)
+                        setGroups({})
+                    }} className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 text-center text-xs">
+                        <p>Add Participants</p>
+                    </button>
+                </div>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
-                <div className="w-full px-4 py-[4px]  text-start rounded text-sidebarText cursor-pointer duration-300 hover:bg-gray-800" onClick={(e) => {
+                <div className="statepriority_btn" onClick={(e) => {
                 }}>
-                    <div className="flex-center px-2 text-sm text-gray-800 rounded-full bg-[#60a5fa]">
+                    <div className="flex-center px-2 text-sm text-gray-800 rounded-full bg-[#a1a1aa]">
                         <p>{states}</p>
                     </div>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
-                <div className="w-full px-4 py-[4px]  text-start rounded text-sidebarText cursor-pointer duration-300 hover:bg-gray-800" onClick={(e) => {
+                <div className="statepriority_btn" onClick={(e) => {
                     setDispatch({states: false})
                     setDispatch({priority: true})
                     priorityPosition.handlerBoundingClientRight(e, 250)
@@ -120,43 +130,41 @@ export const ProjectTable:React.FC<ProjectProps> = ({
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary ">
-                <div className="w-full px-4 py-[4px] text-start text-sidebarText cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
+                <div className="taskTab_btn" onClick={() => {
                 setDispatch({calendar: true})
                 setDateValue('start_date')
                 setIndexes(index)
-                setAction('project')
                 }}>
                     <p>{start_date}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
-                <div className="w-full px-4 py-[4px] text-start text-sidebarText cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
+                <div className="taskTab_btn" onClick={() => {
                 setDispatch({calendar: true})
                 setDateValue('deadline')
                 setIndexes(index)
-                setAction('project')
                 }}>
                     <p>{deadline}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary ">
-                <div className="w-full px-4 py-[4px] text-start text-sidebarText cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
+                <div className="taskTab_btn" onClick={() => {
                 setDispatch({clock: true})
                 setIndexes(index)
                 setAction('project')
                 setTypeTime('start')
                 }}>
-                    <p>{start_time && start_time}</p>
+                    <p>{start_time ? start_time : "00:00AM"}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
-                <div className="w-full px-4 py-[4px] text-start text-sidebarText cursor-pointer  duration-300 hover:bg-gray-800" onClick={() => {
+                <div className="taskTab_btn" onClick={() => {
                 setDispatch({clock: true})
                 setIndexes(index)
                 setAction('project')
                 setTypeTime('end')
                 }}>
-                    <p>{end_time && end_time}</p>
+                    <p>{end_time ? end_time : "00:00AM"}</p>
                 </div>
             </td>
         </tr>

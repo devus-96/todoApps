@@ -1,26 +1,18 @@
 "use client"
 import React from "react";
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { Select } from "../ui/select";
 import { weeks } from "@/constants/task";
 import clsx from "clsx";
-import PopUpTags from "../PopUpTags";
-import { Calendar } from "../calendar/calendar";
-import { taskContext } from "@/hooks/useTask";
 import { format } from "date-fns";
-import { useForm } from "@/hooks/useForm";
 
 export default function Routine () {
     const [ select, setSelect ] = useState('day')
     const [monthly, setMonthly] = useState('')
     const [active, setActive] = useState<number[]>([])
-    const {state, setDispatch} = useContext(taskContext)
     const [date, setDate] = useState(new Date())
 
     return <>
-        <PopUpTags state={state.calendar}>
-            <Calendar value={date} onChange={setDate}/>
-        </PopUpTags>
         <div className="w-[300px] h-[420px] fixed top-0 left-[300px] bg-white px-4 py-4 space-y-4 rounded capitalize flex flex-col font-[family-name:var(--font-jetBrains-mono)]">
             <div className="space-y-4">
                 <h1>repeat every</h1>
@@ -69,7 +61,7 @@ export default function Routine () {
                     <div className="flex items-center space-x-4">
                         <input type="radio" name=""/>
                         <button className="btnClock" onClick={() => {
-                            setDispatch({calendar: 'calendar'})
+                            ({calendar: 'calendar'})
                         }}>{`${format(date, "ccc dd LLLL yyyy")}`}</button>
                     </div>
                     <div className="flex items-center space-x-4">

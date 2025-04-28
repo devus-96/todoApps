@@ -9,6 +9,8 @@ import { Cog } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { Projector } from 'lucide-react';
 
+const teamId = localStorage.getItem('teamId')
+
 export const userRoute = [
     {
         name: 'Teams',
@@ -99,41 +101,41 @@ export const teamsRoutes = [
     {
         name: 'Home',
         icons: House,
-        route: '/teams'
+        route: `/teams/${teamId}`
     },
     {
         name: 'Menbers',
         icons: Users,
-        route: '/teams/menber'
+        route: `/teams/${teamId}/menber`
     },
     {
         name: 'Meetings',
         icons: Projector,
-        route: '/teams/meetings'
+        route: `/teams/${teamId}/meetings`
     },
     {
         name: 'Tasks',
         icons: FileCheck2,
-        route: '/teams/tasks'
+        route: `/teams/${teamId}/tasks`
     },
     {
         name: 'Projects',
         icons: Target,
-        route: '/teams/project'
+        route: `/teams/${teamId}/project`
     },
     {
         name: 'History',
         icons: History,
-        route: '/teams/history'
+        route: `/teams/${teamId}/history`
     },
     {
         name: 'Trash',
         icons: Trash2,
-        route: '/teamstrash'
+        route: `/teams/${teamId}/trash`
     },
     {
         name: "Settings",
         icons: Cog,
-        route: '/teams/setting'
+        route: `/teams/${teamId}/setting`
     },
 ]

@@ -53,6 +53,10 @@ export default function Popup({
                       break;
                     case 'taskdetails':
                       setDispatch({taskdetails: false})
+                      break;
+                    case 'team':
+                      setDispatch({team: false})
+                      break;
                   }
                 }}
             />

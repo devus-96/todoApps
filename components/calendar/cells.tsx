@@ -42,16 +42,22 @@ const Cell:React.FC<Props> =  ({
     )
 }) =>  {
     const {setDispatch, state} = useContext(popupContext)
-    const {dateValue, setGroups, setFormTask} = useContext(connectContext)
+    const {dateValue, setGroups, setDate} = useContext(connectContext)
     const [tab, setTab] = useState<Tasks[]>([])
-      function handleAction () {
-          switch (dateValue) {
-            case "start_date": 
-              setGroups({start_date: currentDate})
-              break;
-            case "deadline":
-              setGroups({deadline: currentDate})
-              break;
+    function handleAction () {
+      switch (dateValue) {
+        case "start_date": 
+          setGroups({start_date: currentDate})
+          break;
+        case "deadline":
+          setGroups({deadline: currentDate})
+          break;
+        case "start":
+          setDate({start_date: currentDate})
+          break
+        case "end":
+          setDate({deadline: currentDate})
+          break
       }
     }
     useEffect(() => {

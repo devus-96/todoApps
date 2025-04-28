@@ -54,7 +54,14 @@ export const TaskPopUp = () => {
                                 setFormTask({...formTask, ...newValue})
                             }}
                         />
-                        <InputList name="project" Icons={Target} placeholder="can't create new status" items={states}/>
+                        <InputList 
+                            name="project" 
+                            Icons={Target} 
+                            placeholder="can't create new status" 
+                            items={states}
+                            setValue={setFormTask}
+                            values={formTask}
+                        />
                         <div className="flex-justify">
                             <div className="flex items-center space-x-4">
                                 <CalendarX /><p>Startdate</p>
@@ -103,10 +110,38 @@ export const TaskPopUp = () => {
                                 <p>{formTask.end_time !== '' ? formTask.end_time : 'Empty'}</p>
                             </div>
                         </div>
-                        <InputList name="state" Icons={CircleDashed} placeholder="can't create new status" items={states}/>
-                        <InputList name="priority" Icons={Flag} placeholder="can't create new priority" items={priority}/>
-                        <InputList name="tags" Icons={Tags} placeholder="comming soom !!!" items={project}/>
-                        <InputList name="assign" Icons={Users} placeholder="assign to your menbers" items={emails}/>
+                        <InputList 
+                            name="state" 
+                            Icons={CircleDashed} 
+                            placeholder="can't create new status" 
+                            items={states}
+                            setValue={setFormTask}
+                            values={formTask}
+                        />
+                        <InputList 
+                            name="priority" 
+                            Icons={Flag} 
+                            placeholder="can't create new priority" 
+                            items={priority}
+                            setValue={setFormTask}
+                            values={formTask}
+                        />
+                        <InputList 
+                            name="tags" 
+                            Icons={Tags} 
+                            placeholder="comming soom !!!" 
+                            items={project}
+                            setValue={setFormTask}
+                            values={formTask}
+                        />
+                        <InputList 
+                            name="assign" 
+                            Icons={Users} 
+                            placeholder="assign to your menbers" 
+                            items={emails}
+                            setValue={setFormTask}
+                            values={formTask}
+                        />
                         <textarea 
                             placeholder='add description'
                             name='description'
@@ -132,13 +167,3 @@ export const TaskPopUp = () => {
        </>
     )
 }
-
-/*
-<Select 
-    name="Does not repeat" 
-    options={optionsRepetition} 
-    handler={setSelect}
-    inputClass="flex items-center cursor-pointer p-2 rounded justify-between border border-sidebarText text-sidebarText" 
-    className="w-full relative rounded-lg p-2 text-sm"
-    seclectClass="absolute w-full top-[-300px] rounded p-5 mb-2 bg-primary shadow text-sidebarText"
-/>*/

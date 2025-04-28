@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { Dispatch, useContext, useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons";
 import { UserRoundPlus } from 'lucide-react';
 import { popupContext } from "@/hooks/usePopup";
@@ -16,6 +16,8 @@ interface InputLinkProps {
     Icons: IconType;
     placeholder: string
     items: string[]
+    setValue: Dispatch<any>,
+    values: any
 }
 
 export const InputList:React.FC<InputLinkProps> = ({
@@ -23,6 +25,8 @@ export const InputList:React.FC<InputLinkProps> = ({
     Icons,
     placeholder,
     items,
+    setValue,
+    values
 }) => {
     //useState
     const [active, setActive] = useState<boolean>(false)
@@ -33,8 +37,6 @@ export const InputList:React.FC<InputLinkProps> = ({
     const menuRef = useRef<HTMLDivElement>(null)
     const assign = useRef<string[]>([])
     const store = useRef(items)
-    //useContext
-    const {formTask, setFormTask} = useContext(connectContext)
     //hooks
     const emailFrom = useForm({email: ''}, emailSchema)
     //useEffect
@@ -67,22 +69,22 @@ export const InputList:React.FC<InputLinkProps> = ({
         }
     }
     function handleKeyUp (userEmail: string) {
-        setFormTask((prev: Tasks) => {
+        setValue((prev: Tasks) => {
             let nouveauTableau = {...prev};
-            nouveauTableau.assign = {...formTask.assign}
+            nouveauTableau.assign = {...values.assign}
             return nouveauTableau
         })
         indentique.current = false
         if (!emailFrom.error) {
-            for (const [_, email] of Object.entries(formTask.assign)) {
+            for (const [_, email] of Object.entries(values.assign)) {
                     if (email === userEmail) {
                         indentique.current = true
                     }
                 }
-            const numbElement = Object.keys(formTask.assign).length 
+            const numbElement = Object.keys(values.assign).length 
             let objectifValue = {[`${numbElement + 1}`]: userEmail}
             if (!indentique.current) {
-                setFormTask((prevElements: Tasks) => {
+                setValue((prevElements: Tasks) => {
                     let nouveauTableau = {...prevElements};
                     nouveauTableau.assign = {...nouveauTableau.assign, ...objectifValue};
                     return nouveauTableau;
@@ -107,15 +109,15 @@ export const InputList:React.FC<InputLinkProps> = ({
                 name !== 'assign' && setActive(true)
             }}>
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap capitalize">
-                    {name !== 'assign' ? <p>{(formTask[name] !== '') ? formTask[name] : 'Empty' }</p>:
+                    {name !== 'assign' ? <p>{(values[name]) ? values[name] : 'Empty' }</p>:
                     <div>
-                        {!formTask.assign ? <p>Empty</p> :
+                        {!values.assign ? <p>Empty</p> :
                         <div>
-                            {Object.entries(formTask.assign).map((item, index) => (
+                            {Object.entries(values.assign).map((item: any, index: number) => (
                             <div key={index} className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p className="text-xss">{item[1]}</p>
+                                <p className="text-xs">{item[1]}</p>
                                 <IoMdClose size={12} className="cursor-pointer" onClick={() => {
-                                   delete formTask.assign[item[0]]
+                                   delete values.assign[item[0]]
                                 }}/>
                             </div>
                         ))}
@@ -152,7 +154,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                             handleKeyUp(target.value)
                         } else {
                             let newvalue = {[name]: target.value}
-                            setFormTask({...formTask, ...newvalue})
+                            setValue({...values, ...newvalue})
                         }
                         setActive(false);
                     }
@@ -162,17 +164,17 @@ export const InputList:React.FC<InputLinkProps> = ({
                 <div className="px-4">
                     <div className="p-2">
                         <div>
-                            <p className="text-xs mb-4">create one or choose one</p>
+                            <p className="text-xs mb-4 text-sidebarText">create one or choose one</p>
                             {tab.map((item, index) => (
                                 <div onClick={() => {
                                     if (name == 'assign') {
                                         handleKeyUp(item)
                                     } else {
                                         let newvalue = {[name]: item}
-                                        setFormTask({...formTask, ...newvalue})
+                                        setValue({...values, ...newvalue})
                                     }
                                     setActive(false);
-                                }} key={index} className="text-xs p-1 mb-1 cursor-pointer hover:text-gray-800 hover:bg-sidebarText rounded"><p>{item}</p></div>
+                                }} key={index} className="text-xs p-1 mb-1 cursor-pointer text-sidebarText hover:text-gray-800 hover:bg-sidebarText"><p>{item}</p></div>
                             ))}
                         </div>
                     </div>

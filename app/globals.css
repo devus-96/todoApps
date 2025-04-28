@@ -23,6 +23,13 @@
   @apply px-14 py-[11px] rounded-full text-sm text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 }
 
+.taskTab_btn {
+  @apply w-full px-4 py-[4px] text-xs text-center text-sidebarText cursor-pointer  duration-300 hover:bg-gray-800
+}
+.statepriority_btn{
+  @apply w-full px-4 py-[4px] text-xs text-center rounded text-sidebarText cursor-pointer duration-300 hover:bg-gray-800
+}
+
 .btnEffect {
   @apply text-gray-700 bg-btnColor cursor-pointer hover:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-600 transition-colors duration-300
 }

@@ -1,20 +1,14 @@
 "use client"
-
+import React from "react"
 import { connectContext } from "@/hooks/useConnect"
 import { popupContext } from "@/hooks/usePopup"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { Menu } from "../global/Menu"
 import { Tasks } from "@/types/global"
 import { emails } from "@/constants/task"
 import { useForm } from "@/hooks/useForm"
 import { emailSchema } from "@/types/schema"
 import { UserRoundPlus } from "lucide-react"
-
-const priorityState = [
-    {name: 'low', color: '#a1a1aa'},
-    {name: 'medium', color: '#a78bfa'},
-    {name: 'high', color: '#f87171'},
-]
 
 export const Menbers = ({value}: {value: Tasks}) => {
     //useRef
@@ -24,7 +18,7 @@ export const Menbers = ({value}: {value: Tasks}) => {
     const [tab, setTab] = useState(emails)
     //useContext
     const {state, setDispatch} = useContext(popupContext)
-    const {setGroups, groups} = useContext(connectContext)
+    const {setGroups} = useContext(connectContext)
     //hooks
     const emailFrom = useForm({email: ''}, emailSchema)
     //function
@@ -33,42 +27,39 @@ export const Menbers = ({value}: {value: Tasks}) => {
         const newTab = store.current.filter((item) => {
             return target.value.toLowerCase() === item.slice(0, target.value.length).toLowerCase()
         })
-        console.log(newTab)
         if (target.value === '') {
             setTab(store.current)
-            console.log('hello2')
         } else {
-            console.log('hello')
             setTab(newTab)
         }
     }
     function handleKeyUp (userEmail: string) {
-        setGroups((prev: Record<string,any>) => {
-            let nouveauTableau = {...prev};
-            nouveauTableau.assign = {...value.assign}
-            return nouveauTableau
-        })
-        indentique.current = false
-        if (!emailFrom.error) {
-            for (const [_, email] of Object.entries(value.assign)) {
-                    if (email === userEmail) {
-                        indentique.current = true
+            setGroups((prev: Record<string,any>) => {
+                let nouveauTableau = {...prev};
+                nouveauTableau.assign = {...value.assign}
+                return nouveauTableau
+            })
+            indentique.current = false
+            if (!emailFrom.error) {
+                for (const [_, email] of Object.entries(value.assign)) {
+                        if (email === userEmail) {
+                            indentique.current = true
+                        }
                     }
+                const numbElement = Object.keys(value.assign).length 
+                let objectifValue = {[`${numbElement + 1}`]: userEmail}
+                if (!indentique.current) {
+                    setGroups((prevElements: Record<string,any>) => {
+                        let nouveauTableau = {...prevElements};
+                        nouveauTableau.assign = {...nouveauTableau.assign, ...objectifValue};
+                        return nouveauTableau;
+                    })
+                    emailFrom.setValue({email: ''})
+                } else {
+                    emailFrom.setError('this email is already call')
+                    emailFrom.setValue({email: ''})
                 }
-            const numbElement = Object.keys(value.assign).length 
-            let objectifValue = {[`${numbElement + 1}`]: userEmail}
-            if (!indentique.current) {
-                setGroups((prevElements: Record<string,any>) => {
-                    let nouveauTableau = {...prevElements};
-                    nouveauTableau.assign = {...nouveauTableau.assign, ...objectifValue};
-                    return nouveauTableau;
-                })
-                emailFrom.setValue({email: ''})
-            } else {
-                emailFrom.setError('this email is already call')
-                emailFrom.setValue({email: ''})
             }
-        }
     }
     //DOM
     return (
@@ -124,6 +115,5 @@ export const Menbers = ({value}: {value: Tasks}) => {
                 </div>
             </div>
         </Menu>
-        
     )
 }

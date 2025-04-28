@@ -36,11 +36,18 @@ export function HTTPClient (params?: string | null) : AxiosInstance {
           return config;
     })
 
-    instance.interceptors.response.use((res) =>{
-        console.info(`RESPONSE (${res.config.url}) => `, res);
-
-        return res
-    })
+    instance.interceptors.response.use(
+        (res) => {
+          console.info(`RESPONSE (${res.config.url}) => `, res);
+    
+          return res;
+        },
+        (error) => {
+          console.info(`RESPONSE-ERROR (${error.config.url}) => `, error.response);
+    
+          throw error;
+        }
+      );
 
     return instance;
 } 

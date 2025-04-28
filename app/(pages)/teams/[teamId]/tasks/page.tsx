@@ -88,6 +88,7 @@ const TaskPage = () => {
     //hook
     const sortPositon = usePosition()
     const tasks = useForm(project)
+    //function de trie
     const {values}  = useFilter(sortList, storeTasks.current)
     useEffect(() => {tasks.setValue(() => values)}, [values])
     //DOM

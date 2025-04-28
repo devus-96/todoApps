@@ -41,7 +41,6 @@ export async function get (code: string, url: string) {
         }).then ((res) => {
             let datasString = JSON.stringify(res.data);
             let datas  = JSON.parse(datasString);
-            console.log(datas.id_token, datas)
             setCookie('user_session', datas.id_token, {
                 maxAge: datas.expires_in || 24*60*60,
             });
@@ -72,6 +71,6 @@ export async function post (url: string, formData: FormData) {
         });
         setCookie('firstname', response.data.firstname)
         setCookie('lastname', response.data.lastname)
-        window.location.assign('/')
+        window.location.assign('/users')
     })
 }

@@ -21,15 +21,15 @@ const SideBar = () => {
                     <Image src='/logo.svg' alt="logo" width={40} height={40} /><p className="text-white">TODOAPPS</p>
                 </div>
                 <div className="h-2/3 mt-8">
-                    <div className="mb-4 border-t border-sidebarText px-4">
+                    <div className="mb-4 border-sidebarText px-4">
                         {userRoute.map((item, index) => {
                             if (item.name !== 'Company' && item.name !== 'Teams') {
                                 return  <SidebarLink key={index} item={item} />
                             }
                         })}
                     </div>
-                    <div className="mb-4 border-t border-sidebarText">
-                        <p className="uppercase ml-2 text-sm my-4 text-btnColor">workspace</p>
+                    <div className="mb-4 border-sidebarText">
+                        <p className="uppercase ml-4 text-sm my-4 text-btnColor">workspace</p>
                         {userRoute.map((item) => {
                             if (item.name === 'Company') {
                                 return (

@@ -79,7 +79,7 @@ export const TaskTableComponent = ({
                             <p onClick={() => {
                             setUpdateName(true)
                             setIndex(occ)
-                            }} className="ml-4 text-sm overflow-hidden text-ellipsis whitespace-nowrap">{item.name}</p>
+                            }} className="ml-4 text-xs overflow-hidden text-ellipsis whitespace-nowrap">{item.name}</p>
                             <div onClick={() => {
                             window.location.assign('/teams/project/params=0')
                             }} className="opacity-0 cursor-pointer group-hover:opacity-100 h-5 w-5 flex-center rounded hover:bg-sidebarText hover:text-gray-800">
@@ -123,7 +123,7 @@ export const TaskTableComponent = ({
                 {Object.entries(item.assign).map((menber, i) => {
                     return (
                         <div key={i}>
-                            <div className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
+                            <div className="text-xs flex items-center bg-gray-800 text-sidebarText justify-between p-1">
                                 <p>{menber[1]}</p>
                                 <IoMdClose onClick={() => {
                                     setIndex(occ)
@@ -149,7 +149,7 @@ export const TaskTableComponent = ({
                 </div>
             </td>
             }
-            <td className="border-l border-r border-t border-primary cursor-pointer">
+            <td className="border-l border-r border-t border-primary cursor-pointer text-xs">
                 <div onClick={(e) => {
                     priorityPosition.handlerBoundingClientRight(e, 280)
                     setDispatch({
@@ -158,7 +158,7 @@ export const TaskTableComponent = ({
                         menberList: false
                     })
                     setIndexes(occ)
-                }} className={clsx("flex-center px-2 text-sm text-gray-800 rounded-full", {
+                }} className={clsx("flex-center px-2 text-xs text-gray-800 rounded-full", {
                     "bg-[#a1a1aa]" : item.state.toLowerCase() === 'canceled',
                     "bg-[#34d399]" : item.state.toLowerCase() === 'done',
                     "bg-[#fbbf24]" : item.state.toLowerCase() === 'in progress',
@@ -177,7 +177,7 @@ export const TaskTableComponent = ({
                     })
                     setIndexes(occ)
                     priorityPosition.handlerBoundingClientRight(e, 250)
-                }} className={clsx("flex-center px-2 text-sm text-gray-800 rounded-full", {
+                }} className={clsx("flex-center px-2 text-xs text-gray-800 rounded-full", {
                     "bg-[#a1a1aa]" : item.priority.toLowerCase() === 'low',
                     "bg-[#a78bfa]" : item.priority.toLowerCase() === 'medium',
                     "bg-[#f87171]" : item.priority.toLowerCase() === 'high',
@@ -185,7 +185,7 @@ export const TaskTableComponent = ({
                     <p>{item.priority}</p>
                 </div>
             </td>
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
                 <div onClick={(e) => {
                     setDateValue('start_date')
                     setIndexes(occ)
@@ -194,7 +194,7 @@ export const TaskTableComponent = ({
                     <p>{format(item.start_date, 'dd/MM/yyy')}</p>
                 </div>
             </td>
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
                 <div onClick={(e) => {
                     setDispatch({calendar: true})
                     setDateValue('deadline')
@@ -204,7 +204,7 @@ export const TaskTableComponent = ({
                 </div>
             </td>
             {Object.keys(item).includes('start_time') &&
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
                 <div onClick={(e) => {
                     setDispatch({clock: true})
                     setTypeTime('start')
@@ -225,7 +225,7 @@ export const TaskTableComponent = ({
             </td>
             }
             {Object.keys(item).includes('end_time') &&
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
                 <div onClick={(e) => {
                     setDispatch({clock: true})
                     setTypeTime('start')
@@ -247,7 +247,7 @@ export const TaskTableComponent = ({
             </td>
             }
             {completion &&
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-sm">
+            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
                 <div className="flex items-center" onClick={(e) => {setDispatch({clock: true})}}>
                     <div className="w-[80%] rounded-full h-1 bg-red-500">
                         <div className="bg-blue-500 rounded-full h-1" style={{

@@ -1,49 +1,56 @@
-import { FC, useEffect, useState } from "react"
+import { FC } from "react"
 import React from "react"
-import { AxiosError } from "axios"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
 interface messageProps {
-    type?: string
-    message: unknown
+    message:  string
+    mood: {bg: string, text: string} | null
+    getter: unknown[]
+    next?: () => void
+    prev?: () => void
+    accessoire?: boolean
 }
 
 
 export const Message:FC<messageProps> = ({
-    type,
-    message
+    message,
+    mood,
+    getter,
+    next,
+    prev,
+    accessoire=true
 }) => {
-    const [mood, setMood] = useState<{state: string, message: any}>()
-
-    useEffect(() => {
-        if (message instanceof AxiosError) {
-            switch (message.status) {
-                case 400:
-                    setMood({state: 'warning', message: message.response?.data.message});
-                    break;
-                case 401:
-                    setMood({state: 'warning', message: message.response?.data.message});
-                    break;
-                case 500:
-                    setMood({state: 'failed', message: message.message})
-                    break;
-            }
-            if (message.status === undefined) setMood({state: 'failed', message: message.message + "check your network connection"})
-        } else if (message instanceof Error) {
-            setMood({state: 'failed', message: message.message})
+    return <div className={`w-full py-4 px-4 flex items-center justify-between`} style={{
+        background: `${mood?.bg}`
+   }}> 
+        {accessoire && 
+            <div className="flex items-center space-x-4" style={{
+                        color: `${mood?.text}`
+                }}>
+                <div className="w-8 h-8 border-2 flex items-center justify-center text-sm cursor-pointer" style={{
+                    borderColor: `${mood?.bg}`
+                }}>
+                    <ArrowLeft size={16} onClick={() => {prev && prev()}} />
+                </div>
+                <div className="w-8 h-8 border-2 flex items-center justify-center text-sm cursor-pointer" style={{
+                    borderColor: `${mood?.bg}`
+                }}>
+                    <ArrowRight size={16} onClick={() => {next && next()}} />
+                </div>
+            </div>
         }
-        else {
-            setMood({state: 'failed', message: message})
-        }
-    }, [message])
-
-    
-    return <div> 
-        <div className="w-full mt-4 text-sm rounded-lg text-center">
-               <p style={{
-                    color: mood?.state === 'warning' ? '#eab308' : '#ef4444'
-               }}>{mood?.message}</p>
+        <div className="w-fit text-sm rounded-lg">
+               <p className="text-sm overflow-hidden text-ellipsis whitespace-nowrap" style={{
+                    color: `${mood?.text}`
+               }}>{message}</p>
         </div>
-    
+        {accessoire &&
+        <div className="w-8 h-8 flex items-center justify-center text-sm cursor-pointer rounded-full" style={{
+            background: `${mood?.bg}`,
+            color: `${mood?.text}`
+        }}>
+            {getter.length}
+        </div>
+        }
     </div>
-    
 } 

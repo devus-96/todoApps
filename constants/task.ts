@@ -13,6 +13,28 @@ export const weeks = [
 
 export const sortTask = {assign: '', priority: '',  state: '', daily: '', weekly: '', monthly: ''}
 
+export const defaultValue = [{
+    name: '',
+    assign: {},
+    priority: 'Empty',
+    state: 'not started',
+    start_date: new Date(),
+    deadline: new Date(),
+    start_time: null,
+    end_time: null,
+    description: '',
+}]
+export const projectDefaultValue = {
+    name: '',
+    objectifs: null,
+    start_date: new Date(),
+    deadline: new Date(),
+    repeat: null,
+    description: '',
+    priority: '',
+    state: ''
+}
+
   export const weeksMin = [
     "sun",
     "mon",
@@ -44,11 +66,11 @@ export const priority = [
     'medim'
 ]
 export let states = [
-    "Planning",
-    "Paused",
-    'In Progress',
-    'Done',
-    'Canceled',
+    "not started",
+    "paused",
+    'in Progress',
+    'done',
+    'canceled',
 ]
 
 export const project = [
@@ -272,11 +294,11 @@ export const myprojects = [
 
 
 export const statusState = [
-    {name: 'Canceled', color: '#a1a1aa'},
+    {name: 'Canceled', color: '#f87171'},
     {name: 'Done', color: '#34d399'},
     {name: 'Paused', color:'#d782ff'},
     {name: 'In Progress', color: '#fbbf24'},
-    {name: 'Planning', color: '#60a5fa '}
+    {name: 'not started', color: '#a1a1aa '}
 ]
 
 export const emails = [

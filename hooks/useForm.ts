@@ -3,8 +3,9 @@ import React from "react"
 import { useContext, useRef, useState } from "react"
 import { object, z } from "zod";
 import { connectContext } from "./useConnect";
+import { ProjectType } from "@/types/global";
 
-export function useForm(initialValues: any , schema: any = object({})) {
+export function useForm(initialValues: any , schema: z.AnyZodObject | any = object({})) {
     const storeValue = useRef(initialValues)
     const [value, setValue] = useState(initialValues);
     const emails = useRef<string[]>([]);
@@ -77,19 +78,58 @@ export function useForm(initialValues: any , schema: any = object({})) {
     }
 
     function handleFilter (e: React.ChangeEvent) {
-            let target = e.target as HTMLInputElement;
-            if (target.value === '') {
-                setValue(storeValue.current)
-            } else {
-                setValue(() => {
-                    const newtab = [...storeValue.current]
-                    const tab = newtab.filter((item) => {
-                        return target.value.toLowerCase() === item.name.slice(0, target.value.length).toLowerCase()
-                    })
-                    return tab
+        let target = e.target as HTMLInputElement;
+        if (target.value === '') {
+            setValue(storeValue.current)
+        } else {
+            setValue(() => {
+                const newtab = [...storeValue.current]
+                const tab = newtab.filter((item) => {
+                    return target.value.toLowerCase() === item.name.slice(0, target.value.length).toLowerCase()
+                })
+                return tab
+            })
+        }
+    }
+
+    function verifyDate (value: any) {
+        if (value.start_date?.getTime() > value.deadline?.getTime()) {
+            throw new Error('la date de debut doit venir avant la date de fin')
+        }
+    }
+
+    function validate() {
+        return schema.parse(value);
+    }
+
+    function verifyTasksDate (value: ProjectType) {
+        const startdate = value.start_date as Date
+        const deadline = value.start_date as Date
+        if (startdate.getTime() < value.start_date.getTime()) 
+            throw new Error('vous ne pouvey programmer un tache avant le debut du projet')
+        if (deadline.getTime() > value.deadline.getTime()) 
+            throw new Error('vous ne pouvey programmer un tache apres la fin du projet')
+    }
+
+    function submit(callback?: (values: any) => Promise<any>) {
+        try {
+            verifyDate(value)
+            validate()
+            if (callback !== undefined) {
+                return callback(value).then((res) => {
+                    return Promise.resolve(res)
+                }).catch((error) => {
+                    return Promise.reject(error)
                 })
             }
+            return Promise.resolve(value)
+        } catch (err: unknown) {
+            if (err instanceof z.ZodError) {
+                return Promise.reject(err.errors[0].message)
+            }
+            return Promise.reject(err)
         }
+      }
 
     return {
         handleClick,
@@ -101,6 +141,9 @@ export function useForm(initialValues: any , schema: any = object({})) {
         handleChange,
         setValue,
         handleFilter,
-        storeValue
+        storeValue,
+        submit,
+        verifyDate,
+        verifyTasksDate
     }
 }

@@ -50,7 +50,9 @@ type formTask = ((prevElements: Tasks) => Tasks) | Tasks
 export const connectContext = createContext({
     currTaskDetails: {data: undefined} as {data: Tasks | undefined},
     setCurrTaskDetails: (data: any) => {},
-    groups: {},
+    date: {},
+    setDate: (date: any) => {},
+    groups: {} as any,
     setGroups: (action:any) => {},
     formProject: projectDefaultValue,
     setFormProject: (action:any) => {},
@@ -78,6 +80,7 @@ export function ConnectContextProvider ({children}: {children: React.ReactNode})
     const [action, setAction] = useState<string>('')
 
     const [groups, setGroups] = useState<Record<string, any>>({})
+    const [date, setDate] = useState<Record<string, any>>({})
     const [currTaskDetails, setCurrTaskDetails] = useState<{data: Tasks | undefined}>({data: undefined})
 
     useEffect(() => {
@@ -88,11 +91,11 @@ export function ConnectContextProvider ({children}: {children: React.ReactNode})
         console.log(formProject)
     }, [formProject])
 
-    useEffect(() => {console.log(groups)}, [groups])
-
     return <connectContext.Provider value={{
         currTaskDetails,
         setCurrTaskDetails,
+        date,
+        setDate,
         groups,
         setGroups,
         formProject,

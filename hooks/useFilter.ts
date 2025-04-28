@@ -1,6 +1,6 @@
 "use client"
 import { sortListProps } from "@/components/Tasks/sortTasks";
-import { format, isDate } from "date-fns";
+import { format } from "date-fns";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -68,32 +68,3 @@ export function useFilter(defaultValue: sortListProps, store: any) {
             values
         }
 }
-
-/*
-/*useEffect(() => {
-        if (sortList.priority !== '' || sortList.state !== '' || sortList.assign !== '') {
-            tasks.setValue(() => {
-                const newtab = [...storeTasks.current]
-                const tab = newtab.filter((item: Tasks) => {
-                    let condition = true;
-                    let condition2 = true;
-                    let condition3 = true;
-                    for(const [key, value] of Object.entries(sortList)) {
-                        if (value !== '' && key === 'state') {
-                            condition = item[key].toLowerCase() === value.toLowerCase()
-                        } else if (value !== '' && key === 'priority') {
-                            condition2 = item[key].toLowerCase() === value.toLowerCase()
-                        } else if (value !== '' && key === 'assign') {
-                            const menber = sortByMenbers(item.assign, value)
-                            condition3 = menber === value
-                        }
-                    }
-                    return condition && condition2 && condition3
-                })
-                return tab;
-            })
-        } else {
-            tasks.setValue(storeTasks.current)
-        }
-    }, [sortList])*/
-

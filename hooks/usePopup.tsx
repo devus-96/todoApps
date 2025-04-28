@@ -10,7 +10,7 @@ const defaultValue = {
     states: false,
     priority: false,
     invitation: false,
-    company: false,
+    team: false,
     task: false,
     project: false,
     calendar: false,

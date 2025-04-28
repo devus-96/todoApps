@@ -1,3 +1,4 @@
+import React from "react";
 import { usePathname } from "next/navigation";
 import { linkProps } from "./sidebarSection";
 import clsx from "clsx";
@@ -6,28 +7,46 @@ import { useContext, useState } from "react";
 import { popupContext } from "@/hooks/usePopup";
 import { Spinner } from "../ui/spinner";
 import Link from "next/link";
-
-const companies = [
-    {name: "symphony social"},
-    {name: "axe digital"},
-    {name: "OPEP CAPITAL"},
-    {name: "Music Groupcasascakjbkjbj"},
-    {name: "symphony social"},
-    {name: "axe digital"},
-    {name: "OPEP CAPITAL"},
-    {name: "Music Groupcasascakjbkjbjkb"},
-    {name: "symphony social"},
-    {name: "axe digital"},
-    {name: "OPEP CAPITAL"},
-    {name: "Music Groupcasascakjbkjbjkb"}]
+import { fetchTeamsProjects } from "@/api/project";
+import { useMessage } from "@/hooks/useMessage";
+import { Message } from "../ui/message";
+import SidebarProject from "../project/sidebarProject";
 
 export const SidebarLink:React.FC<linkProps> = ({item}) => {
+    //usePathname
     const pathname = usePathname()
+    //useContext
     const {setDispatch} = useContext(popupContext)
+    //useState
     const [active, setActive] = useState<boolean>(false);
     const [projectIcon, setProjectIcons] = useState(true);
+    const [projects, setProjects] = useState<any>()
+   //hook
+    const {setGetter, message, mood, getter, next, prev} = useMessage()
+    const [isLoading, setLoading] = useState<boolean>(false)
+    //function
+    function fetchProjects () {
+        setGetter([])
+        setLoading(true)
+        fetchTeamsProjects().then((res) => {
+            setProjects(res)
+        }).catch((err) => {
+            setGetter(prev => [...prev, err])
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
+    //DOM
     return (
         <div>
+          <SidebarProject data={projects}  />
+            {message && <Message 
+                message={message} 
+                mood={mood} 
+                getter={getter}
+                next={next}
+                prev={prev}
+            />}
             <div key={item.name}
                 onClick={(e)=> {
                     e.stopPropagation()
@@ -41,13 +60,14 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                 }}
             >
             <div className={clsx("mt-4 h-[44px] rounded transition duration-300 cursor-pointer hover:bg-sidebarText hover:text-gray-800",{
+        
                 "bg-btnColor text-gray-800": pathname === item.route,
                 'text-sidebarText' :  pathname !== item.route,
                 'group' : item.name === 'Tasks' || item.name === 'Menbers' || item.name === 'Projects' || item.name === 'Meetings'
             })}>
-                <div className="flex items-center space-x-4 h-full  pl-4" style={{
-                    paddingLeft: item.name !== 'Tasks' ? 16 + 'px' : "0"
-                }}>
+                <div className={clsx("flex items-center h-full", {
+                    'space-x-4 pl-4' : item.name !== 'Tasks'
+                })}>
                     {item.name !== 'Tasks' ? <item.icons size={16} /> :
                         <>
                         {projectIcon ?
@@ -66,8 +86,11 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                                 <div onClick={(e) => {
                                 e.stopPropagation();
                                 setActive(true)
+                                console.log('hello')
                             }} className="w-full h-full flex-center px-4 ">
-                                <FaChevronRight size={12} title={`${item.name}`}/>
+                                <FaChevronRight onClick={() => {
+                                    fetchProjects()
+                                }} size={12} title={`${item.name}`}/>
                             </div>}
                         </div>
                         }
@@ -82,7 +105,8 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                             setDispatch({task: true})
                         }
                         else if (item.name === 'Projects') {
-                            window.location.assign('/teams/project/new')
+                            const teamId = localStorage.getItem('teamId')
+                            window.location.assign(`/teams/${teamId}/project/new`)
                         }
                     }} className="flex-center w-8 h-full duration-150 cursor-pointer opacity-0 group-hover:opacity-100 hover:bg-gray-800 hover:text-sidebarText">
                         {(item.name === 'Tasks' || item.name === 'Menbers' || item.name === 'Projects' || item.name === 'Meetings') && 
@@ -96,13 +120,13 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                 <div className={clsx('', {
                         "hidden": !active
                     })}>
-                        {false && <Spinner className="w-[18px] p-0" bg="#fff" fill="#171515" />}
-                        {companies.map((company, index) => {
+                        {isLoading && <Spinner className="w-[18px] p-0 ml-4 mt-2" bg="#fff" fill="#171515" />}
+                        {projects?.data.map((company: any, index: number) => {
                             return <div key={index}>
                                 {index < 3 && <div className="rounded text-sm mt-4 text-sidebarText  hover:bg-sidebarText hover:text-gray-800">
                                 <Link 
                                 href={item.route} 
-                                className="block  py-2 rounded "
+                                className="block  py-2 rounded"
                                 onClick={() => localStorage.setItem('workspace', company.name)}>
                                     <ul className="w-full list-disc pl-12 overflow-hidden text-ellipsis whitespace-nowrap">
                                         <li><p className="text-xs">{company.name}</p></li>
@@ -111,7 +135,7 @@ export const SidebarLink:React.FC<linkProps> = ({item}) => {
                             </div>}
                             </div>
                         })}
-                        {companies.length > 3  && <div onClick={()=> setDispatch({projectList: true})
+                        {projects?.data.length > 3  && <div onClick={()=> setDispatch({projectList: true})
                         } className="py-1 mt-4 pl-12 cursor-pointer rounded text-xs text-sidebarText hover:underline">
                              <p>See More</p>
                         </div>}
