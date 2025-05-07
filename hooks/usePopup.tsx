@@ -22,6 +22,7 @@ const defaultValue = {
     tableTask: true,
     boardTask: false,
     menberList: false,
+    menberList2: false,
     comment: false,
     calendarNotice: false,
     taskdetails: false,

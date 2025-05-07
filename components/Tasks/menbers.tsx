@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { connectContext } from "@/hooks/useConnect"
 import { popupContext } from "@/hooks/usePopup"
 import { useContext, useRef, useState } from "react"
@@ -10,7 +10,7 @@ import { useForm } from "@/hooks/useForm"
 import { emailSchema } from "@/types/schema"
 import { UserRoundPlus } from "lucide-react"
 
-export const Menbers = ({value}: {value: Tasks}) => {
+export const Menbers = ({value, position}: {value: Tasks, position: {x: number, top: number}}) => {
     //useRef
     const indentique = useRef(false)
     const store = useRef(emails)
@@ -34,24 +34,22 @@ export const Menbers = ({value}: {value: Tasks}) => {
         }
     }
     function handleKeyUp (userEmail: string) {
-            setGroups((prev: Record<string,any>) => {
-                let nouveauTableau = {...prev};
-                nouveauTableau.assign = {...value.assign}
-                return nouveauTableau
-            })
+            let jsonAssign  = {}
+            value.assign !== '' ? jsonAssign = JSON.parse(value.assign) : jsonAssign  = {}
             indentique.current = false
             if (!emailFrom.error) {
-                for (const [_, email] of Object.entries(value.assign)) {
+                for (const [_, email] of Object.entries(jsonAssign)) {
                         if (email === userEmail) {
                             indentique.current = true
                         }
                     }
-                const numbElement = Object.keys(value.assign).length 
+                const numbElement = Object.keys(jsonAssign).length 
                 let objectifValue = {[`${numbElement + 1}`]: userEmail}
+                objectifValue = {...objectifValue, ...jsonAssign}
                 if (!indentique.current) {
                     setGroups((prevElements: Record<string,any>) => {
                         let nouveauTableau = {...prevElements};
-                        nouveauTableau.assign = {...nouveauTableau.assign, ...objectifValue};
+                        nouveauTableau.assign = JSON.stringify(objectifValue);
                         return nouveauTableau;
                     })
                     emailFrom.setValue({email: ''})
@@ -61,10 +59,15 @@ export const Menbers = ({value}: {value: Tasks}) => {
                 }
             }
     }
-    //DOM
+    //DOMlog()
+    useEffect(() => console.log(position), [position])
     return (
-        <Menu active={state.priority} dispatch='priority'>
-            <div className={`flex flex-col relative w-[250px] text-sidebarText h-[250px] overflow-y-auto bg-primary rounded border border-borderCard`}>
+        <>
+            <div className='fixed z-30' style={{
+                    left: position.x + 'px',
+                    top: position.top + 'px',
+            }}>
+                <div className={`flex flex-col relative w-[250px] text-sidebarText h-[250px] overflow-y-auto bg-primary rounded border border-borderCard`}>
                 {emailFrom.error !== '' && 
                 <div className="w-full absolute top-0 text-center">
                     <p className="text-center text-xs text-red-400">{emailFrom.error}</p>
@@ -86,7 +89,7 @@ export const Menbers = ({value}: {value: Tasks}) => {
                             onKeyUp={(e) => {
                                 if (e.key === 'Enter') {
                                     handleKeyUp(emailFrom.value.email)
-                                    setDispatch({menberList: false})
+                                    setDispatch({menberList: false, menberList2: false})
                                     document.body.style.overflow = 'auto'
                                 }
                             }}
@@ -96,7 +99,7 @@ export const Menbers = ({value}: {value: Tasks}) => {
                     {tab.map((item, index) => (
                         <div onClick={() => {
                             handleKeyUp(item)
-                            setDispatch({menberList: false})
+                            setDispatch({menberList: false, menberList2: false})
                             document.body.style.overflow = 'auto'
                         }} key={index} className="p-1 rounded text-sidebarText hover:bg-secondary cursor-pointer text-xs">
                         <p>{item}</p>
@@ -114,6 +117,7 @@ export const Menbers = ({value}: {value: Tasks}) => {
                     }
                 </div>
             </div>
-        </Menu>
+            </div>
+    </>
     )
 }

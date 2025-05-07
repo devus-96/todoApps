@@ -9,6 +9,7 @@ import { HTTPClient } from "@/lib/https";
 import { Message } from "../ui/message";
 import { popupContext } from "@/hooks/usePopup";
 import { useForm } from "@/hooks/useForm";
+import { messageContext } from "@/hooks/useMessage";
 
 const roles = [
     'administrator: Can view stats, change site settings, invite people, approve tasks, Can view stats,submit tasks and create new task',
@@ -26,6 +27,7 @@ export const InvitationPopUp = () => {
     const [more, setMore] = useState<boolean>(false)
     //useContext
     const {state} = useContext(popupContext)
+    const {setGetter, message, mood, getter, next, prev} = useContext(messageContext)
     //hook
     const {handleClick, handleEmail, error, setError, emails} = useForm(defaultCalue)
 
@@ -33,7 +35,14 @@ export const InvitationPopUp = () => {
         <>
             {state.invitation && 
             <Popup width="400px" height="auto" modeNight={true} popup='invitation' className="rounded-lg">
-                <Message message={error} />
+                {message && <Message
+                    message={message}
+                    mood={mood}
+                    getter={getter}
+                    next={next}
+                    prev={prev}
+                    accessoire={false}
+                />}
                 <div className="text-sidebarText p-4 space-y-4">
                     <h1 className="text-gray-300 text-center">Invite Menbers</h1>
                     <p className="text-xs text-center">Write emails in field bellow and click Enter</p>

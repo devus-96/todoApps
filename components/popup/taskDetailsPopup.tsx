@@ -20,10 +20,9 @@ export const TaskDetails = ({task}:{task:{data: Tasks | undefined}}) => {
         <Popup width="400px" height="auto" popup='taskdetails' className="rounded-lg">
             <div className="text-sidebarText p-4 space-y-4">
                 <h1 className="text-gray-300 text-center">Task Details</h1>
-                <p className="text-xs text-center">task form {format(task.data?.start_date, 'dd/MM/yyyy')} to {format(task.data?.deadline, 'dd/MM/yyyy')}</p>
+                <p className="text-xs text-center">task form {task.data?.start_date} to {task.data?.deadline}</p>
                 <div className="text-sm space-y-4">
                     <p className="text-start">Name: {task.data?.name}</p>
-                    {task.data?.project && <p>Project: {task.data?.project}</p>}
                     <div className="flex items-center space-x-2">
                         <p>priority</p>
                         <div onClick={(e) => {
@@ -65,7 +64,6 @@ export const TaskDetails = ({task}:{task:{data: Tasks | undefined}}) => {
                                     <div className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
                                         <p>{menber[1]}</p>
                                         <IoMdClose onClick={() => {
-                                        
                                         }} size={12} className="cursor-pointer"/>
                                     </div>
                                 </div>
@@ -73,7 +71,6 @@ export const TaskDetails = ({task}:{task:{data: Tasks | undefined}}) => {
                         })}
                          </>
                         }
-                        
                     </div>
                     <div className="">
 

@@ -1,13 +1,8 @@
 "use client"
 
-import { Dispatch, useContext, useEffect, useRef, useState } from "react";
+import React, { Dispatch, useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons";
-import { UserRoundPlus } from 'lucide-react';
-import { popupContext } from "@/hooks/usePopup";
-import { connectContext } from "@/hooks/useConnect";
-import { IoMdClose } from "react-icons/io";
 import { emailSchema } from "@/types/schema";
-import { Tasks } from "@/types/global";
 import { useForm } from "@/hooks/useForm";
 import clsx from "clsx";
 
@@ -68,34 +63,7 @@ export const InputList:React.FC<InputLinkProps> = ({
             setTab(newTab)
         }
     }
-    function handleKeyUp (userEmail: string) {
-        setValue((prev: Tasks) => {
-            let nouveauTableau = {...prev};
-            nouveauTableau.assign = {...values.assign}
-            return nouveauTableau
-        })
-        indentique.current = false
-        if (!emailFrom.error) {
-            for (const [_, email] of Object.entries(values.assign)) {
-                    if (email === userEmail) {
-                        indentique.current = true
-                    }
-                }
-            const numbElement = Object.keys(values.assign).length 
-            let objectifValue = {[`${numbElement + 1}`]: userEmail}
-            if (!indentique.current) {
-                setValue((prevElements: Tasks) => {
-                    let nouveauTableau = {...prevElements};
-                    nouveauTableau.assign = {...nouveauTableau.assign, ...objectifValue};
-                    return nouveauTableau;
-                })
-                emailFrom.setValue({email: ''})
-            } else {
-                emailFrom.setError('this email is already call')
-                emailFrom.setValue({email: ''})
-            }
-        }
-    }
+    
     return (
         <div className="flex-justify relative">
             <div className="flex items-center space-x-4">
@@ -109,29 +77,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                 name !== 'assign' && setActive(true)
             }}>
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap capitalize">
-                    {name !== 'assign' ? <p>{(values[name]) ? values[name] : 'Empty' }</p>:
-                    <div>
-                        {!values.assign ? <p>Empty</p> :
-                        <div>
-                            {Object.entries(values.assign).map((item: any, index: number) => (
-                            <div key={index} className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p className="text-xs">{item[1]}</p>
-                                <IoMdClose size={12} className="cursor-pointer" onClick={() => {
-                                   delete values.assign[item[0]]
-                                }}/>
-                            </div>
-                        ))}
-                        <div className="flex text-sm items-center py-1 px-4 space-x-2 cursor-pointer bg-sidebarText rounded text-gray-800"
-                            onClick={() => {
-                                setActive(true)
-                            }}>
-                            <UserRoundPlus size={16} />
-                            <p>Add participants</p>
-                        </div>
-                        </div>
-                    }
-                    </div>
-                    }
+                    <p>{(values[name]) ? values[name] : 'Empty' }</p>
                 </div>
             </div>
             {active &&
@@ -150,12 +96,8 @@ export const InputList:React.FC<InputLinkProps> = ({
                 onKeyUp={(e) => {
                     if (e.key === 'Enter') {
                         let target = e.target as HTMLInputElement;
-                        if ( name === 'assign') {
-                            handleKeyUp(target.value)
-                        } else {
-                            let newvalue = {[name]: target.value}
-                            setValue({...values, ...newvalue})
-                        }
+                        let newvalue = {[name]: target.value}
+                        setValue({...values, ...newvalue})
                         setActive(false);
                     }
                 }}
@@ -167,12 +109,8 @@ export const InputList:React.FC<InputLinkProps> = ({
                             <p className="text-xs mb-4 text-sidebarText">create one or choose one</p>
                             {tab.map((item, index) => (
                                 <div onClick={() => {
-                                    if (name == 'assign') {
-                                        handleKeyUp(item)
-                                    } else {
-                                        let newvalue = {[name]: item}
-                                        setValue({...values, ...newvalue})
-                                    }
+                                    let newvalue = {[name]: item}
+                                    setValue({...values, ...newvalue})
                                     setActive(false);
                                 }} key={index} className="text-xs p-1 mb-1 cursor-pointer text-sidebarText hover:text-gray-800 hover:bg-sidebarText"><p>{item}</p></div>
                             ))}
@@ -181,8 +119,7 @@ export const InputList:React.FC<InputLinkProps> = ({
                 </div>
                 : name === 'project' ? <Project newValue={newValue}/> :
                 (name === 'priority')  ? <><p className="text-xs px-4">sorry you can only use the propose</p></> : 
-                name === 'state' ? <><p className="text-xs px-4">sorry you can only use the propose</p></> :
-                 name === 'assign' ? <Assign /> : <></>
+                name === 'state' ? <><p className="text-xs px-4">sorry you can only use the propose</p></> : <></>
                 }
             </div>
             }
@@ -196,20 +133,6 @@ const Project = ({newValue}:{newValue: string}) => {
             <p className="">create</p>
             <div className="text-xs p-1 cursor-pointer bg-sidebarText text-gray-800 rounded">
                 <p>{newValue}</p>
-            </div>
-        </div>
-    )
-}
-
-const Assign = () => {
-    const {setDispatch} = useContext(popupContext)
-    return (
-        <div className="px-4 space-y-2 pb-2">
-            <p className="text-xs">No matches in {sessionStorage.getItem('workspace')} </p>
-            <div className="flex text-xs items-center py-1 px-4 space-x-2 cursor-pointer bg-sidebarText rounded text-gray-800"
-                    onClick={() => setDispatch({invitation: true})}>
-                    <UserRoundPlus size={16} />
-                    <p>Invite Menber</p>
             </div>
         </div>
     )

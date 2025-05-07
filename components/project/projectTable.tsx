@@ -6,6 +6,8 @@ import { popupContext } from "@/hooks/usePopup"
 import { usePosition } from "@/hooks/usePosition"
 import { Tasks } from "@/types/global"
 import { IoMdClose } from "react-icons/io"
+import { changeDateFormat } from "@/lib/action"
+import { usePathname } from "next/navigation"
 
 interface ProjectProps {
     index: number
@@ -21,6 +23,7 @@ interface ProjectProps {
     }>>,
     error: string,
     value: Tasks[],
+    setTasks: React.Dispatch<React.SetStateAction<Tasks[]>>
 }
 
 export const ProjectTable:React.FC<ProjectProps> = ({
@@ -34,9 +37,11 @@ export const ProjectTable:React.FC<ProjectProps> = ({
     setPosition,
     error,
     value,
+    setTasks
 }) => {
+    const pathname = usePathname()
     //useContext
-    const {setDateValue, setIndexes,setAction, setTypeTime, setGroups, groups} = useContext(connectContext)
+    const {setDateValue, setIndexes,setAction, setTypeTime, setGroups} = useContext(connectContext)
     const {setDispatch} = useContext(popupContext)
     //hook
     const menberPosition = usePosition()
@@ -56,7 +61,7 @@ export const ProjectTable:React.FC<ProjectProps> = ({
     return (
     <>
         <tr>
-            <td className="border-l border-r border-t border-primary w-[250px]">
+            <td className="border-l border-r border-t border-primary w-[225px]">
                 <textarea
                  onChange={(e) => {
                     const target = e.target as HTMLTextAreaElement
@@ -69,32 +74,36 @@ export const ProjectTable:React.FC<ProjectProps> = ({
                  className="px-4 py-2 w-full text-sm outline-none resize-none scrollbar-hide bg-secondary placeholder:text-holder" 
                  ></textarea>
             </td>
-            <td className="border-l border-r border-t border-primary w-[250px]">
+            {pathname.split('/')[1] === 'teams' &&
+            <td className="border-l border-r border-t border-primary w-[225px]">
                 <div>
+                {value[index].assign !== '' &&
                 <div>
-                {value[index].assign &&
-                    <div>
-                    {Object.entries(value[index].assign).map((menber, i) => {
-                        return (
+                    {Object.entries(JSON.parse(value[index].assign)).map((menber, i) => {
+                    const val = menber[1] as string
+                    const key = menber[0] 
+                    console.log(i)
+                    return (
                         <div key={i}>
-                            <div className="text-sm flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p>{menber[1]}</p>
+                            <div className="text-xs flex items-center bg-gray-800 text-sidebarText justify-between p-1">
+                                <p>{val}</p>
                                 <IoMdClose onClick={() => {
                                     setIndexes(index)
-                                    if (typeof value[index].assign !== 'string') {
-                                        let assign = value[index].assign
-                                        if (assign) {
-                                            delete assign[menber[0]]
-                                        }
-                                    }
+                                    let newAssign = JSON.parse(value[index].assign)
+                                    delete newAssign[key]
+                                    newAssign = JSON.stringify(newAssign)
+                                    setTasks((prev: Tasks[]) => {
+                                        let newValue = [...prev]
+                                        newValue[index]['assign'] = newAssign
+                                        return newValue
+                                    })
                                 }} size={12} className="cursor-pointer"/>
                             </div>
                         </div>
-                        )
-                    })}
-                    </div>
-                }
+                    )
+                })}
                 </div>
+                }
                 <div className="full">
                     <button onClick={(e) => {
                         menberPosition.handlerBoundingClientRight(e, 250)
@@ -111,6 +120,7 @@ export const ProjectTable:React.FC<ProjectProps> = ({
                 </div>
                 </div>
             </td>
+            }
             <td className="border-l border-r border-t border-primary">
                 <div className="statepriority_btn" onClick={(e) => {
                 }}>
@@ -135,7 +145,7 @@ export const ProjectTable:React.FC<ProjectProps> = ({
                 setDateValue('start_date')
                 setIndexes(index)
                 }}>
-                    <p>{start_date}</p>
+                    <p>{changeDateFormat(start_date)}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary">
@@ -144,7 +154,7 @@ export const ProjectTable:React.FC<ProjectProps> = ({
                 setDateValue('deadline')
                 setIndexes(index)
                 }}>
-                    <p>{deadline}</p>
+                    <p>{changeDateFormat(deadline)}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary ">

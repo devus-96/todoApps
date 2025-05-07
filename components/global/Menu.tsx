@@ -38,7 +38,7 @@ export const Menu = ({
               }
     }, [active])
     return (
-        <div ref={menuRef}>
+        <div className="w-fit h-fit" ref={menuRef}>
             {children}
         </div>
     )

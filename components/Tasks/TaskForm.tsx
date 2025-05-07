@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { defaultValue, tasksRow } from "@/constants/task"
+import { defaultValue, tasksRow, userstasksRow } from "@/constants/task"
 import { ProjectTable } from "../project/projectTable"
 import { format } from "date-fns"
 import { ProjectType, Tasks } from "@/types/global"
@@ -12,22 +12,22 @@ import { Priority } from "./priority"
 import { Menbers } from "./menbers"
 import { Plus } from "lucide-react"
 import { Menu } from "../global/Menu"
+import { usePathname } from "next/navigation"
 
 interface TaskProps {
     task: Tasks[],
     setTask: Dispatch<SetStateAction<Tasks[]>>,
     error: string,
-    project: ProjectType,
-    setError: React.Dispatch<React.SetStateAction<unknown[]>>
+    setError: (value: (prev: unknown[]) => unknown[]) => void
 }
 
 export const TaskForm:FC<TaskProps> = ({
     task,
     setTask,
     error,
-    project,
     setError
 }) => {
+    const pathname = usePathname()
     //useREf
     const storeTasks = useRef(defaultValue)
     // useState
@@ -50,42 +50,21 @@ export const TaskForm:FC<TaskProps> = ({
             }
         }
     }, [groups, indexes])
-    useEffect(() => {console.log(task), [task]})
+    useEffect(() => console.log(task), [task])
+    console.log(pathname.split('/'))
     return (
     <div>
-        {state.states &&
-        <div className="fixed w-[234px] h-[250px] z-50 text-sidebarText bg-primary rounded border-borderCard"
-                style={{
-                    left: position.x + 'px',
-                    top: position.top + 'px',
-                }}
-            >
-                <Status  />
-        </div>
-        }
-        {state.priority &&
-        <div className="fixed w-[244px] h-[250px] z-50 text-sidebarText bg-primary rounded"
-                style={{
-                    left: position.x + 'px',
-                    top: position.top + 'px',
-                }}
-                >
-                <Priority />
-        </div>
-        }
-        {state.menberList && 
-        <Menu active={state.menberList} dispatch='menberList'>
-            <div className='fixed z-30' style={{
-                    left: position.x + 'px',
-                    top: position.top + 'px',
-            }}>
-                {indexes !== null && <Menbers value={task[indexes]} />}
-            </div>
-        </Menu>
+        <Status position={position} />
+        <Priority position={position}/>
+        {((indexes !== null && task) && state.menberList) && 
+            <Menu active={state.menberList} dispatch='menberList'>
+                <Menbers position={position} value={task[indexes]} />
+            </Menu>
         }
         <div className="mt-12">
             <div className="w-full scrollbar-hide">
                 <table className="border-primary text-sidebarText w-full overflow-y-visible text-start">
+                    {pathname.split('/')[1] === 'teams' && 
                     <thead>
                         <tr>
                             {tasksRow.map((item, index) => (
@@ -97,6 +76,20 @@ export const TaskForm:FC<TaskProps> = ({
                             ))}
                         </tr>
                     </thead>
+                    }
+                    {pathname.split('/')[1] === 'users' && 
+                    <thead>
+                        <tr>
+                            {userstasksRow.map((item, index) => (
+                            <td key={index} className="border-l border-r border-b border-primary pl-4">
+                                <div className="flex items-center gap-2 text-sm text-gray-500">
+                                    <item.icon size={16} className="block"/><p>{item.name}</p>
+                                </div>
+                            </td>
+                            ))}
+                        </tr>
+                    </thead>
+                    }
                     <tbody>
                         {task.map((item: Tasks , index: number) => (
                             <ProjectTable 
@@ -105,12 +98,13 @@ export const TaskForm:FC<TaskProps> = ({
                             setPosition={setPosition}
                             priority={item.priority}
                             states={item.state}
-                            start_date={format(item.start_date, 'dd/MM/yyy')}
-                            deadline={format(item.deadline, 'dd/MM/yyy')}
+                            start_date={item.start_date}
+                            deadline={item.deadline}
                             start_time={item.start_time}
                             end_time={item.end_time}
                             value={task}
                             error={error}
+                            setTasks={setTask}
                             />
                         ))}
                     </tbody>
@@ -119,11 +113,11 @@ export const TaskForm:FC<TaskProps> = ({
             <div className="w-full text-[#333] hover:bg-[#333] cursor-pointer hover:text-gray-300 flex pl-2 py-1 gap-2" onClick={() => {
                 setTask([...task, {
                     name: '',
-                    assign: {},
+                    assign: '',
                     priority: 'Empty',
                     state: 'not started',
-                    start_date: new Date(),
-                    deadline: new Date(),
+                    start_date: format(new Date().toLocaleDateString(), "yyyy-MM-dd"),
+                    deadline: format(new Date().toLocaleDateString(), "yyyy-MM-dd"),
                 }])
             }}>
                 <Plus size={24} />

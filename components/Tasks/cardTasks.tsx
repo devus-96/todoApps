@@ -94,7 +94,7 @@ export const CardTasks = ({
             }
             <div className="flex items-center justify-between w-full mt-2">
                 <div className="flex flex-col gap-2">
-                <p className="text-xs" onClick={() => {more ? setMore(false) : setMore(true)}}>{Object.entries(item.assign).length} {Object.entries(item.assign).length > 1 ? 'Participants': 'Participant'}</p>
+                <p className="text-xs" onClick={() => {more ? setMore(false) : setMore(true)}}>{Object.entries(JSON.parse(item.assign)).length} {Object.entries(JSON.parse(item.assign)).length > 1 ? 'Participants': 'Participant'}</p>
                 {more &&
                     <>
                     {Object.entries(item.assign).map((value, i) => {

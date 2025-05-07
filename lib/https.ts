@@ -43,7 +43,7 @@ export function HTTPClient (params?: string | null) : AxiosInstance {
           return res;
         },
         (error) => {
-          console.info(`RESPONSE-ERROR (${error.config.url}) => `, error.response);
+          console.info(`RESPONSE-ERROR (${error.config.url}) => `, error);
     
           throw error;
         }

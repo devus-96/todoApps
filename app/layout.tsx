@@ -10,6 +10,7 @@ import ConnectContextProvider from "@/hooks/useConnect";
 import { ClockPopUp } from "@/components/popup/clockPopup";
 import { CommentPopUp } from "@/components/popup/commentPopup";
 import { TeamPopUp } from "@/components/popup/teamPopup";
+import MessageContextProvider from "@/hooks/useMessage";
 
 const jetBrainsMono = localFont({
   src: "./fonts/woff/JetBrainsMono-Regular.woff",
@@ -46,6 +47,7 @@ export default function RootLayout({
         className={`${jetBrainsMono.variable} ${jetBrainsMonoBold.variable} ${jetBrainsMonoExtraBold.variable} antialiased`}
       >
         <ConnectContextProvider>
+        <MessageContextProvider>
         <PopupContextProvider>
           <TeamPopUp />
           <CommentPopUp />
@@ -55,6 +57,7 @@ export default function RootLayout({
           <InvitationPopUp />
           {children}
         </PopupContextProvider>
+        </MessageContextProvider>
         </ConnectContextProvider>
       </body>
     </html>

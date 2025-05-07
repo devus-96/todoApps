@@ -1,11 +1,11 @@
 export type Tasks = {
 id?: string,
 name: string; 
-assign: Record<string,any>; 
+assign: string; 
 priority: string; 
 state: string; 
-start_date: Date; 
-deadline: Date; 
+start_date: string; 
+deadline: string; 
 author?:string,
 creation?: Date; 
 start_time?: string; 
@@ -17,8 +17,10 @@ export type ProjectType = {
 id?:string,
 name: string;
 objectifs?: Record<string,any>;
-start_date: Date;
-deadline: Date;
+start_date: string;
+state: string; 
+priority: string; 
+deadline: string;
 repeat?: string;
 description?: string;
 }

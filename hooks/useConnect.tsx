@@ -1,26 +1,31 @@
 "use client"
-import { Tasks } from "@/types/global";
-import { createContext, useEffect, useState } from "react";
+import { ProjectType, Tasks } from "@/types/global";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 
-const defaultTask = {
+export const defaultTask = {
     name: '',
-    project: '' ,
-    assign: {} as Record<string,any>,
+    assign: '',
     priority: '',
     state: '',
-    start_date: new Date(),
-    deadline: new Date(),
+    start_date: new Date().toLocaleDateString(),
+    deadline: new Date().toLocaleDateString(),
     start_time: '',
     end_time: '',
 }
 
+type taskdetailType = {
+    type: string,
+    name: string,
+    submit: (formTask: Tasks, group?: any) => Promise<never> | undefined
+}
+
 const defaultValue = {
     name: '',
-    assign: {},
+    assign: '',
     priority: 'Empty',
     state: 'Plan',
-    start_date: new Date(),
-    deadline: new Date(),
+    start_date: new Date().toLocaleDateString(),
+    deadline: new Date().toLocaleDateString(),
     start_time: '00:00AM',
     end_time: '00:00AM',
 }
@@ -28,8 +33,8 @@ const defaultValue = {
 export const projectDefaultValue = {
     name: '',
     objectifs: {'0': ''},
-    start_date: new Date(),
-    deadline: new Date(),
+    start_date: new Date().toLocaleDateString(),
+    deadline: new Date().toLocaleDateString(),
     repeat: '',
     image: '',
 }
@@ -48,6 +53,8 @@ type formTask = ((prevElements: Tasks) => Tasks) | Tasks
  */
 
 export const connectContext = createContext({
+    createtask: null as taskdetailType | null,
+    setCreatetask: (data: taskdetailType) => {},
     currTaskDetails: {data: undefined} as {data: Tasks | undefined},
     setCurrTaskDetails: (data: any) => {},
     date: {},
@@ -82,16 +89,11 @@ export function ConnectContextProvider ({children}: {children: React.ReactNode})
     const [groups, setGroups] = useState<Record<string, any>>({})
     const [date, setDate] = useState<Record<string, any>>({})
     const [currTaskDetails, setCurrTaskDetails] = useState<{data: Tasks | undefined}>({data: undefined})
-
-    useEffect(() => {
-        console.log(groupFormTask)
-    }, [groupFormTask])
-
-    useEffect(() => {
-        console.log(formProject)
-    }, [formProject])
+    const [createtask, setCreatetask] = useState<taskdetailType | null>(null)
 
     return <connectContext.Provider value={{
+        createtask,
+        setCreatetask,
         currTaskDetails,
         setCurrTaskDetails,
         date,

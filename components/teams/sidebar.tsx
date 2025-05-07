@@ -1,4 +1,5 @@
 "use client"
+import React from "react";
 import { teamsRoutes } from "@/constants/sidebar";
 import clsx from "clsx"
 import Link from "next/link";
@@ -6,14 +7,33 @@ import { usePathname } from "next/navigation"
 import { UserPlus } from "lucide-react";
 import { ChevronDown } from "lucide-react";
 import { StepBack } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { popupContext } from "@/hooks/usePopup";
 import { SidebarLink } from "../global/sidebarLink";
 import { TeamDetails } from "./details";
+import SidebarProject from "../project/sidebarProject";
+import { fetchTeamsProjects } from "@/api/project";
+import { messageContext } from "@/hooks/useMessage";
 
 const SideBar = () => {
     const pathname = usePathname()
     const {setDispatch} = useContext(popupContext)
+    const [projects, setProjects] = useState<any>()
+    const {setGetter} = useContext(messageContext)
+    const [isLoading, setLoading] = useState<boolean>(false)
+
+    function fetchProjects () {
+        const teamId = localStorage.getItem('teamId')
+        setGetter(() => [{}])
+        setLoading(true)
+        fetchTeamsProjects(teamId).then((res) => {
+            setProjects(res)
+        }).catch((err) => {
+            setGetter(prev => [...prev, err])
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
     return (
         <div className={
             clsx("sidebar", {
@@ -23,6 +43,7 @@ const SideBar = () => {
             })
         }>
             <TeamDetails />
+            {projects && <SidebarProject data={projects.data} />}
             <div className="w-full h-full absolute flex flex-col">
                 <div className="text-sidebarText flex justify-between items-center space-x-4 px-4">
                     <div className="flex-justify w-[150px]">
@@ -43,7 +64,13 @@ const SideBar = () => {
                 <div className="h-auto mt-4 flex-1">
                     <div className="px-4">
                         {teamsRoutes.map((item, index) => {
-                            return  <SidebarLink key={index} item={item} />
+                            return  <SidebarLink 
+                                key={index} 
+                                item={item} 
+                                projects={projects}
+                                fetchProjects={fetchProjects}
+                                loading={isLoading}
+                                />
                         })}
                     </div>
                 </div>

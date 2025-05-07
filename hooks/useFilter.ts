@@ -9,12 +9,14 @@ export function useFilter(defaultValue: sortListProps, store: any) {
     const [values, setValue] = useState<any>(store)
 
     useEffect(() => {
-        const tab = Object.values(defaultValue).filter((item) => item !== '')
-        console.log(tab)
-        if (tab.length === 0) {
-            setValue(() => store)
-        } else {
-            sort()
+        if (store) {
+            const tab = Object.values(defaultValue).filter((item) => item !== '')
+            console.log(tab)
+            if (tab.length === 0) {
+                setValue(() => store)
+            } else {
+                sort()
+            }
         }
     }, [defaultValue])
 

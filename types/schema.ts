@@ -28,30 +28,29 @@ export const ProjectSchema = z.object({
   name: z.string().regex(nameFormat, {
     message: "project must have a name, format: no special (&/,), min 4 and max 60 characters",
   }),
-  start_date: z.date({
+  start_date: z.string({
     required_error: "start date are required",
   }),
-  deadline: z.date({
+  deadline: z.string({
     required_error: "deadline are required",
   }),
   state: z.enum(["not started", "paused",'in progress','done','canceled',]),
-  priority: z.enum(['high', 'low', 'meduim']),
+  priority: z.enum(['high', 'low', 'medium']),
 });
 
 export const TaskSchema = z.object({
   name: z.string().regex(nameFormat, {
     message: "task must have a name, format: no special (&/,), min 4 and max 60 characters",
   }),
-  start_date: z.date({
+  start_date: z.string({
     required_error: "start date are required",
   }),
-  deadline: z.date({
+  deadline: z.string({
     required_error: "deadline are required",
   }),
   state: z.enum(["not started", "paused",'in progress','done','canceled',]),
-  priority: z.enum(['high', 'low', 'medim']),
+  priority: z.enum(['high', 'low', 'medium']),
 });
-
 
 export const emailSchema = z.string().email('invalid email adress');
 

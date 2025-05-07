@@ -7,23 +7,23 @@ import { useForm } from "@/hooks/useForm";
 import { TeamSchema } from "@/types/schema";
 import { createTeams } from "@/api/teams";
 import { Message } from "../ui/message";
+import { messageContext } from "@/hooks/useMessage";
 
 export const TeamPopUp = () => {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const {state} = useContext(popupContext)
     const teams = useForm({}, TeamSchema)
-    const [error, setError] = useState<any>()
+    const {setGetter, message, mood, getter, next, prev} = useContext(messageContext)
 
     function submit () {
         setLoading(true)
-        setError('')
+        setGetter(() => [])
         teams
         .submit(createTeams)
         .then((res) => {
-            console.log(res)
-            //window.location.assign(`/teams/${res.data.id}`);
+            window.location.assign(`/teams/${res.data.id}`);
         })
-        .catch((error: any) => setError(error))
+        .catch((error: any) => setGetter((prev) => [error, ...prev]))
         .finally(() => {
             setLoading(false)
         });
@@ -32,7 +32,14 @@ export const TeamPopUp = () => {
         <>
             {state.team && (
                 <Popup width="400px" height="h-fit" modeNight={true} popup='team' className="rounded-lg">
-                    <Message message={error} />
+                    {message && <Message
+                        message={message}
+                        mood={mood}
+                        getter={getter}
+                        next={next}
+                        prev={prev}
+                        accessoire={false}
+                    />}
                     <form action={(formData) => {
                         setLoading(true)
                     }} className="px-8 py-4 text-sidebarText">
@@ -64,6 +71,5 @@ export const TeamPopUp = () => {
                 </Popup>
             )}
         </>
-       
     )
 }

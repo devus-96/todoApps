@@ -47,23 +47,23 @@ const Cell:React.FC<Props> =  ({
     function handleAction () {
       switch (dateValue) {
         case "start_date": 
-          setGroups({start_date: currentDate})
+          setGroups({start_date: format(currentDate,"yyyy-MM-dd")})
           break;
         case "deadline":
-          setGroups({deadline: currentDate})
+          setGroups({deadline: format(currentDate,"yyyy-MM-dd")})
           break;
         case "start":
-          setDate({start_date: currentDate})
+          setDate({start_date: format(currentDate,"yyyy-MM-dd")})
           break
         case "end":
-          setDate({deadline: currentDate})
+          setDate({deadline: format(currentDate,"yyyy-MM-dd")})
           break
       }
     }
     useEffect(() => {
       if (data) {
         setTab(() => {
-          const newTab = data.filter((item) => (format(item.start_date, 'dd/MM/yyyy')  === format(currentDate, 'dd/MM/yyyy') || format(item.deadline, 'dd/MM/yyyy')  === format(currentDate, 'dd/MM/yyyy')))
+          const newTab = data.filter((item) => (format(item.start_date, 'yyyy-MM-dd')  === format(currentDate, 'dd-MM-yyyy') || format(item.deadline, 'dd-MM-yyyy')  === format(currentDate, 'dd-MM-yyyy')))
           return newTab
         })
       }

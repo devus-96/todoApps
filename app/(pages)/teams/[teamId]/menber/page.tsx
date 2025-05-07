@@ -88,7 +88,7 @@ const MenberPage = () => {
         }
     }
     return (
-        <div className="bg-secondary w-[calc(100%-200px)] min-h-screen pb-8">
+        <div className="bg-secondary w-full min-h-screen pb-8">
             <HeaderProject />
             {state.menberAction &&
             <>

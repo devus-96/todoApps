@@ -8,16 +8,18 @@ import { usePosition } from "@/hooks/usePosition"
 import { popupContext } from "@/hooks/usePopup"
 import { useForm } from "@/hooks/useForm"
 import { Tasks } from "@/types/global"
-import { format } from "date-fns"
 import { BookOpen, MoreVertical } from "lucide-react"
+import { patchTeamsProjectTasks } from "@/api/tasks"
+import { changeDateFormat } from "@/lib/action"
+import { usePathname } from "next/navigation"
 
 export const TaskTableComponent = ({
     item, 
     occ,
     value,
     setPosition,
-    setProjects,
-    completion = false,
+    setTasks,
+    teamId,
 }:{
         item: Tasks, 
         occ: number,
@@ -26,9 +28,10 @@ export const TaskTableComponent = ({
             x: number;
             top: number;
         }>>;
-        setProjects: React.Dispatch<React.SetStateAction<Tasks[]>>,
-        completion?: boolean
+        setTasks: React.Dispatch<React.SetStateAction<Tasks[]>>,
+        teamId?: string,
     }) => {
+    const pathname = usePathname()
     //useState
     const [index, setIndex] = useState(0)
     const [updateName, setUpdateName] = useState(false)
@@ -53,15 +56,7 @@ export const TaskTableComponent = ({
     useEffect(() => {
         setPosition(menberPosition.position)
     }, [menberPosition.position])
-    //function
-    function time () {
-        const start  = item.start_date as Date
-        const end = item.deadline as Date
-        const now = new Date()
-        const percent = (now.getTime() - start.getTime()) / (end.getTime() - start.getTime())
-        return percent * 100
-    }
-
+    useEffect(() => console.log(value), [value])
     return (
         <>
         <tr key={index} className="py-2">
@@ -77,19 +72,19 @@ export const TaskTableComponent = ({
                         </div>
                         <div className="flex items-center justify-between w-[200px]">
                             <p onClick={() => {
-                            setUpdateName(true)
-                            setIndex(occ)
+                                setUpdateName(true)
+                                setIndex(occ)
                             }} className="ml-4 text-xs overflow-hidden text-ellipsis whitespace-nowrap">{item.name}</p>
                             <div onClick={() => {
-                            window.location.assign('/teams/project/params=0')
-                            }} className="opacity-0 cursor-pointer group-hover:opacity-100 h-5 w-5 flex-center rounded hover:bg-sidebarText hover:text-gray-800">
-                            <BookOpen size={16} />
-                        </div>
+                                window.location.assign('/teams/project/params=0')
+                                }} className=" opacity-0 cursor-pointer group-hover:opacity-100 h-5 w-5 flex-center rounded durarion-300 hover:bg-sidebarText/30 hover:text-gray-800">
+                                <BookOpen color="rgb(166 166 168 / 0.9)" size={16} />
+                            </div>
                         </div>
                     </div>
                     {(updateName && index === occ) &&
                     <Menu active={updateName} setActive={setUpdateName}>
-                    <div className="absolute top-0 z-30 bg-secondary border border-borderCard">
+                    <form className="w-full absolute top-0 z-30 bg-secondary border border-borderCard p-4">
                         <input 
                         type="text" 
                         name='name'
@@ -101,38 +96,57 @@ export const TaskTableComponent = ({
                         }}
                         value={nameTasks.value.name}
                         className="popupinput bg-secondary text-sm text-gray-300" />
-                        <div className="flex items-center text-xs py-1 px-4 space-x-2 cursor-pointer bg-secondary rounded text-sidebarText duration-300 hover:bg-sidebarText hover:text-gray-800"
+                        <button className="flex items-center text-xs py-1 px-4 ml-4 space-x-2 cursor-pointer bg-secondary rounded text-sidebarText duration-300 hover:bg-sidebarText hover:text-gray-800"
                             onClick={() => {
-                                setProjects((prevValue: Tasks[]) => {
+                                setTasks((prevValue: Tasks[]) => {
                                     const nouveauTableau = [...prevValue];
                                     nouveauTableau[index].name = nameTasks.value.name
                                     return nouveauTableau
                                 })
+                                if (teamId && item.id) {
+                                    patchTeamsProjectTasks({name: nameTasks.value.name}, item.id, teamId)
+                                } else {
+                                    patchTeamsProjectTasks({name: nameTasks.value.name}, item.id)
+                                }
                                 setUpdateName(false)
                             }}>
                             <p> Update name</p>
-                        </div>
-                    </div>
+                        </button>
+                    </form>
                     </Menu>
                     }
                 </div>
             </td>
-            {Object.keys(item).includes('assign') &&
+            {pathname.split('/')[1] === 'teams' &&
             <td className="border-l border-r border-t border-primary">
                 <div>
-                {Object.entries(item.assign).map((menber, i) => {
-                    return (
-                        <div key={i}>
-                            <div className="text-xs flex items-center bg-gray-800 text-sidebarText justify-between p-1">
-                                <p>{menber[1]}</p>
-                                <IoMdClose onClick={() => {
-                                    setIndex(occ)
-                                    delete value[index].assign[menber[0]]
-                                }} size={12} className="cursor-pointer"/>
+                    {item.assign !== '' &&
+                    <div>
+                        {Object.entries(JSON.parse(item.assign)).map((menber, i) => {
+                        const val = menber[1] as string
+                        const key = menber[0] 
+                        return (
+                            <div key={i}>
+                                <div className="text-xs flex items-center bg-gray-800 text-sidebarText justify-between p-1">
+                                    <p>{val}</p>
+                                    <IoMdClose onClick={() => {
+                                        setIndex(occ)
+                                        let newAssign = JSON.parse(value[i].assign)
+                                        delete newAssign[key]
+                                        newAssign = JSON.stringify(newAssign)
+                                        setTasks((prev: Tasks[]) => {
+                                            let newValue = [...prev]
+                                            newValue[occ]['assign'] = newAssign
+                                            return newValue
+                                        })
+                                        value[occ].id && patchTeamsProjectTasks({assign: newAssign}, teamId, value[occ].id)
+                                    }} size={12} className="cursor-pointer"/>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                    </div>
+                    }
                     <div className="full">
                     <button onClick={(e) => {
                         menberPosition.handlerBoundingClientRight(e, 250)
@@ -159,10 +173,10 @@ export const TaskTableComponent = ({
                     })
                     setIndexes(occ)
                 }} className={clsx("flex-center px-2 text-xs text-gray-800 rounded-full", {
-                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'canceled',
+                    "bg-[#a1a1aa]" : item.state.toLowerCase() === 'not started',
                     "bg-[#34d399]" : item.state.toLowerCase() === 'done',
                     "bg-[#fbbf24]" : item.state.toLowerCase() === 'in progress',
-                    "bg-[#60a5fa]" : item.state.toLowerCase() === 'planning',
+                    "bg-[#fa6074]" : item.state.toLowerCase() === 'canceled',
                     'bg-[#d782ff]' : item.state.toLowerCase() === 'paused'
                 })}>
                     <p>{item.state}</p>
@@ -191,7 +205,7 @@ export const TaskTableComponent = ({
                     setIndexes(occ)
                     setDispatch({calendar: true})
                 }}>
-                    <p>{format(item.start_date, 'dd/MM/yyy')}</p>
+                    <p>{changeDateFormat(item.start_date)}</p>
                 </div>
             </td>
             <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
@@ -200,7 +214,7 @@ export const TaskTableComponent = ({
                     setDateValue('deadline')
                     setIndexes(occ)
                 }}>
-                    <p>{format(item.deadline, 'dd/MM/yyy')}</p>
+                    <p>{changeDateFormat(item.deadline)}</p>
                 </div>
             </td>
             {Object.keys(item).includes('start_time') &&
@@ -243,20 +257,6 @@ export const TaskTableComponent = ({
                         {item.start_time ? '00:00AM' : 'Add end_time'}
                     </button>
                     </div>}
-                </div>
-            </td>
-            }
-            {completion &&
-            <td className="border-l border-r border-t border-primary text-center cursor-pointer text-xs">
-                <div className="flex items-center" onClick={(e) => {setDispatch({clock: true})}}>
-                    <div className="w-[80%] rounded-full h-1 bg-red-500">
-                        <div className="bg-blue-500 rounded-full h-1" style={{
-                            width: time().toFixed(2) + '%'
-                        }}>
-
-                        </div>
-                    </div>
-                    <p className="text-xs">{time().toFixed(2)}%</p>
                 </div>
             </td>
             }

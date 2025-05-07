@@ -1,17 +1,17 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getGithubAuthUrl, getGoogleAuthUrl, post } from '@/api/user';
 import { InputPasswrld } from '@/components/auth/input';
 import Link from 'next/link';
 import { Message } from '@/components/ui/message';
 import { Spinner } from '@/components/ui/spinner';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
-import { useMessage } from '@/hooks/useMessage';
+import { messageContext } from '@/hooks/useMessage';
 
 const Login = () => {
     const [isLoading, setLoading] = useState<boolean>(false)
     const [provider, setProvider] = useState<string | null>(null)
-    const {setGetter, message, mood, getter, next, prev} = useMessage()
+    const {setGetter, message, mood, getter, next, prev} = useContext(messageContext)
 
     useEffect(() => {
         if (provider === 'google') {
@@ -39,7 +39,7 @@ const Login = () => {
                 <form action={(formData) => {
                     setLoading(true);
                     post('/login/user', formData).catch((error) => {
-                        setGetter(() => [error.response])
+                        setGetter(() => [error])
                     }).finally(() => {
                         setLoading(false);
                     })

@@ -7,7 +7,6 @@ import { sortListProps, SortTask } from "@/components/Tasks/sortTasks"
 import { Status } from "@/components/Tasks/state"
 import { TaskTableComponent } from "@/components/project/tasksComponent"
 import { Select } from "@/components/ui/select"
-import { project, sortTask, tasksRow } from "@/constants/task"
 import { connectContext } from "@/hooks/useConnect"
 import { useForm } from "@/hooks/useForm"
 import { popupContext } from "@/hooks/usePopup"
@@ -24,11 +23,12 @@ import { Calendar1 } from "@/components/global/calendar"
 import { TaskDetails } from "@/components/popup/taskDetailsPopup"
 import clsx from "clsx"
 import { useFilter } from "@/hooks/useFilter"
+import { TaskAction } from "@/components/Tasks/TaskAction"
 
 const TaskPage = () => {
     //useRef
     const tabStates = useRef<string[]>([])
-    const storeTasks = useRef(project)
+    const storeTasks = useRef([])
     const statesRef = useRef(["Planning","Paused",'In Progress','Done','Canceled'])
     //useState
     const [select, setSelect] = useState('')
@@ -93,61 +93,19 @@ const TaskPage = () => {
     useEffect(() => {tasks.setValue(() => values)}, [values])
     //DOM
     return  (
-        <div className='w-[calc(100%-220px)] pb-8 bg-secondary min-h-screen isolate'>
+        <div className='w-full pb-8 bg-secondary min-h-screen'>
             <HeaderProject />
             {currTaskDetails.data !== undefined && <TaskDetails task={currTaskDetails} />}
-            {state.states &&
-            <div aria-hidden='true' className="top-0 left-0 w-svw h-screen absolute">
-            <div className="fixed w-[234px] h-[280px] z-50 text-sidebarText bg-primary rounded border-borderCard"
-                style={{
-                    left: position.x + 'px',
-                    top: position.top + 'px',
-                }}>
-                <Status  />
-            </div>
-            </div>
-
-            }
-            {state.priority &&
-            <div className="fixed w-[244px] h-[200px] z-50 text-sidebarText bg-primary rounded"
-                 style={{
-                     left: position.x + 'px',
-                     top: position.top + 'px',
-                 }}
-                 >
-                 <Priority />
-            </div>
-            }
-            {state.sortTask && 
-            <Menu active={state.sortTask} dispatch='sortTask'>
-                <div className='fixed z-30' style={{
-                    left: sortPositon.position.x + 'px',
-                    top: sortPositon.position.top + 'px',
-                }}>
-                    <SortTask taskOptions={taskOptions} type="sort" setSortList={setSortList} sortList={sortList} />
-                </div>
-            </Menu>
-            }
-            {state.taskAction && 
-            <Menu active={state.taskAction} dispatch='taskAction'>
-                <div className='fixed z-30' style={{
-                     left: position.x + 'px',
-                     top: position.top + 'px',
-                }}>
-                    {indexes !== null && <SortTask taskOptions={taskAction} setValue={tasks.setValue} value={tasks.value[indexes]} type="action" setSortList={setSortList} sortList={sortList} />}
-                </div>
-            </Menu>
-            }
-            {state.menberList && 
-            <Menu active={state.menberList} dispatch='menberList'>
-                <div className='fixed z-30' style={{
-                     left: position.x + 'px',
-                     top: position.top + 'px',
-                }}>
-                    {indexes !== null && <Menbers value={tasks.value[indexes]} />}
-                </div>
-            </Menu>
-            }
+            <Status position={position} />
+            <Priority position={position} />
+            <SortTask 
+            taskOptions={taskOptions}
+            setSortList={setSortList} 
+            sortList={sortList} 
+            position={sortPositon.position}
+            />
+            {indexes && <TaskAction value={tasks.value[indexes]} setValue={tasks.setValue} position={position} />}
+            {indexes !== null && <Menbers position={position} value={tasks.value[indexes]} />}
             <div className="banniere">
 
             </div>

@@ -5,30 +5,28 @@ import { connectContext } from "@/hooks/useConnect"
 import { useForm } from "@/hooks/useForm"
 import { popupContext } from "@/hooks/usePopup"
 import { ProjectType, Tasks } from "@/types/global"
-import { format } from "date-fns"
 import { Calendar, CircleDashed, Flag, MessageSquareText, Plus, SquareCheck } from "lucide-react"
-import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
+import {  useContext, useEffect, useRef, useState } from "react"
 import { HeaderProject } from "../global/header"
 import { createTeamsProjects } from "@/api/project"
 import { ProjectSchema, TaskSchema } from "@/types/schema"
 import { InputList } from "../Tasks/inputList"
 import { TaskForm } from "../Tasks/TaskForm"
 import { HTTPClient } from "@/lib/https"
-import { useMessage } from "@/hooks/useMessage"
-import { Message } from "../ui/message"
+import { messageContext } from "@/hooks/useMessage"
 import { ZodError } from "zod"
+import { changeDateFormat } from "@/lib/action"
 
-
-export const ProjectFrom = ({teamid}:{teamid: string}) => {
+export const ProjectFrom = ({teamid}:{teamid?: string}) => {
      //useRef
      const numberRef = useRef<number>(1)
      //hook
-     const {setGetter, message, mood, getter, next, prev} = useMessage()
      const project = useForm(projectDefaultValue, ProjectSchema)
      const tasks = useForm(defaultValue, TaskSchema)
      //useContext
      const {setDispatch} = useContext(popupContext)
      const {setDateValue, date}= useContext(connectContext)
+     const {setGetter} = useContext(messageContext)
      //useState
      const [loading, setLoading] = useState(false)
      const [showDescription, setShowDescription] = useState<boolean>(false)
@@ -44,17 +42,20 @@ export const ProjectFrom = ({teamid}:{teamid: string}) => {
     //function
     function sortTasks (data: Tasks[]) {
         let newTab = [] as Tasks[]
+        let badTask = [] as Tasks[]
         for(let i = 0; i <= data.length - 1; i++) {
             try {
                 TaskSchema.parse(data[i])
-                tasks.verifyDate(tasks.value)
-                tasks.verifyTasksDate(project.value)
+                tasks.verifyDate(tasks.value[i])
+                tasks.verifyTasksDate(project.value, data[i])
                 newTab = [...newTab, data[i]]
             } catch (error) {
+                badTask = [...badTask, data[i]]
+                sessionStorage.setItem("badtask", JSON.stringify(badTask))
                 if (error instanceof ZodError) {
-                    setGetter((prev) => [...prev, error.errors[0].message + `at task numero ${i}`])
+                    setGetter((prev) => [...prev, error.errors[0].message + `the task ${i+1} have not been submitted`])
                 } else {
-                    setGetter((prev) => [...prev, error])
+                    setGetter((prev) => [...prev, error+ `the task ${i+1} have not been submitted`])
                 }
                 continue;
             }
@@ -64,29 +65,23 @@ export const ProjectFrom = ({teamid}:{teamid: string}) => {
 
     function submit () {
         setLoading(true)
-        setGetter([])
-        const newValue = {objectifs: JSON.stringify(project.value.objectifs)}
-        project.setValue({...project.value, ...newValue})
-        project
-        .submit(createTeamsProjects)
+        setGetter(() => [])
+        createTeamsProjects(project.value, teamid)
         .then((res) => {
             setGetter((prev) => [...prev, res])
             const tasksValues = sortTasks(tasks.value)
             tasksValues.forEach((item) => {
-                if (item.assign !== null) {
-                    let newValue = {assign: JSON.stringify(item.assign)}
-                    newValue = {...item, ...newValue}
-                }
-                HTTPClient().post(`/task/create`, newValue, {
-                    params: {teamId: teamid, projectId: res.data.data.id}
+                let newTask = {...item} as unknown
+                const newAssign = {assign: JSON.stringify(item.assign)}
+                newTask = {...item, ...newAssign}
+                HTTPClient().post(`/task/create`, newTask, {
+                    params: {teamId: teamid ? teamid : undefined , projectId: res.data.data.id}
                 }).then((res) => {
                     setGetter((prev) => [...prev, res])
-                    tasks.setValue(defaultValue)
                 }).catch((error) => {
                     setGetter((prev) => [...prev, error])
                 })
             })
-            project.setValue(projectDefaultValue)
         })
         .catch((error: any) => {
             if (error instanceof ZodError) {
@@ -96,19 +91,15 @@ export const ProjectFrom = ({teamid}:{teamid: string}) => {
             }
         })
         .finally(() => {
-            setLoading(false)
+            setTimeout(() => {
+                //window.location.reload()
+                setLoading(false)
+            }, 2000)
         });
     }
     return (
         <div>
             <div className="">
-                {message && <Message 
-                    message={message} 
-                    mood={mood} 
-                    getter={getter}
-                    next={next}
-                    prev={prev}
-                />}
                 <HeaderProject submit={submit} loading={loading} />
                 <input 
                     type="text" 
@@ -164,7 +155,7 @@ export const ProjectFrom = ({teamid}:{teamid: string}) => {
                                 setDispatch({calendar: true})
                                 setDateValue("start")
                             }} className="w-full bg-primary cursor-pointer text-sidebarText border-sidebarText outline-none p-3 text-sm">
-                                <p>{format(project.value.start_date, 'dd/MM/yyy')}</p>
+                                <p>{changeDateFormat(project.value.start_date)}</p>
                             </div>
                         </div>
                         <div className="w-1/2">
@@ -176,24 +167,49 @@ export const ProjectFrom = ({teamid}:{teamid: string}) => {
                                 setDispatch({calendar: true})
                                 setDateValue("end")
                             }} className="w-full bg-primary cursor-pointer text-sidebarText border-sidebarText outline-none p-3 text-sm">
-                                <p>{format(project.value.deadline, 'dd/MM/yyy')}</p>
+                                <p>{changeDateFormat(project.value.deadline)}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="ml-12 mt-8" onClick={() => {
-                    numberRef.current++
-                    setNumber(numberRef.current)
-                }}>
+                <div className="ml-12 mt-8" >
                     <div className="group flex items-center cursor-pointer">
-                        <Plus size={24} className="text-sidebarText opacity-0 group-hover:opacity-85" />
+                        <Plus size={24} className="text-sidebarText" />
                         <p className="text-3xl text-btnColor ">Objectif</p>
                     </div>
                 </div>
                 <div>
                     <div className="ml-24 mt-4">
                         {Array.from({ length: number }).map((_,index) => (
-                            <List key={index} index={index} setValue={project.setValue} />
+                            <div key={index} className="flex items-center text-btnColor">
+                            <SquareCheck size={24}/>
+                            <input 
+                                onChange={(e) => {
+                                    const target = e.target as HTMLInputElement;
+                                    let objectifValue = {[`${index}`]: target.value};
+                                    project.setValue((formProject: ProjectType) => {
+                                        const nouveauTableau = {...formProject};
+                                        nouveauTableau['objectifs'] = {...nouveauTableau['objectifs'], ...objectifValue};
+                                        if (objectifValue[index] === '') {
+                                            delete nouveauTableau['objectifs'][index]
+                                            return nouveauTableau;
+                                        }
+                                        return nouveauTableau;
+                                    })
+                                }}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') {
+                                        numberRef.current++
+                                        setNumber(numberRef.current)
+                                    }
+                                }}
+                                value={undefined}
+                                type="text" 
+                                name={`${index}`}
+                                className="popupinput text-base bg-inherit text-gray-300" 
+                                placeholder="Write project's objectif then click Enter for record"
+                            />
+                        </div>
                         ))}
                     </div>
                 </div>
@@ -202,38 +218,7 @@ export const ProjectFrom = ({teamid}:{teamid: string}) => {
                 task={tasks.value} 
                 setTask={tasks.setValue}
                 error={tasks.error}
-                project={project.value}
                 setError={setGetter}
-            />
-        </div>
-    )
-}
-
-function List ({
-    index,
-    setValue,
-}:{
-    index: number
-    setValue: Dispatch<SetStateAction<ProjectType>>
-}) {
-    return (
-        <div className="flex items-center text-btnColor">
-            <SquareCheck size={24}/>
-            <input 
-                onChange={(e) => {
-                    const target = e.target as HTMLInputElement;
-                    let objectifValue = {[`${index}`]: target.value};
-                    setValue((formProject: ProjectType) => {
-                        const nouveauTableau = {...formProject};
-                        nouveauTableau['objectifs'] = {...nouveauTableau['objectifs'], ...objectifValue};
-                        return nouveauTableau;
-                    })
-                }}
-                value={undefined}
-                type="text" 
-                name={`${index}`}
-                className="popupinput text-base bg-inherit text-gray-300" 
-                placeholder="Write project's objectif then click Enter for record"
             />
         </div>
     )
